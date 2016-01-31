@@ -1,5 +1,5 @@
-# DIRT
-Durham Incident Report Tracker: A simple solution to Tina's problems
+# DIRT: Durham Incident Report Tracker
+A simple solution to Tina's problems
 
 ## Data Schema
 ### Primary tables
@@ -24,13 +24,13 @@ Durham Incident Report Tracker: A simple solution to Tina's problems
 
 ## Technology
 - Ruby 2.3.0
-  - Sinatra
-  - DataMapper
+  - [Sinatra](http://www.sinatrarb.com/)
+  - [DataMapper](http://datamapper.org/)
 - MySQL
 
 ## Contributors
-- Max Ettelson
-- Chris Hinstorff
-- Janeth Jepkogei Rotich
-- Erica Schwartz
-- Norman Young
+- [Max Ettelson](http://github.com/mdettelson)
+- [Chris Hinstorff](http://github.com/chinstorff)
+- [Janeth Jepkogei](http://github.com/janethjepkogei)
+- [Erica Schwartz](http://github.com/ericaschwa)
+- [Norman Young](http://github.com/nyoung01)
