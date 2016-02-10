@@ -7,18 +7,18 @@ function compare(a,b) {
 	   return 0;
 }
 
-var departments = ['Dining, Energy & Facilities',
-                   'Environmental Health & Safety',
-                   'Housing, Mail & Print', 
-                   'Sustainability',
-                   'Events Management',
-                   'Sustainability',
-                   'Transportation',
-                   'Buildings and Facilities',
-                   'Construction Support',
-                   'Environmental Management',
-                   'Laboratories',
-                   'Training'];
+departments = ['Dining, Energy & Facilities',
+               'Environmental Health & Safety',
+               'Housing, Mail & Print', 
+               'Sustainability',
+               'Events Management',
+               'Sustainability',
+               'Transportation',
+               'Buildings and Facilities',
+               'Construction Support',
+               'Environmental Management',
+               'Laboratories',
+               'Training'];
 
 var app = angular.module('incidentApp', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns']);
 
@@ -35,7 +35,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 		 "departments": [0,5],
 		 "incident types": [8,9],
 		 "location": "Logan Airport", // later this will be more than one field for coords, google location id, etc.
-		 "timestamp": "Tue Feb 09 2016 16:04:19 GMT-0500 (EST)",
+		 "timestamp": "Wed Feb 10 2016 16:04:19 GMT-0500 (EST)",
 		 "status": 1,
 		 "permission": 1
 		},
@@ -67,7 +67,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
          "departments": [1,4],
          "incident types": [6,2],
          "location": "175 College Avenue", // will this be coordinates? In what format?
-         "timestamp": "Tue Feb 09 2016 16:04:19 GMT-0500 (EST)",
+         "timestamp": "Thu Feb 11 2016 16:04:19 GMT-0500 (EST)",
          "status": 2,
          "permission": 2
         });
@@ -95,14 +95,13 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
                 }
             }
         }
-        var time = new Date(fromServer[i]['timestamp'])
     	incidentData.push({
     		"submitter": fromServer[i]['submitterln'] + ", " + fromServer[i]['submitterfn'],
     		"severity": parseInt(fromServer[i]['severity']),
     		"description": fromServer[i]['description'],
     		"departments": incidentdepts,
     		"location": fromServer[i]['location'],
-            "time": parseInt(time.getTime()),
+        "time": new Date(fromServer[i]['timestamp']),
     		"edit": edit,
     		"status": status
     	});
@@ -121,6 +120,14 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
         } else {
             return '';
         }
+    };
+
+    filterdate = function() {
+        var date1 = new Date(document.getElementById('datefilterby').value);
+        console.log(date1);
+        
+        $scope.colFilter.term = date1;
+        $scope.colFilter.condition = new RegExp(date1);
     };
  
 	$scope.gridOptions.columnDefs = [
@@ -144,7 +151,9 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 	  { name: 'description', displayName: "Description", headerCellClass: $scope.highlightFilteredHeader},
 	  { name: 'departments', displayName: "Departments", headerCellClass: $scope.highlightFilteredHeader},
 	  { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader},
-      { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader
+      { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader,
+        cellFilter: 'date:\'yyyy-MM-dd\'', type: 'date',
+        filterHeaderTemplate: '<div class="ui-grid-filter-container"><input type="date" id="datefilterby" onchange="filterdate()" /></div>'
       },
 	  { name: 'edit', displayName: "View / Edit", headerCellClass: $scope.highlightFilteredHeader,
         filter: {
@@ -165,8 +174,9 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 	$scope.gridOptions.multiSelect = false;
 	$scope.gridOptions.modifierKeysToMultiSelect = false;
 	$scope.gridOptions.noUnselect = false;
-    $scope.gridOptions.data = incidentData;
+  $scope.gridOptions.data = incidentData;
 
+  
 
 })
 
