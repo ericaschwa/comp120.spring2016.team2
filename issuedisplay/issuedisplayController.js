@@ -62,6 +62,20 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 		 "permission": 1
 		}
   ];
+  // will come from the following request:
+  /*var http = new XMLHttpRequest();
+  var url = ?;
+  var params = "userid=" + ? + "&request=incidentinfo";
+  http.open("GET", url, true);
+  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  http.onreadystatechange = function() {
+    if (http.readyState == 4 && http.status == 200) { // OK, got response from server
+      fromServer = JSON.parse(http.responseText);
+    }
+  }
+  http.send(params);*/
+
+
 
   /* currently how I did it is that the server returns this array, so that it
    doesnt have to return an array of department names for every incident but
@@ -78,6 +92,18 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
                          'Environmental Management',
                          'Laboratories',
                          'Training'];
+  // will come from the following request:
+  /*var http = new XMLHttpRequest();
+  var url = ?;
+  var params = "userid=" + ? + "&request=departmentlist";
+  http.open("GET", url, true);
+  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  http.onreadystatechange = function() {
+    if (http.readyState == 4 && http.status == 200) { // OK, got response from server
+      deptsfromServer = JSON.parse(http.responseText);
+    }
+  }
+  http.send(params);*/
 
   // just to make the data look full, for now
   for (var i = 0; i < 40; i++) {
