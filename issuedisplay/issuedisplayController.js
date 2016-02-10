@@ -15,7 +15,7 @@ function compare(a,b) {
 }
 
 // from http://stackoverflow.com/questions/3066586/get-string-in-yyyymmdd-format-from-js-date-object
-// converts date object to yyyy-mm-dd hh:min:sec format
+// converts date object to yyyy-mm-dd hh:min:sec (sortable) time format
 var convertsortable = function(datetime) { 
       var yyyy = datetime.getFullYear().toString();
       var mm = (datetime.getMonth()+1).toString(); // getMonth() is zero-based
@@ -25,6 +25,8 @@ var convertsortable = function(datetime) {
       var sec = datetime.getSeconds().toString();
       return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]) + " " + (hh[1]?hh:"0"+hh[0]) + ":" + (min[1]?min:"0"+min[0]) + ":" + (sec[1]?sec:"0"+sec[0]);
 };
+
+var setmodal;
 
 var app = angular.module('incidentApp', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns']);
 
@@ -171,7 +173,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       enableFiltering: true,
       multiSelect: false,
       modifierKeysToMultiSelect: false,
-      noUnselect: false
+      noUnselect: true
 	};
 
   // highlights headers of columns by which we have filtered
@@ -182,6 +184,16 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
           return '';
       }
   };
+
+  $scope.gridOptions.onRegisterApi = function(gridApi){
+      //set gridApi on scope
+      $scope.gridApi = gridApi;
+  };
+
+  // passed <a> thing... try to find id / a way to display the right info?
+  setmodal = function(arg) {
+    console.log(arg);
+  }
  
   // defining the formatting etc. for each column in the table
 	$scope.gridOptions.columnDefs = [
@@ -204,7 +216,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     },
 	  { name: 'edit', displayName: "View / Edit", headerCellClass: $scope.highlightFilteredHeader,
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: 'View Only', label: 'View Only' }, { value: 'View and Edit', label: 'View and Edit' }]},
-      cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a href="#">{{COL_FIELD}}</a></div>'
+      cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a data-toggle="modal" data-target="#myModal" onclick="setmodal(this)" id="{{grid.renderContainers.body.visibleRowCache.indexOf(row)}}">{{COL_FIELD}}</a></div>'
     },
 	  { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus',
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
