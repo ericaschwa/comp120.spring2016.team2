@@ -1,0 +1,14 @@
+.myGrid {
+    width: 100%;
+    height: 400px;
+}
+
+.red-highlight { color: red; background-color: yellow !important;}
+.orange-highlight { color: orange; background-color: yellow !important;}
+.red { color: red; }
+.orange { color: orange; }
+.green { color: green; }
+
+.header-filtered {
+  color: blue;
+}
