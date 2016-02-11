@@ -4,10 +4,15 @@
   <title>Report an Incident</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- bootstrap includes -->
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <!-- bootstrap includes -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="bootstrap/dist/css/bootstrap-theme.min.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="stylesheet.css">
   <script src="form.js"> </script>
 </head>
@@ -27,30 +32,30 @@
     </ul>
  </div>
 </nav>-->
-<ul class="nav nav-pills nav-justified">
-          <li role="presentation" ><a href="#">Home</a></li>
-          <li role="presentation" class="active" ><a href="#">Report an Incident</a></li>
-          <li role="presentation" ><a href="issuedisplay.html">View Incident Reports</a></li>
-        </ul>
+  <ul class="nav nav-pills nav-justified">
+    <li role="presentation" ><a href="#">Home</a></li>
+    <li role="presentation" class="active" ><a href="#">Report an Incident</a></li>
+    <li role="presentation" ><a href="issuedisplay.html">View Incident Reports</a></li>
+  </ul>
 
   <form id="form">
   <fieldset class="form-group">
     <label for="InputEmail">Email address</label>
-    <input type="email" class="form-control" id="InputEmail" placeholder="Enter email">
+    <input name="email" type="email" class="form-control" id="InputEmail" placeholder="Enter email">
     <small class="text-muted">We'll never share your email with anyone else.</small>
   </fieldset>
   <fieldset class="form-group">
     <label for="InputLocation">Location</label>
-    <input type="location" class="form-control" id="InputLocation" placeholder="Enter Location">
+    <input name="location" type="location" class="form-control" id="InputLocation" placeholder="Enter Location">
   </fieldset>
    <fieldset class="form-group">
     <label for="Textarea">Incident Description</label>
-    <textarea class="form-control" id="Textarea" rows="3"></textarea>
+    <textarea name="description" class="form-control" id="Textarea" rows="3"></textarea>
   </fieldset>
   <fieldset class="form-group">
     <label for="Select1">Relevant Department(s)</label>
 
-    <select class="form-control" id="Select1">
+    <select class="form-control" id="Select1" name="department">
     	<option selected>Search</option>
       <option>Dining</option>
       <option>Energy & Facilities</option>
@@ -65,7 +70,7 @@
  
   <fieldset class="form-group">
     <label for="InputFile">Add file</label>
-    <input type="file" class="form-control-file" id="InputFile">
+    <input name="photo" type="file" class="form-control-file" id="InputFile">
   </fieldset>
  
   <button type="submit" class="btn btn-primary">Submit</button>
