@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Report an Incident</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- bootstrap includes -->
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="stylesheet.css">
+  <script src="form.js"> </script>
+</head>
+<body>
+<div class="container">
+<!--
+  Just commented this for now so our navbars look the same
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#"></a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="index.html">Home</a></li>
+      <li><a href="">Report an incident</a></li> 
+      <li><a href="#">View Incident Reports</a></li> 
+    </ul>
+ </div>
+</nav>-->
+<ul class="nav nav-pills nav-justified">
+          <li role="presentation" ><a href="#">Home</a></li>
+          <li role="presentation" class="active" ><a href="#">Report an Incident</a></li>
+          <li role="presentation" ><a href="issuedisplay.html">View Incident Reports</a></li>
+        </ul>
+
+  <form id="form">
+  <fieldset class="form-group">
+    <label for="InputEmail">Email address</label>
+    <input type="email" class="form-control" id="InputEmail" placeholder="Enter email">
+    <small class="text-muted">We'll never share your email with anyone else.</small>
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="InputLocation">Location</label>
+    <input type="location" class="form-control" id="InputLocation" placeholder="Enter Location">
+  </fieldset>
+   <fieldset class="form-group">
+    <label for="Textarea">Incident Description</label>
+    <textarea class="form-control" id="Textarea" rows="3"></textarea>
+  </fieldset>
+  <fieldset class="form-group">
+    <label for="Select1">Relevant Department(s)</label>
+
+    <select class="form-control" id="Select1">
+    	<option selected>Search</option>
+      <option>Dining</option>
+      <option>Energy & Facilities</option>
+      <option>Environmental Health & Safety</option>
+      <option>Housing</option>
+      <option>Mail & Print </option>
+      <option>Sustainability</option>
+      <option>Events Management</option>
+      <option>Transportation</option>
+    </select>
+  </fieldset>
+ 
+  <fieldset class="form-group">
+    <label for="InputFile">Add file</label>
+    <input type="file" class="form-control-file" id="InputFile">
+  </fieldset>
+ 
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
+
+</body>
+</html>
