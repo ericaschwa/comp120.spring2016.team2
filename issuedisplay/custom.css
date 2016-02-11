@@ -12,3 +12,7 @@
 .header-filtered {
   color: blue;
 }
+
+.title {
+    font-weight: bold;
+}

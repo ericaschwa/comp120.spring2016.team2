@@ -45,7 +45,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 		 "severity": 10, // change back from varchar
 		 "description": "SNAKES ON A PLANE",
 		 "departments": [0,5], // array of department IDs
-		 "incident types": [8,9], // array of incident type IDs
+		 //"incident types": [8,9], // array of incident type IDs - is this a thing?
 		 "location": "Logan Airport", // later this will be more than one field for coords, google location id, etc.
 		 "timestamp": "Wed Feb 10 2016 16:04:19 GMT-0500 (EST)",
 		 "status": 1,
@@ -55,12 +55,12 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 		 "submitterfn": "Norman",
 		 "submitterln": "Young",
 		 "severity": 3,
-		 "description": "My nose itches.",
+		 "description": "RESOLVED.",
 		 "departments": [2,3],
-		 "incident types": [1,7],
+		 //"incident types": [1,7], is this a thing?
 		 "location": "175 College Avenue",
 		 "timestamp": "Tue Feb 09 2016 16:04:19 GMT-0500 (EST)",
-		 "status": 1,
+		 "status": 3,
 		 "permission": 1
 		}
   ];
@@ -115,7 +115,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
        "severity": i / 4,
        "description": "My nose itches.",
        "departments": [1,4],
-       "incident types": [6,2],
+       //"incident types": [6,2],
        "location": "175 College Avenue",
        "timestamp": "Thu Feb 11 2016 16:04:19 GMT-0500 (EST)",
        "status": 2,
@@ -127,42 +127,52 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 
   // create array, incidentData, that will become the input to our table
 	fromServer.sort(compare);
-  incidentData = [];
-  for (var i = 0; i < fromServer.length; i++) {
-    // don't show incidents the user doesn't have permission to see
-    var edit;
-  	if (fromServer[i]['permission'] === 0) {
-  		continue;
-  	} else if (fromServer[i]['permission'] === 1) {
-      edit = "View Only";
-    } else {
-      edit = "View and Edit";
+
+  $scope.setupData = function() {
+    incidentData = [];
+
+    for (var i = 0; i < fromServer.length; i++) {
+      // don't show incidents the user doesn't have permission to see
+      var edit;
+      if (fromServer[i]['permission'] === 0) {
+        continue;
+      } else if (fromServer[i]['permission'] === 1) {
+        edit = "View Only";
+      } else {
+        edit = "View and Edit";
+      }
+      //don't show incidents that have been resolved
+      var status = fromServer[i]['status'];
+      if (!show_resolved_incidents && fromServer[i]['status'] === 3) {
+        continue;
+      }
+      // match department ID array to string list of departments
+      var incidentdepts = "";
+      var serverdepts = fromServer[i]['departments'];
+      for (var j = 0; j < deptsfromServer.length; j++) {
+          for (var k = 0; k < serverdepts.length; k++) {
+              if (j == serverdepts[k]) {
+                  if (incidentdepts != "") {
+                      incidentdepts += ", "
+                  }
+                  incidentdepts += deptsfromServer[j];
+              }
+          }
+      }
+      var datetime = new Date(fromServer[i]['timestamp']);
+      incidentData.push({
+        "submitter": fromServer[i]['submitterln'] + ", " + fromServer[i]['submitterfn'],
+        "severity": parseInt(fromServer[i]['severity']),
+        "description": fromServer[i]['description'],
+        "departments": incidentdepts,
+        "location": fromServer[i]['location'],
+        "time": convertsortable(datetime),
+        "edit": edit,
+        "status": status
+      });
     }
 
-    // match department ID array to string list of departments
-    var incidentdepts = "";
-    var serverdepts = fromServer[i]['departments'];
-    for (var j = 0; j < deptsfromServer.length; j++) {
-        for (var k = 0; k < serverdepts.length; k++) {
-            if (j == serverdepts[k]) {
-                if (incidentdepts != "") {
-                    incidentdepts += ", "
-                }
-                incidentdepts += deptsfromServer[j];
-            }
-        }
-    }
-    var datetime = new Date(fromServer[i]['timestamp']);
-  	incidentData.push({
-  		"submitter": fromServer[i]['submitterln'] + ", " + fromServer[i]['submitterfn'],
-  		"severity": parseInt(fromServer[i]['severity']),
-  		"description": fromServer[i]['description'],
-  		"departments": incidentdepts,
-  		"location": fromServer[i]['location'],
-      "time": convertsortable(datetime),
-  		"edit": edit,
-  		"status": fromServer[i]['status']
-  	});
+    $scope.gridOptions.data = incidentData;
   }
 
   // optional features that we add to this table
@@ -173,7 +183,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       enableFiltering: true,
       multiSelect: false,
       modifierKeysToMultiSelect: false,
-      noUnselect: true
+      noUnselect: false
 	};
 
   // highlights headers of columns by which we have filtered
@@ -185,14 +195,54 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       }
   };
 
+  // show resolved incidents
+  $scope.showResolved = function() {
+      show_resolved_incidents = true;
+      $scope.setupData();
+      document.getElementById('showresolved').disabled = true;
+      document.getElementById('hideresolved').disabled = false;
+  }
+
+    // show resolved incidents
+  $scope.hideResolved = function() {
+      show_resolved_incidents = false;
+      $scope.setupData();
+      document.getElementById('hideresolved').disabled = true;
+      document.getElementById('showresolved').disabled = false;
+  }
+
   $scope.gridOptions.onRegisterApi = function(gridApi){
       //set gridApi on scope
       $scope.gridApi = gridApi;
   };
 
-  // passed <a> thing... try to find id / a way to display the right info?
+  // set data for modal
   setmodal = function(arg) {
-    console.log(arg);
+    var data = JSON.parse(arg.id);
+    var heading = document.getElementById('modal-title');
+    var body = document.getElementById('modal-body');
+    heading.innerHTML = "";
+    body.innerHTML = "";
+    if(data.edit === "View Only") {
+      heading.innerHTML = "View Incident";
+    } else {
+      heading.innerHTML = "Edit Incident";
+    }
+    body.innerHTML += "<p><span class='title'>Incident Description</span>: " + data.description + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Location</span>: " + data.location + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Severity</span>: " + data.severity + "</p>";
+    var status;
+    if (data.status == 1) {
+      status = "Unresolved";
+    } else if (data.status == 2) {
+      status = "In Progress";
+    } else {
+      status = "Resolved";
+    }
+    body.innerHTML += "<p><span class='title'>Incident Status</span>: " + status + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Time</span>: " + data.time + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Submitter</span>: " + data.submitter + "</p>";
+    body.innerHTML += "<p><span class='title'>Relevant Departments</span>: " + data.departments + "</p>";
   }
  
   // defining the formatting etc. for each column in the table
@@ -216,15 +266,14 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     },
 	  { name: 'edit', displayName: "View / Edit", headerCellClass: $scope.highlightFilteredHeader,
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: 'View Only', label: 'View Only' }, { value: 'View and Edit', label: 'View and Edit' }]},
-      cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a data-toggle="modal" data-target="#myModal" onclick="setmodal(this)" id="{{grid.renderContainers.body.visibleRowCache.indexOf(row)}}">{{COL_FIELD}}</a></div>'
+      cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a data-toggle="modal" data-target="#myModal" onmousedown="setmodal(this)" id="{{row.entity}}">{{COL_FIELD}}</a></div>'
     },
 	  { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus',
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
     }
 	];
 	
-  // this is our table's data!
-  $scope.gridOptions.data = incidentData;
+  $scope.hideResolved();
 })
 
 // for table's view/edit dropdown filter

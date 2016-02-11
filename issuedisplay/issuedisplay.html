@@ -36,6 +36,8 @@
         </ul>
 		<div ng-controller="incidentCtrl" ng-app="incidentApp">
   			<div ui-grid="gridOptions" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns class="myGrid"></div>
+        <button type="button" class="btn btn-default" ng-click="showResolved()" id="showresolved">Show Resolved Incidents</button>
+         <button type="button" class="btn btn-default" ng-click="hideResolved()" id="hideresolved">Hide Resolved Incidents</button>
 		</div>
 
         <!-- Modal that will allow the user to view and edit information-->
