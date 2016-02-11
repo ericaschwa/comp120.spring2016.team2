@@ -42,7 +42,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 		 "submitterfn": "Erica",
 		 "submitterln": "Schwartz",
 		 //"incidentid": 100, don't know if I'll need this?
-		 "severity": 10, // change back from varchar
+		 "severity": 4, // change back from varchar
 		 "description": "SNAKES ON A PLANE",
 		 "departments": [0,5], // array of department IDs
 		 //"incident types": [8,9], // array of incident type IDs - is this a thing?
@@ -112,7 +112,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       fromServer.push({
        "submitterfn": "Norman",
        "submitterln": "Young",
-       "severity": i / 4,
+       "severity": i / 10,
        "description": "My nose itches.",
        "departments": [1,4],
        //"incident types": [6,2],
@@ -251,9 +251,9 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 	  { name: 'severity', displayName:"Severity", headerCellClass: $scope.highlightFilteredHeader,
 	  	cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) { // color-codes severity column
 	  		var severity = grid.getCellValue(row,col);
-	      if (severity > 8) {
+	      if (severity > 3) {
 	      	return 'red';
-	      } else if (severity > 6) {
+	      } else if (severity > 2) {
 	      	return 'orange';
 	      }
 	    }, filters: [{condition: uiGridConstants.filter.GREATER_THAN, placeholder: 'greater than'}]
