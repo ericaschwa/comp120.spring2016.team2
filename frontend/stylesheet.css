@@ -1,4 +1,18 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
 .form-group{
 	width: 50%;
+}
+
+#map {
+	width: 500px;
+    height: 500px;
+    position: absolute;
+    top: 100px;
+    right: 50px;
+    padding: 10px;
 }
