@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <title>Report an Incident</title>
@@ -7,15 +8,24 @@
     <!-- bootstrap includes -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!--<script src="bootstrap/bootstrap-slider/dependencies/js/jquery.min.js"></script>-->
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
     <!-- Optional theme -->
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap-theme.min.css">
     <!-- Latest compiled and minified JavaScript -->
     <script src="bootstrap/dist/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="stylesheet.css">
-  <script src="form.js"> </script>
+    <link rel="stylesheet" href="stylesheet.css"></link>
+    <script src="form.js"> </script>
+    <!-- Slider CSS-->
+    <link rel = "stylesheet" href="bootstrap/bootstrap-slider/dependencies/css/bootstrap.min.css">
+    <link rel = "stylesheet" href="bootstrap/bootstrap-slider/dist/css/bootstrap-slider.css">
+    <!-- Slide javascript-->
+    <script type='text/javascript' src="bootstrap/bootstrap-slider/dependencies/js/modernizr.js"></script>
+    <script type='text/javascript' src="bootstrap/bootstrap-slider/dependencies/js/jquery.min.js"></script>
+    <script type='text/javascript' src="bootstrap/bootstrap-slider/src/js/bootstrap-slider.js"></script>
 </head>
+
 <body>
 <div class="container">
 
@@ -26,42 +36,28 @@
   </ul>
 
   <form id="form">
-  <fieldset class="form-group">
-    <label for="InputEmail">Email address</label>
-    <input name="email" type="email" class="form-control" id="InputEmail" placeholder="Enter email">
-    <small class="text-muted">We'll never share your email with anyone else.</small>
-  </fieldset>
-  <fieldset class="form-group">
-    <label for="InputLocation">Location</label>
-    <input name="location" type="location" class="form-control" id="InputLocation" placeholder="Enter Location">
-  </fieldset>
-   <fieldset class="form-group">
-    <label for="Textarea">Incident Description</label>
-    <textarea name="description" class="form-control" id="Textarea" rows="3"></textarea>
-  </fieldset>
-  <fieldset class="form-group">
-    <label for="Select1">Relevant Department(s)</label>
+    <fieldset class="form-group">
+      <label for="Severity">Severity</label>
+      <input id="severity" data-slider-id='severitySlider' type="text" data-slider-min="0" data-slider-max="4" data-slider-step="1" data-slider-value="2" class="form-control">
+    </fieldset>
 
-    <select class="form-control" id="Select1" name="department">
-    	<option selected>Search</option>
-      <option>Dining</option>
-      <option>Energy & Facilities</option>
-      <option>Environmental Health & Safety</option>
-      <option>Housing</option>
-      <option>Mail & Print </option>
-      <option>Sustainability</option>
-      <option>Events Management</option>
-      <option>Transportation</option>
-    </select>
-  </fieldset>
+    <fieldset class="form-group">
+      <label for="InputLocation">Location</label>
+      <input name="location" type="location" class="form-control" id="InputLocation" placeholder="Enter Location">
+    </fieldset>
+
+    <fieldset class="form-group">
+      <label for="Textarea">Incident Description</label>
+      <textarea name="description" class="form-control" id="Textarea" rows="3"></textarea>
+    </fieldset>
  
-  <fieldset class="form-group">
-    <label for="InputFile">Add file</label>
-    <input name="photo" type="file" class="form-control-file" id="InputFile">
-  </fieldset>
+    <fieldset class="form-group">
+      <label for="InputFile">Add file</label>
+      <input name="photo" type="file" class="form-control-file" id="InputFile">
+    </fieldset>
  
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
 </div>
 
 </body>
