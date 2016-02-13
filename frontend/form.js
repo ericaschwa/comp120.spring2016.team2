@@ -25,16 +25,18 @@ $( document ).ready(function() {
 });
 
 //Google Maps JavaScript
-(function() {
-	window.onload = function(){
-   		var latlng = new google.maps.LatLng(35.9886, -78.9072);
-   		var options = {
-      		zoom: 13,
-      		center: latlng,
-      		mapTypeId: google.maps.MapTypeId.ROADMAP
-    	}; 
+function init() {
+   	var latlng = new google.maps.LatLng(35.9886, -78.9072);
+   	var options = {
+      	zoom: 13,
+      	center: latlng,
+      	mapTypeId: google.maps.MapTypeId.ROADMAP
+    }; 
   	var map = new google.maps.Map(document.getElementById('map'), options);
-  	}
 
-
-})();
+  	//searchbox
+  	var input = document.getElementById('pac-input');
+  	var searchBox = new google.maps.places.SearchBox(input);
+  	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+}
+google.maps.event.addDomListener(window, "load", init);
