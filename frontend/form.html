@@ -44,24 +44,25 @@
       <input name="severity" id="severity" data-slider-id='severitySlider' type="text" data-slider-min="0" data-slider-max="4" data-slider-step="1" data-slider-value="0" class="form-control">
     </fieldset>
 
-    <fieldset class="form-group">
+    <!--<fieldset class="form-group">
       <label for="InputLocation">Location</label>
       <input name="location" type="location" class="form-control" id="InputLocation" placeholder="Enter Location">
-    </fieldset>
+    </fieldset>-->
 
     <fieldset class="form-group">
       <label for="Textarea">Incident Description</label>
-      <textarea name="description" class="form-control" id="Textarea" rows="3"></textarea>
+      <textarea name="description" class="form-control" id="Textarea" rows="12"></textarea>
     </fieldset>
  
     <fieldset class="form-group">
       <label for="InputFile">Add file</label>
       <input name="photo" type="file" class="form-control-file" id="InputFile">
     </fieldset>
- 
+
+    <div id="map"></div>
     <button type="submit" class="btn btn-primary">Submit</button>
+
   </form>
-  <div id="map"></div>
 </div>
 
 </body>
