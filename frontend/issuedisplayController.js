@@ -27,6 +27,7 @@ var convertsortable = function(datetime) {
 };
 
 var setmodal;
+var edit;
 
 var app = angular.module('incidentApp', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns']);
 
@@ -221,13 +222,16 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     var data = JSON.parse(arg.id);
     var heading = document.getElementById('modal-title');
     var body = document.getElementById('modal-body');
-    heading.innerHTML = "";
-    body.innerHTML = "";
     if(data.edit === "View Only") {
-      heading.innerHTML = "View Incident";
+      setmodalVIEW(heading,body,data);
     } else {
-      heading.innerHTML = "Edit Incident";
+      setmodalEDIT(heading,body,data);
     }
+  }
+
+  setmodalVIEW = function(heading, body, data) {
+    heading.innerHTML = "View Incident";
+    body.innerHTML = "";
     body.innerHTML += "<p><span class='title'>Incident Description</span>: " + data.description + "</p>";
     body.innerHTML += "<p><span class='title'>Incident Location</span>: " + data.location + "</p>";
     body.innerHTML += "<p><span class='title'>Incident Severity</span>: " + data.severity + "</p>";
@@ -244,6 +248,33 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     body.innerHTML += "<p><span class='title'>Incident Submitter</span>: " + data.submitter + "</p>";
     body.innerHTML += "<p><span class='title'>Relevant Departments</span>: " + data.departments + "</p>";
   }
+
+  setmodalEDIT = function(heading, body, data) {
+    heading.innerHTML = "Edit Incident";
+    body.innerHTML = "<form id='myForm'>";
+    body.innerHTML += "<p><span class='title'>Incident Description</span>: " + "<input class='formedit' name='description' type='text' value='" + data.description + "' />" + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Location</span>: " + "<input class='formedit' name='location' type='text' value='" + data.location + "' />" + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Severity</span>: " + "<input class='formedit' name='severity' type='text' value='" + data.severity + "' />" + "</p>";
+    var status;
+    if (data.status == 1) {
+      status = "Unresolved";
+    } else if (data.status == 2) {
+      status = "In Progress";
+    } else {
+      status = "Resolved";
+    }
+    body.innerHTML += "<p><span class='title'>Incident Status</span>: " + "<input class='formedit' id='status' name='status' type='text' value='" + status + "' />" + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Time</span>: " + "<input class='formedit' name='time' type='text' value='" + data.time + "' />" + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Submitter</span>: " + "<input class='formedit' name='submitter' type='text' value='" + data.submitter + "' />" + "</p>";
+    body.innerHTML += "<p><span class='title'>Relevant Departments</span>: " + "<input class='formedit' name='departments' type='text' value='" + data.departments + "' />" + "</p>";
+    body.innerHTML += "</form><button type='button' class='btn btn-primary' onclick='edit()'>Save</button>";
+  }
+
+  $scope.edit = function() {
+    console.log(document.getElementById('status').value);
+  }
+
+  edit = $scope.edit;
  
   // defining the formatting etc. for each column in the table
 	$scope.gridOptions.columnDefs = [
