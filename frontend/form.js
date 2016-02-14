@@ -10,13 +10,14 @@ $( document ).ready(function() {
 	});
 	// from http://stackoverflow.com/questions/169506/obtain-form-input-fields-using-jquery
 	$( "#form" ).on( "submit", function( event ) {
-    console.log(":)");
 	 	event.preventDefault();
 	    var $inputs = $('#form :input');
 	    var values = {};
 	    $inputs.each(function() {
 	        if (this.name === "") {
-	        	console.log(values);
+	        	values['time'] = new Date();
+            values['username'] = 'Anonymous'; // this will be replaced by UserID when we get one
+            console.log(values); // right here is where the server call would happen
 	        } else {
 	        	values[this.name] = $(this).val();
 	        }
