@@ -16,3 +16,8 @@ html, body {
     right: 50px;
     padding: 10px;
 }
+
+.mainimg {
+    margin-right: auto;
+    margin-left: auto;
+}

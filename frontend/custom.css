@@ -16,3 +16,9 @@
 .title {
     font-weight: bold;
 }
+
+.mainimg {
+	display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
