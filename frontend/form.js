@@ -10,6 +10,7 @@ $( document ).ready(function() {
 	});
 	// from http://stackoverflow.com/questions/169506/obtain-form-input-fields-using-jquery
 	$( "#form" ).on( "submit", function( event ) {
+    console.log(":)");
 	 	event.preventDefault();
 	    var $inputs = $('#form :input');
 	    var values = {};
