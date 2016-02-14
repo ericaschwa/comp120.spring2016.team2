@@ -249,12 +249,14 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     body.innerHTML += "<p><span class='title'>Relevant Departments</span>: " + data.departments + "</p>";
   }
 
+  // TODO: add progress bar and map and dropdown menu, save these edits to the data model and table
   setmodalEDIT = function(heading, body, data) {
+    permission = data.edit;
     heading.innerHTML = "Edit Incident";
     body.innerHTML = "<form id='myForm'>";
-    body.innerHTML += "<p><span class='title'>Incident Description</span>: " + "<input class='formedit' name='description' type='text' value='" + data.description + "' />" + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Location</span>: " + "<input class='formedit' name='location' type='text' value='" + data.location + "' />" + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Severity</span>: " + "<input class='formedit' name='severity' type='text' value='" + data.severity + "' />" + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Description</span>: " + "<input class='formedit' name='description' id='description' type='text' value='" + data.description + "' />" + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Location</span>: " + "<input class='formedit' name='location' id='location' type='text' value='" + data.location + "' />" + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Severity</span>: " + "<input class='formedit' name='severity' id='severity' type='text' value='" + data.severity + "' />" + "</p>";
     var status;
     if (data.status == 1) {
       status = "Unresolved";
@@ -263,15 +265,28 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     } else {
       status = "Resolved";
     }
-    body.innerHTML += "<p><span class='title'>Incident Status</span>: " + "<input class='formedit' id='status' name='status' type='text' value='" + status + "' />" + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Time</span>: " + "<input class='formedit' name='time' type='text' value='" + data.time + "' />" + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Submitter</span>: " + "<input class='formedit' name='submitter' type='text' value='" + data.submitter + "' />" + "</p>";
-    body.innerHTML += "<p><span class='title'>Relevant Departments</span>: " + "<input class='formedit' name='departments' type='text' value='" + data.departments + "' />" + "</p>";
+    //body.innerHTML += "<p><span class='title'>Incident Status</span>: " + "<input class='formedit' id='status' name='status' type='text' value='" + status + "' />" + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Status</span>: " + '<select><option value="1">Unresolved</option><option value="2">In Progress</option><option value="3">Resolved</option></select></p>'
+    body.innerHTML += "<p><span class='title'>Incident Time</span>: " + "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" + "</p>";
+    body.innerHTML += "<p><span class='title'>Incident Submitter</span>: " + "<input class='formedit' id='submitter' name='submitter' type='text' value='" + data.submitter + "' />" + "</p>";
+    body.innerHTML += "<p><span class='title'>Relevant Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "</p>";
     body.innerHTML += "</form><button type='button' class='btn btn-primary' onclick='edit()'>Save</button>";
   }
 
+//TODO: make sure this is in the exact same format as it is in form.html
   $scope.edit = function() {
-    console.log(document.getElementById('status').value);
+    console.log()
+    var obj = {
+      'description': document.getElementById('description').value,
+      'location': document.getElementById('location').value,
+      'severity': document.getElementById('severity').value,
+      //'status': document.getElementById('status').value, TODO!!!
+      'time': document.getElementById('time').value,
+      'submitter': document.getElementById('submitter').value,
+      'departments': document.getElementById('departments').value,
+      'permission': permission
+    };
+    console.log(obj);
   }
 
   edit = $scope.edit;
