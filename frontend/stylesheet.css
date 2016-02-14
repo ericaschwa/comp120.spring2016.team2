@@ -4,17 +4,9 @@ html, body {
     padding: 0;
 }
 
-.form-group{
-	width: 50%;
-}
-
 #map {
-	width: 40%;
-    height: 80%;
-    position: absolute;
-    top: 10%;
-    right: 50px;
-    padding: 10px;
+	  width: 90%;
+    height:400px;
 }
 
 .mainimg {
@@ -41,7 +33,7 @@ html, body {
   margin-left: 12px;
   padding: 0 11px 0 13px;
   text-overflow: ellipsis;
-  width: 300px;
+  width: 250px;
 }
 
 #pac-input:focus {

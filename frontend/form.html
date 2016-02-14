@@ -8,7 +8,7 @@
     <!-- bootstrap includes -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <!--<script src="bootstrap/bootstrap-slider/dependencies/js/jquery.min.js"></script>-->
+    <script src="bootstrap/bootstrap-slider/dependencies/js/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
     <!-- Optional theme -->
@@ -39,29 +39,31 @@
   </ul>
 
   <form id="form">
-    <label for="Severity">Severity</label>
-    <fieldset class="form-group">
-      <input name="severity" id="severity" data-slider-id='severitySlider' type="text" data-slider-min="0" data-slider-max="4" data-slider-step="1" data-slider-value="0" class="form-control">
-    </fieldset>
+    <div class="row">
 
-    <!--<fieldset class="form-group">
-      <label for="InputLocation">Location</label>
-      <input name="location" type="location" class="form-control" id="InputLocation" placeholder="Enter Location">
-    </fieldset>-->
+      <div class="col-md-6">
+        <label for="Severity">Severity</label>
+        <fieldset class="form-group">
+          <input name="severity" id="severity" data-slider-id='severitySlider' type="text" data-slider-min="0" data-slider-max="4" data-slider-step="1" data-slider-value="0" class="form-control">
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="Textarea">Incident Description</label>
+          <textarea name="description" class="form-control" id="Textarea" rows="12"></textarea>
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="InputFile">Add file</label>
+          <input name="photo" type="file" class="form-control-file" id="InputFile">
+        </fieldset>
+      </div>
+      
+      <div class="col-md-6">
+        <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+        <div id="map"></div>
+      </div>
 
-    <fieldset class="form-group">
-      <label for="Textarea">Incident Description</label>
-      <textarea name="description" class="form-control" id="Textarea" rows="12"></textarea>
-    </fieldset>
- 
-    <fieldset class="form-group">
-      <label for="InputFile">Add file</label>
-      <input name="photo" type="file" class="form-control-file" id="InputFile">
-    </fieldset>
-    <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-    <div id="map"></div>
+    </div>
+      
     <button type="submit" class="btn btn-primary">Submit</button>
-
   </form>
 </div>
 
