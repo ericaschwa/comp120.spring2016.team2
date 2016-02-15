@@ -127,9 +127,10 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 /**********************      END OF HARD CODED STUFF :)      **********************/
 
   // create array, incidentData, that will become the input to our table
-	fromServer.sort(compare);
-
   $scope.setupData = function() {
+    //TODO: GET DATA FROM SERVER
+    fromServer.sort(compare);
+
     incidentData = [];
 
     for (var i = 0; i < fromServer.length; i++) {
@@ -249,15 +250,22 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     body.innerHTML += "<p><span class='title'>Relevant Departments</span>: " + data.departments + "</p>";
   }
 
-  // TODO: add progress bar and map and dropdown menu, save these edits to the data model and table
   setmodalEDIT = function(heading, body, data) {
     permission = data.edit;
     heading.innerHTML = "Edit Incident";
-    body.innerHTML = "<form id='myForm'>";
-    body.innerHTML += "<p><span class='title'>Incident Description</span>: " + "<input class='formedit' name='description' id='description' type='text' value='" + data.description + "' />" + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Location</span>: " + "<input class='formedit' name='location' id='location' type='text' value='" + data.location + "' />" + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Severity</span>: " + "<input class='formedit' name='severity' id='severity' type='text' value='" + data.severity + "' />" + "</p>";
-    var status;
+    body.innerHTML = "";
+    body.innerHTML += "<span class='title'>Severity</span> (1 = Minor Incident, 4 = Emergency)</span>: " +
+                      '<select id="severity"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>' +
+                      '<br>'
+    body.innerHTML += "<span class='title'>Status</span>: " +
+                      '<select id="status"><option value="1">Unresolved</option><option value="2">In Progress</option><option value="3">Resolved</option></select>' +
+                      '<br>'+
+                    '</div><br>';
+    body.innerHTML += "<input class='formedit controls' name='location' id='pac-input' type='text' value='" + data.location + "' />" +
+                      "<div id='map'></div>" +
+                      "<br>";
+    body.innerHTML += "<span class='title'>Description</span>: " + "<input class='formedit' name='description' id='description' type='text' value='" + data.description + "' />" + "<br>";
+        var status;
     if (data.status == 1) {
       status = "Unresolved";
     } else if (data.status == 2) {
@@ -265,28 +273,28 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     } else {
       status = "Resolved";
     }
-    //body.innerHTML += "<p><span class='title'>Incident Status</span>: " + "<input class='formedit' id='status' name='status' type='text' value='" + status + "' />" + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Status</span>: " + '<select><option value="1">Unresolved</option><option value="2">In Progress</option><option value="3">Resolved</option></select></p>'
-    body.innerHTML += "<p><span class='title'>Incident Time</span>: " + "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Submitter</span>: " + "<input class='formedit' id='submitter' name='submitter' type='text' value='" + data.submitter + "' />" + "</p>";
-    body.innerHTML += "<p><span class='title'>Relevant Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "</p>";
-    body.innerHTML += "</form><button type='button' class='btn btn-primary' onclick='edit()'>Save</button>";
+    body.innerHTML += "<span class='title'>Time</span>: " + "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" + "<br>";
+    body.innerHTML += "<span class='title'>Submitter</span>: " + "<input class='formedit' id='submitter' name='submitter' type='text' value='" + data.submitter + "' />" + "<br>";
+    body.innerHTML += "<span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "<br>";
+    body.innerHTML += "<button type='button' class='btn btn-primary' onclick='edit()' data-dismiss='modal'>Save</button>";
+    setTimeout(init, 1000); // needs slight delay
   }
 
-//TODO: make sure this is in the exact same format as it is in form.html
+  // edit an incident
   $scope.edit = function() {
-    console.log()
     var obj = {
       'description': document.getElementById('description').value,
-      'location': document.getElementById('location').value,
+      'location': document.getElementById('pac-input').value,
       'severity': document.getElementById('severity').value,
-      //'status': document.getElementById('status').value, TODO!!!
-      'time': document.getElementById('time').value,
+      'status': document.getElementById('status').value,
+      'time': new Date(document.getElementById('time').value),
       'submitter': document.getElementById('submitter').value,
       'departments': document.getElementById('departments').value,
       'permission': permission
     };
     console.log(obj);
+    // TODO: save edits to server, make sure this is in the exact same format as it is in form.html
+    $scope.setupData();
   }
 
   edit = $scope.edit;

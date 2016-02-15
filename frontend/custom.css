@@ -54,3 +54,12 @@ a:hover {
 .options {
 	margin-top: 50px;
 }
+
+.formedit {
+    margin-top:5px;
+}
+
+#map {
+    width: 90%;
+    height:200px;
+}

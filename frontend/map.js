@@ -67,3 +67,4 @@ function init() {
   });
   // [END region_getplaces]
 }
+
