@@ -65,20 +65,6 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 		 "permission": 1
 		}
   ];
-  // will come from the following request:
-  /*var http = new XMLHttpRequest();
-  var url = ?;
-  var params = "userid=" + ? + "&request=incidentinfo";
-  http.open("GET", url, true);
-  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  http.onreadystatechange = function() {
-    if (http.readyState == 4 && http.status == 200) { // OK, got response from server
-      fromServer = JSON.parse(http.responseText);
-    }
-  }
-  http.send(params);*/
-
-
 
   /* currently how I did it is that the server returns this array, so that it
    doesnt have to return an array of department names for every incident but
@@ -95,18 +81,6 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
                          'Environmental Management',
                          'Laboratories',
                          'Training'];
-  // will come from the following request:
-  /*var http = new XMLHttpRequest();
-  var url = ?;
-  var params = "userid=" + ? + "&request=departmentlist";
-  http.open("GET", url, true);
-  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  http.onreadystatechange = function() {
-    if (http.readyState == 4 && http.status == 200) { // OK, got response from server
-      deptsfromServer = JSON.parse(http.responseText);
-    }
-  }
-  http.send(params);*/
 
   // just to make the data look full, for now
   for (var i = 0; i < 40; i++) {
@@ -127,27 +101,52 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 
 /**********************      END OF HARD CODED STUFF :)      **********************/
 
-  $scope.make_api_call = function() {
+  $scope.make_api_get = function() {
     var success = false;
     var http = new XMLHttpRequest();
     var url = URL + '/incidents';
     http.open("GET", url, true);
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.onreadystatechange = function() {
+    http.onreadystatechange = function(request, response) {
       if (http.readyState == 4 && http.status == 200) { // OK, got response from server
         success = true;
-        fromServer = JSON.parse(response.text);
+        fromServer = JSON.parse(http.responseText);
         $scope.setupData();
       }
     }
     http.send();
   }
 
+  $scope.make_api_post = function(values) {
+    var success = false;
+    var http = new XMLHttpRequest();
+    var url = URL + '/incidents/new';
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.onreadystatechange = function() {
+      if (http.readyState == 4 && http.status == 200) { // OK, got response from server
+        success = true;
+      }
+    }
+    http.send(values);
+  }
+
   // create array, incidentData, that will become the input to our table
   $scope.setupData = function() {
-    //TODO: GET DATA FROM SERVER
-    make_api_call();
     fromServer.sort(compare);
+    fromServer.push({
+     "submitterfn": "Norman",
+     "submitterln": "Young",
+     "severity": 3,
+     "description": "RESOLVED.",
+     "departments": [2,3],
+     //"incident types": [1,7], is this a thing?
+     "location": "175 College Avenue",
+     "timestamp": "Tue Feb 09 2016 16:04:19 GMT-0500 (EST)",
+     "status": 2,
+     "permission": 1
+    });
+    console.log(fromServer);
 
     incidentData = [];
 
@@ -163,12 +162,18 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       }
       //don't show incidents that have been resolved
       var status = fromServer[i]['status'];
-      if (!show_resolved_incidents && fromServer[i]['status'] === 3) {
+      if (!show_resolved_incidents && fromServer[i]['status'] == 2) {
         continue;
+      } else if (show_resolved_incidents && fromServer[i]['status'] == 2) {
+        status = "Resolved"
+      } else if (status == 1) {
+        status = "In Progress";
+      } else if (status == 0) {
+        status = "Unresolved";
       }
       // match department ID array to string list of departments
       var incidentdepts = "";
-      var serverdepts = fromServer[i]['departments'];
+      /*var serverdepts = fromServer[i]['departments'];
       for (var j = 0; j < deptsfromServer.length; j++) {
           for (var k = 0; k < serverdepts.length; k++) {
               if (j == serverdepts[k]) {
@@ -178,7 +183,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
                   incidentdepts += deptsfromServer[j];
               }
           }
-      }
+      }*/
       var datetime = new Date(fromServer[i]['timestamp']);
       incidentData.push({
         "submitter": fromServer[i]['submitterln'] + ", " + fromServer[i]['submitterfn'],
@@ -191,7 +196,6 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
         "status": status
       });
     }
-
     $scope.gridOptions.data = incidentData;
   }
 
@@ -218,7 +222,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
   // show resolved incidents
   $scope.showResolved = function() {
       show_resolved_incidents = true;
-      $scope.make_api_call();
+      $scope.make_api_get();
       document.getElementById('showresolved').disabled = true;
       document.getElementById('hideresolved').disabled = false;
   }
@@ -226,7 +230,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     // show resolved incidents
   $scope.hideResolved = function() {
       show_resolved_incidents = false;
-      $scope.make_api_call();
+      $scope.make_api_get();
       document.getElementById('hideresolved').disabled = true;
       document.getElementById('showresolved').disabled = false;
   }
@@ -255,9 +259,9 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     body.innerHTML += "<p><span class='title'>Incident Location</span>: " + data.location + "</p>";
     body.innerHTML += "<p><span class='title'>Incident Severity</span>: " + data.severity + "</p>";
     var status;
-    if (data.status == 1) {
+    if (data.status == 0) {
       status = "Unresolved";
-    } else if (data.status == 2) {
+    } else if (data.status == 1) {
       status = "In Progress";
     } else {
       status = "Resolved";
@@ -284,9 +288,9 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
                       "<br>";
     body.innerHTML += "<span class='title'>Description</span>: " + "<input class='formedit' name='description' id='description' type='text' value='" + data.description + "' />" + "<br>";
         var status;
-    if (data.status == 1) {
+    if (data.status == 0) {
       status = "Unresolved";
-    } else if (data.status == 2) {
+    } else if (data.status == 1) {
       status = "In Progress";
     } else {
       status = "Resolved";
@@ -311,6 +315,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       'permission': permission
     };
     console.log(obj);
+    make_api_post(obj);
     // TODO: save edits to server, make sure this is in the exact same format as it is in form.html
     $scope.setupData();
   }
@@ -341,7 +346,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a data-toggle="modal" data-target="#myModal" onmousedown="setmodal(this)" id="{{row.entity}}">{{COL_FIELD}}</a></div>'
     },
 	  { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus',
-      filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
+      filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: 'Unresolved', label: 'Unresolved' }, { value: 'In Progress', label: 'In Progress' }, { value: 'Resolved', label: 'Resolved'}]}
     }
 	];
 	
@@ -367,9 +372,9 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 // for table's status dropdown filter
 .filter('mapStatus', function() {
       var statusHash = {
-        1: 'Unresolved',
-        2: 'In Progress',
-        3: 'Resolved'
+        'Unresolved': 'Unresolved',
+        'In Progress': 'In Progress',
+        'Resolved': 'Resolved'
       };
      
       return function(input) {

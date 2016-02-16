@@ -21,7 +21,7 @@ $( document ).ready(function() {
             values['departments'] = []; // this will be coded in later (TODO)
             values['status'] = 1; // all incidents start as unresolved
             console.log(values); // right here is where the server call would happen (TODO)
-            make_api_call(values);
+            make_api_post(values);
 	        } else {
 	        	values[this.name] = $(this).val();
 	        }
@@ -30,13 +30,13 @@ $( document ).ready(function() {
 
 });
 
-function make_api_call(values) {
+function make_api_post(values) {
 	var success = false;
 	var http = new XMLHttpRequest();
   var url = URL + '/incidents/new';
   http.open("POST", url, true);
   http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  http.onreadystatechange = function() {
+  http.onreadystatechange = function(request, response) {
     if (http.readyState == 4 && http.status == 200) { // OK, got response from server
      	success = true;
     }
