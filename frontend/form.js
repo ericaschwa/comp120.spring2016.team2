@@ -20,7 +20,6 @@ $( document ).ready(function() {
             values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
             values['departments'] = []; // this will be coded in later (TODO)
             values['status'] = 1; // all incidents start as unresolved
-            console.log(values); // right here is where the server call would happen (TODO)
             make_api_post(values);
 	        } else {
 	        	values[this.name] = $(this).val();

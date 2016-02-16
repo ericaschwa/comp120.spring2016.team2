@@ -28,78 +28,11 @@ var convertsortable = function(datetime) {
 
 var setmodal;
 var edit;
+var fromServer;
 
 var app = angular.module('incidentApp', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns']);
 
 app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
-
-
-/**********************      HARD-CODED STUFF :(      **********************/
-
-  //server returns an array of incidents, each containing the following info:
-	var fromServer = [
-		{
-		 //"submitterid": 1, don't know if I'll need this?
-		 "submitterfn": "Erica",
-		 "submitterln": "Schwartz",
-		 //"incidentid": 100, don't know if I'll need this?
-		 "severity": 4, // change back from varchar
-		 "description": "SNAKES ON A PLANE",
-		 "departments": [0,5], // array of department IDs
-		 //"incident types": [8,9], // array of incident type IDs - is this a thing?
-		 "location": "Logan Airport", // later this will be more than one field for coords, google location id, etc.
-		 "timestamp": "Wed Feb 10 2016 16:04:19 GMT-0500 (EST)",
-		 "status": 1,
-		 "permission": 1
-		},
-		{
-		 "submitterfn": "Norman",
-		 "submitterln": "Young",
-		 "severity": 3,
-		 "description": "RESOLVED.",
-		 "departments": [2,3],
-		 //"incident types": [1,7], is this a thing?
-		 "location": "175 College Avenue",
-		 "timestamp": "Tue Feb 09 2016 16:04:19 GMT-0500 (EST)",
-		 "status": 3,
-		 "permission": 1
-		}
-  ];
-
-  /* currently how I did it is that the server returns this array, so that it
-   doesnt have to return an array of department names for every incident but
-   can rather return an array of indices. Open to discussion. */
-  var deptsfromServer = ['Dining, Energy & Facilities',
-                         'Environmental Health & Safety',
-                         'Housing, Mail & Print', 
-                         'Sustainability',
-                         'Events Management',
-                         'Sustainability',
-                         'Transportation',
-                         'Buildings and Facilities',
-                         'Construction Support',
-                         'Environmental Management',
-                         'Laboratories',
-                         'Training'];
-
-  // just to make the data look full, for now
-  for (var i = 0; i < 40; i++) {
-      fromServer.push({
-       "submitterfn": "Norman",
-       "submitterln": "Young",
-       "severity": i / 10,
-       "description": "My nose itches.",
-       "departments": [1,4],
-       //"incident types": [6,2],
-       "location": "175 College Avenue",
-       "timestamp": "Thu Feb 11 2016 16:04:19 GMT-0500 (EST)",
-       "status": 2,
-       "permission": 2
-      });
-  }
-
-
-/**********************      END OF HARD CODED STUFF :)      **********************/
 
   $scope.make_api_get = function() {
     var success = false;
@@ -134,19 +67,6 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
   // create array, incidentData, that will become the input to our table
   $scope.setupData = function() {
     fromServer.sort(compare);
-    fromServer.push({
-     "submitterfn": "Norman",
-     "submitterln": "Young",
-     "severity": 3,
-     "description": "RESOLVED.",
-     "departments": [2,3],
-     //"incident types": [1,7], is this a thing?
-     "location": "175 College Avenue",
-     "timestamp": "Tue Feb 09 2016 16:04:19 GMT-0500 (EST)",
-     "status": 2,
-     "permission": 1
-    });
-    console.log(fromServer);
 
     incidentData = [];
 
@@ -161,30 +81,13 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
         edit = "View and Edit";
       }
       //don't show incidents that have been resolved
-      var status = fromServer[i]['status'];
-      if (!show_resolved_incidents && fromServer[i]['status'] == 2) {
+      var status = fromServer[i]['status'] + 1;
+      if (!show_resolved_incidents && status == 3) {
         continue;
-      } else if (show_resolved_incidents && fromServer[i]['status'] == 2) {
-        status = "Resolved"
-      } else if (status == 1) {
-        status = "In Progress";
-      } else if (status == 0) {
-        status = "Unresolved";
       }
       // match department ID array to string list of departments
       var incidentdepts = "";
-      /*var serverdepts = fromServer[i]['departments'];
-      for (var j = 0; j < deptsfromServer.length; j++) {
-          for (var k = 0; k < serverdepts.length; k++) {
-              if (j == serverdepts[k]) {
-                  if (incidentdepts != "") {
-                      incidentdepts += ", "
-                  }
-                  incidentdepts += deptsfromServer[j];
-              }
-          }
-      }*/
-      var datetime = new Date(fromServer[i]['timestamp']);
+      var datetime = new Date(fromServer[i]['created_at']);
       incidentData.push({
         "submitter": fromServer[i]['submitterln'] + ", " + fromServer[i]['submitterfn'],
         "severity": parseInt(fromServer[i]['severity']),
@@ -203,7 +106,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
   $scope.gridOptions = { 
 	  	enableRowSelection: true,
 	  	enableRowHeaderSelection: false,
-	  	rowHeight: 35,
+	  	rowHeight: 60,
       enableFiltering: true,
       multiSelect: false,
       modifierKeysToMultiSelect: false,
@@ -300,7 +203,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     body.innerHTML += "<span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "<br>";
     body.innerHTML += "<button type='button' class='btn btn-primary' onclick='edit()' data-dismiss='modal'>Save</button>";
     setTimeout(init, 1000); // needs slight delay
-  }
+  };
 
   // edit an incident
   $scope.edit = function() {
@@ -314,42 +217,39 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       'departments': document.getElementById('departments').value,
       'permission': permission
     };
-    console.log(obj);
-    make_api_post(obj);
-    // TODO: save edits to server, make sure this is in the exact same format as it is in form.html
-    $scope.setupData();
-  }
+    $scope.make_api_post(obj);
+  };
 
   edit = $scope.edit;
  
   // defining the formatting etc. for each column in the table
-	$scope.gridOptions.columnDefs = [
-	  { name: 'submitter', displayName:"Submitted By", headerCellClass: $scope.highlightFilteredHeader},
-	  { name: 'severity', displayName:"Severity", headerCellClass: $scope.highlightFilteredHeader,
-	  	cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) { // color-codes severity column
-	  		var severity = grid.getCellValue(row,col);
-	      if (severity > 3) {
-	      	return 'red';
-	      } else if (severity > 2) {
-	      	return 'orange';
-	      }
-	    }, filters: [{condition: uiGridConstants.filter.GREATER_THAN, placeholder: 'greater than'}]
-	  },
-	  { name: 'description', displayName: "Description", headerCellClass: $scope.highlightFilteredHeader},
-	  { name: 'departments', displayName: "Departments", headerCellClass: $scope.highlightFilteredHeader},
-	  { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader},
+  $scope.gridOptions.columnDefs = [
+    { name: 'submitter', displayName:"Submitted By", headerCellClass: $scope.highlightFilteredHeader},
+    { name: 'severity', displayName:"Severity", headerCellClass: $scope.highlightFilteredHeader,
+      cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) { // color-codes severity column
+        var severity = grid.getCellValue(row,col);
+        if (severity > 3) {
+          return 'red';
+        } else if (severity > 2) {
+          return 'orange';
+        }
+      }, filters: [{condition: uiGridConstants.filter.GREATER_THAN, placeholder: 'greater than'}]
+    },
+    { name: 'description', displayName: "Description", headerCellClass: $scope.highlightFilteredHeader},
+    //{ name: 'departments', displayName: "Departments", headerCellClass: $scope.highlightFilteredHeader},
+    { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader},
     { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader,
       filters: [{placeholder: 'yyyy-mm-dd hh:min:sec'}]
     },
-	  { name: 'edit', displayName: "View / Edit", headerCellClass: $scope.highlightFilteredHeader,
+    { name: 'edit', displayName: "View / Edit", headerCellClass: $scope.highlightFilteredHeader,
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: 'View Only', label: 'View Only' }, { value: 'View and Edit', label: 'View and Edit' }]},
       cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a data-toggle="modal" data-target="#myModal" onmousedown="setmodal(this)" id="{{row.entity}}">{{COL_FIELD}}</a></div>'
     },
-	  { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus',
-      filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: 'Unresolved', label: 'Unresolved' }, { value: 'In Progress', label: 'In Progress' }, { value: 'Resolved', label: 'Resolved'}]}
+    { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus',
+      filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
     }
-	];
-	
+  ];
+  
   $scope.hideResolved();
 })
 
@@ -372,9 +272,9 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 // for table's status dropdown filter
 .filter('mapStatus', function() {
       var statusHash = {
-        'Unresolved': 'Unresolved',
-        'In Progress': 'In Progress',
-        'Resolved': 'Resolved'
+        1: 'Unresolved',
+        2: 'In Progress',
+        3: 'Resolved'
       };
      
       return function(input) {
@@ -385,6 +285,8 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
         }
     };
 });
+
+
 
 
 
