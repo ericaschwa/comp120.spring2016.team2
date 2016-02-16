@@ -124,11 +124,29 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       });
   }
 
+
 /**********************      END OF HARD CODED STUFF :)      **********************/
+
+  $scope.make_api_call = function() {
+    var success = false;
+    var http = new XMLHttpRequest();
+    var url = URL + '/incidents';
+    http.open("GET", url, true);
+    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    http.onreadystatechange = function() {
+      if (http.readyState == 4 && http.status == 200) { // OK, got response from server
+        success = true;
+        fromServer = JSON.parse(response.text);
+        $scope.setupData();
+      }
+    }
+    http.send();
+  }
 
   // create array, incidentData, that will become the input to our table
   $scope.setupData = function() {
     //TODO: GET DATA FROM SERVER
+    make_api_call();
     fromServer.sort(compare);
 
     incidentData = [];
@@ -200,7 +218,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
   // show resolved incidents
   $scope.showResolved = function() {
       show_resolved_incidents = true;
-      $scope.setupData();
+      $scope.make_api_call();
       document.getElementById('showresolved').disabled = true;
       document.getElementById('hideresolved').disabled = false;
   }
@@ -208,7 +226,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     // show resolved incidents
   $scope.hideResolved = function() {
       show_resolved_incidents = false;
-      $scope.setupData();
+      $scope.make_api_call();
       document.getElementById('hideresolved').disabled = true;
       document.getElementById('showresolved').disabled = false;
   }

@@ -16,11 +16,12 @@ $( document ).ready(function() {
 	    $inputs.each(function() {
 	        if (this.name === "") {
 	        	values['time'] = new Date();
-            values['submitter'] = 'Anonymous'; // this will be replaced by UserID when we get one (TODO)
+            values['user'] = USER; // this will be replaced by UserID when we get one (TODO)
             values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
             values['departments'] = []; // this will be coded in later (TODO)
             values['status'] = 1; // all incidents start as unresolved
             console.log(values); // right here is where the server call would happen (TODO)
+            make_api_call(values);
 	        } else {
 	        	values[this.name] = $(this).val();
 	        }
@@ -28,5 +29,19 @@ $( document ).ready(function() {
 	});
 
 });
+
+function make_api_call(values) {
+	var success = false;
+	var http = new XMLHttpRequest();
+  var url = URL + '/incidents/new';
+  http.open("POST", url, true);
+  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  http.onreadystatechange = function() {
+    if (http.readyState == 4 && http.status == 200) { // OK, got response from server
+     	success = true;
+    }
+  }
+  http.send(values);
+}
 
 google.maps.event.addDomListener(window, "load", init);
