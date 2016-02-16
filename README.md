@@ -1,6 +1,9 @@
 # DIRT: Durham Incident Report Tracker
 A simple solution to Tina's problems
 
+[Click here](https://github.com/tuftsdev/comp120-spring2016-team2-api) to see
+our api.
+
 ## Data Schema
 ### Primary tables
 - `Incident` store incident information
