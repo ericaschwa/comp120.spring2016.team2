@@ -1,7 +1,7 @@
 # DIRT: Durham Incident Report Tracker
 A simple solution to Tina's problems
 
-Access the API [Here](https://github.com/tuftsdev/comp120-spring2016-team2-api)
+Access the API [here](https://github.com/tuftsdev/comp120-spring2016-team2-api)
 ##Goals For Product:
 
 According to Tina, the email feedback form on her institution's website 
