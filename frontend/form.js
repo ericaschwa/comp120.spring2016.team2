@@ -19,7 +19,8 @@ $( document ).ready(function() {
             values['user'] = USER; // this will be replaced by UserID when we get one (TODO)
             values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
             values['departments'] = []; // this will be coded in later (TODO)
-            values['status'] = 1; // all incidents start as unresolved
+            values['status'] = 0; // all incidents start as unresolved
+            console.log(values);
             make_api_post(values);
 	        } else {
 	        	values[this.name] = $(this).val();
@@ -38,6 +39,8 @@ function make_api_post(values) {
   http.onreadystatechange = function(request, response) {
     if (http.readyState == 4 && http.status == 200) { // OK, got response from server
      	success = true;
+     	console.log(http.responseText);
+     	//window.location = './issuedisplay.html';
     }
   }
   http.send(values);
