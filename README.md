@@ -10,7 +10,7 @@ the user may have had when reporting incidents in the past.
 
 Since this system will be used for all incidents big and
 small, and major incidents should be reported as quickly as possible, 
-we created a system that would allow for fast incident reporting
+we created a system that allows for fast incident reporting
 and tracking.
 
 In order to streamline the process of reporting and tracking incidents, we used
@@ -18,8 +18,8 @@ two primary goals in developing our product:
 
  - Accessing the system (ie. logging in) should be quick and painless 
  for those that have access to the system.
- - Do as much work for the user as possible.  The less information the user
-has to manually add during reporting, the better.
+ - The product should do as much work for the user as possible.  
+ The less information the user has to manually add during reporting, the better.
  - The on-call responder should be able to navigate the incident table easily 
   and the reporter should be able to quickly add an incident without 
   having to navigate through menus.
@@ -46,6 +46,7 @@ has to manually add during reporting, the better.
 - `IncidentDepartment` relation between Incident and Department
 
 ## Technology
+###Backend
 - Ruby 2.3.0
   - [Sinatra](http://www.sinatrarb.com/)
    
@@ -63,10 +64,16 @@ has to manually add during reporting, the better.
    We chose MySQL because of its thorough documentation and active community.
    One member of our group had some experience with MySQL, but this was not a
    deciding factor in our decision.
+
+###Frontend
 - Angular
 - Google Maps API
 - JQuery
 - Bootstrap
+
+##MVP Details
+- Time spent learning ruby: 1-2 hours
+- Time spent implementing MVP: 20 hours
 
 ## Contributors
 - [Max Ettelson](http://github.com/mdettelson)
