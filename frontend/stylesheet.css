@@ -6,7 +6,7 @@ html, body {
 
 #map {
 	  width: 90%;
-    height:400px;
+    height:338px;
 }
 
 .mainimg {
@@ -54,4 +54,8 @@ html, body {
   font-family: Roboto;
   font-size: 13px;
   font-weight: 300;
+}
+
+.incidentbar {
+  margin-bottom:15px;
 }

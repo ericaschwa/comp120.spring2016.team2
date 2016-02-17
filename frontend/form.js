@@ -1,7 +1,4 @@
 $( document ).ready(function() {
-/*	$(function() {
-		$("#map_canvas").googleMap();
-	});*/
 	// adapted from http://seiyria.com/bootstrap-slider/
 	$("#severity").slider({
 	    formatter: function(value) {
@@ -16,34 +13,34 @@ $( document ).ready(function() {
 	    $inputs.each(function() {
 	        if (this.name === "") {
 	        	values['time'] = new Date();
-            values['user'] = USER; // this will be replaced by UserID when we get one (TODO)
-            values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
-            values['departments'] = []; // this will be coded in later (TODO)
-            values['status'] = 0; // all incidents start as unresolved
-            console.log(values);
-            make_api_post(values);
+            	values['user_id'] = USER; // this will be replaced by UserID when we get one (TODO)
+            	values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
+            	values['departments'] = []; // this will be coded in later (TODO)
+            	values['status'] = 0; // all incidents start as unresolved
+            	values['severity'] = parseInt(values['severity'])
+            	$.ajax({
+				  method: "POST",
+				  url: URL + '/incidents/new',
+				  data: values
+				})
+				.done(function(msg) {
+				  console.log(msg);
+				});
 	        } else {
 	        	values[this.name] = $(this).val();
 	        }
 	    });
 	});
-
+	document.getElementById('submitbutton').disabled = true;
 });
 
-function make_api_post(values) {
-	var success = false;
-	var http = new XMLHttpRequest();
-  var url = URL + '/incidents/new';
-  http.open("POST", url, true);
-  http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  http.onreadystatechange = function(request, response) {
-    if (http.readyState == 4 && http.status == 200) { // OK, got response from server
-     	success = true;
-     	console.log(http.responseText);
-     	//window.location = './issuedisplay.html';
-    }
-  }
-  http.send(values);
+var descriptionedit = function() {
+	var desc = document.getElementById('description');
+	if (desc.value == "") {
+		document.getElementById('submitbutton').disabled = true;
+	} else {
+		document.getElementById('submitbutton').disabled = false;
+	}
 }
 
 google.maps.event.addDomListener(window, "load", init);

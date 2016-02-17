@@ -34,7 +34,7 @@
 <body>
 <div class="container">
 
-  <ul class="nav nav-pills nav-justified">
+  <ul class="nav nav-pills nav-justified incidentbar">
     <li role="presentation" ><a href="index.html">Home</a></li>
     <li role="presentation" class="active" ><a href="#">Report an Incident</a></li>
     <li role="presentation" ><a href="issuedisplay.html">View Incident Reports</a></li>
@@ -50,7 +50,7 @@
         </fieldset>
         <fieldset class="form-group">
           <label for="Textarea">Incident Description</label>
-          <textarea name="description" class="form-control" id="Textarea" rows="12"></textarea>
+          <textarea name="description" class="form-control" id="description" rows="12" onkeyup="descriptionedit()"></textarea>
         </fieldset>
         <!--<fieldset class="form-group">
           <label for="InputFile">Add file</label>
@@ -65,7 +65,7 @@
 
     </div>
       
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button id="submitbutton" type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
 

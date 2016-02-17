@@ -96,7 +96,8 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
         "location": fromServer[i]['location'],
         "time": convertsortable(datetime),
         "edit": edit,
-        "status": status
+        "status": status,
+        "id": fromServer[i]['id']
       });
     }
     $scope.gridOptions.data = incidentData;
@@ -141,11 +142,14 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
   $scope.gridOptions.onRegisterApi = function(gridApi){
       //set gridApi on scope
       $scope.gridApi = gridApi;
+      gridApi.selection.on.rowSelectionChanged($scope,function(row){
+        setmodal(row.entity);
+      });
   };
 
   // set data for modal
-  setmodal = function(arg) {
-    var data = JSON.parse(arg.id);
+  setmodal = function(data) {
+    //var data = JSON.parse(arg.id);
     var heading = document.getElementById('modal-title');
     var body = document.getElementById('modal-body');
     if(data.edit === "View Only") {
@@ -202,6 +206,10 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     body.innerHTML += "<span class='title'>Submitter</span>: " + "<input class='formedit' id='submitter' name='submitter' type='text' value='" + data.submitter + "' />" + "<br>";
     body.innerHTML += "<span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "<br>";
     body.innerHTML += "<button type='button' class='btn btn-primary' onclick='edit()' data-dismiss='modal'>Save</button>";
+    //jQuery.noConflict(); 
+    //$('#myModal').modal('show'); 
+    var j = jQuery.noConflict(); 
+    j('#myModal').modal('show'); 
     setTimeout(init, 1000); // needs slight delay
   };
 
@@ -241,10 +249,10 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader,
       filters: [{placeholder: 'yyyy-mm-dd hh:min:sec'}]
     },
-    { name: 'edit', displayName: "View / Edit", headerCellClass: $scope.highlightFilteredHeader,
+    /*{ name: 'edit', displayName: "View / Edit", headerCellClass: $scope.highlightFilteredHeader,
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: 'View Only', label: 'View Only' }, { value: 'View and Edit', label: 'View and Edit' }]},
       cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a data-toggle="modal" data-target="#myModal" onmousedown="setmodal(this)" id="{{row.entity}}">{{COL_FIELD}}</a></div>'
-    },
+    },*/
     { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus',
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
     }
