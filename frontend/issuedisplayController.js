@@ -50,8 +50,8 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     http.send();
   }
 
-  $scope.make_api_post = function(values) {
-    var success = false;
+  $scope.make_api_post = function(value) {
+    /*var success = false;
     var http = new XMLHttpRequest();
     var url = URL + '/incidents/new';
     http.open("POST", url, true);
@@ -61,7 +61,17 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
         success = true;
       }
     }
-    http.send(values);
+    http.send(values);*/
+    //console.log(value);
+    var j = jQuery.noConflict();
+    j.ajax({
+          method: "POST",
+          url: URL + '/incidents/' + value['id'],
+          data: value
+    })
+    .done(function(msg) {
+          console.log(msg);
+    });
   }
 
   // create array, incidentData, that will become the input to our table
