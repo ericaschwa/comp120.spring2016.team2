@@ -63,3 +63,8 @@ a:hover {
     width: 90%;
     height:200px;
 }
+
+.datepicker {
+    width: 80%;
+    margin-left:10px;
+}
