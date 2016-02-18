@@ -14,6 +14,11 @@ function compare(a,b) {
 	   return 0;
 }
 
+function setDatetimePicker() {
+  jQuery.noConflict();
+  jQuery('#datetimepicker').datetimepicker();
+}
+
 // from http://stackoverflow.com/questions/3066586/get-string-in-yyyymmdd-format-from-js-date-object
 // converts date object to yyyy-mm-dd hh:min:sec (sortable) time format
 var convertsortable = function(datetime) { 
@@ -48,6 +53,9 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       }
     }
     http.send();
+    // TODO: COMMENT THIS OUT
+    fromServer = [];
+    $scope.setupData();
   }
 
   $scope.make_api_post = function(value) {
@@ -100,6 +108,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       });
     }
     $scope.gridOptions.data = incidentData;
+    setTimeout(setDatetimePicker, 1000);
   }
 
   // optional features that we add to this table
@@ -216,7 +225,8 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     { name: 'description', displayName: "Description", headerCellClass: $scope.highlightFilteredHeader},
     { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader},
     { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader,
-      filters: [{placeholder: 'yyyy-mm-dd hh:min:sec'}]
+      //filters: [{placeholder: 'yyyy-mm-dd hh:min:sec'}]
+      filterHeaderTemplate: '<input name="datetime" id="datetimepicker" class="datepicker" type="text" >'
     },
     { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus',
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
