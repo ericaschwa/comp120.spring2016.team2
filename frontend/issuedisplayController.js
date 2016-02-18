@@ -51,17 +51,6 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
   }
 
   $scope.make_api_post = function(value) {
-    /*var success = false;
-    var http = new XMLHttpRequest();
-    var url = URL + '/incidents/new';
-    http.open("POST", url, true);
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.onreadystatechange = function() {
-      if (http.readyState == 4 && http.status == 200) { // OK, got response from server
-        success = true;
-      }
-    }
-    http.send(values);*/
     //console.log(value);
     var j = jQuery.noConflict();
     j.ajax({
@@ -149,8 +138,8 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       document.getElementById('showresolved').disabled = false;
   }
 
+  //set gridApi on scope
   $scope.gridOptions.onRegisterApi = function(gridApi){
-      //set gridApi on scope
       $scope.gridApi = gridApi;
       gridApi.selection.on.rowSelectionChanged($scope,function(row){
         setmodal(row.entity);
@@ -159,37 +148,8 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
 
   // set data for modal
   setmodal = function(data) {
-    //var data = JSON.parse(arg.id);
     var heading = document.getElementById('modal-title');
     var body = document.getElementById('modal-body');
-    if(data.edit === "View Only") {
-      setmodalVIEW(heading,body,data);
-    } else {
-      setmodalEDIT(heading,body,data);
-    }
-  }
-
-  setmodalVIEW = function(heading, body, data) {
-    heading.innerHTML = "View Incident";
-    body.innerHTML = "";
-    body.innerHTML += "<p><span class='title'>Incident Description</span>: " + data.description + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Location</span>: " + data.location + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Severity</span>: " + data.severity + "</p>";
-    var status;
-    if (data.status == 0) {
-      status = "Unresolved";
-    } else if (data.status == 1) {
-      status = "In Progress";
-    } else {
-      status = "Resolved";
-    }
-    body.innerHTML += "<p><span class='title'>Incident Status</span>: " + status + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Time</span>: " + data.time + "</p>";
-    body.innerHTML += "<p><span class='title'>Incident Submitter</span>: " + data.submitter + "</p>";
-    body.innerHTML += "<p><span class='title'>Relevant Departments</span>: " + data.departments + "</p>";
-  }
-
-  setmodalEDIT = function(heading, body, data) {
     permission = data.edit;
     heading.innerHTML = "Edit Incident";
     body.innerHTML = "";
@@ -254,15 +214,10 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       }, filters: [{condition: uiGridConstants.filter.GREATER_THAN, placeholder: 'greater than'}]
     },
     { name: 'description', displayName: "Description", headerCellClass: $scope.highlightFilteredHeader},
-    //{ name: 'departments', displayName: "Departments", headerCellClass: $scope.highlightFilteredHeader},
     { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader},
     { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader,
       filters: [{placeholder: 'yyyy-mm-dd hh:min:sec'}]
     },
-    /*{ name: 'edit', displayName: "View / Edit", headerCellClass: $scope.highlightFilteredHeader,
-      filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: 'View Only', label: 'View Only' }, { value: 'View and Edit', label: 'View and Edit' }]},
-      cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><a data-toggle="modal" data-target="#myModal" onmousedown="setmodal(this)" id="{{row.entity}}">{{COL_FIELD}}</a></div>'
-    },*/
     { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus',
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
     }

@@ -1,10 +1,10 @@
 $( document ).ready(function() {
 	// adapted from http://seiyria.com/bootstrap-slider/
-	$("#severity").slider({
+	/*$("#severity").slider({
 	    formatter: function(value) {
 	        return 'Current value: ' + value;
 	    }
-	});
+	});*/
 	// from http://stackoverflow.com/questions/169506/obtain-form-input-fields-using-jquery
 	$( "#form" ).on( "submit", function( event ) {
 	 	event.preventDefault();

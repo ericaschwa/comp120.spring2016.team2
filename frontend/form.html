@@ -22,6 +22,7 @@
     <script type='text/javascript' src="bootstrap/node_modules/bootstrap-slider/dependencies/js/modernizr.js"></script>
     <script type='text/javascript' src="bootstrap/node_modules/bootstrap-slider/dependencies/js/jquery.min.js"></script>
     <script type='text/javascript' src="bootstrap/node_modules/bootstrap-slider/src/js/bootstrap-slider.js"></script>
+
     <!-- Google Maps -->
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true&libraries=places"></script>
 
@@ -32,6 +33,7 @@
 </head>
 
 <body>
+  
 <div class="container">
 
   <ul class="nav nav-pills nav-justified incidentbar">
@@ -50,7 +52,11 @@
         </fieldset>
         <fieldset class="form-group">
           <label for="Textarea">Incident Description</label>
-          <textarea name="description" class="form-control" id="description" rows="12" onkeyup="descriptionedit()"></textarea>
+          <textarea name="description" class="form-control" id="description" rows="8" onkeyup="descriptionedit()"></textarea>
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="Textarea">Date and Time:</label>
+          <input name="datetime" id="datetimepicker" type="text" >
         </fieldset>
         <!--<fieldset class="form-group">
           <label for="InputFile">Add file</label>
@@ -70,4 +76,14 @@
 </div>
 
 </body>
+
+<link rel="stylesheet" type="text/css" href="datetimepicker-master/jquery.datetimepicker.css"/ >
+<script src="datetimepicker-master/jquery.js"></script>
+<script src="datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
+<script type="text/javascript">
+  jQuery('#datetimepicker').datetimepicker();
+</script>
+
+
+
 </html>
