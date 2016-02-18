@@ -19,6 +19,9 @@ function setDatetimePicker() {
   jQuery('#datetimepicker').datetimepicker();
 }
 
+var dateentered;
+
+
 // from http://stackoverflow.com/questions/3066586/get-string-in-yyyymmdd-format-from-js-date-object
 // converts date object to yyyy-mm-dd hh:min:sec (sortable) time format
 var convertsortable = function(datetime) { 
@@ -37,7 +40,7 @@ var fromServer;
 
 var app = angular.module('incidentApp', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns']);
 
-app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
+app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants) {
 
   $scope.make_api_get = function() {
     var success = false;
@@ -54,7 +57,7 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     }
     http.send();
     // TODO: COMMENT THIS OUT
-    fromServer = [];
+    fromServer = [{created_at:new Date()}];
     $scope.setupData();
   }
 
@@ -108,8 +111,30 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
       });
     }
     $scope.gridOptions.data = incidentData;
+    allData = incidentData;
     setTimeout(setDatetimePicker, 1000);
   }
+
+
+  $scope.dateentered = function() {
+    //$scope.colFilter.listTerm = [];
+    //$scope.colFilter.listTerm.push();
+    //$scope.colFilter.term = "";
+    //$scope.colFilter.term = $scope.colFilter.listTerm.join(', ');
+    /*console.log(colFilter);
+    $scope.colFilter.condition = new RegExp($scope.colFilter.listTerm.join('|'));
+    console.log(":)");*/
+    /*for (var i = 0; i < $scope.gridOptions.data.length; i++) {
+      if ($scope.gridOptions.data[i]['time'] == document.)
+    }
+    $scope.gridOptions.data = newData;*/
+    // TODO: QUESTIONS.
+    // DO WE WANT A DATETIME PICKER, OR JUST A DATEPICKER?
+    //       this one would force them to filter by date and time, even if they just want to filter by date
+    //       how useful is this? may just be better to sort?
+    console.log(new Date(document.getElementById('datetimepicker').value));
+  }
+  dateentered = $scope.dateentered;
 
   // optional features that we add to this table
   $scope.gridOptions = { 
@@ -224,9 +249,8 @@ app.controller('incidentCtrl', function($scope, $http, uiGridConstants) {
     },
     { name: 'description', displayName: "Description", headerCellClass: $scope.highlightFilteredHeader},
     { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader},
-    { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader,
-      //filters: [{placeholder: 'yyyy-mm-dd hh:min:sec'}]
-      filterHeaderTemplate: '<input name="datetime" id="datetimepicker" class="datepicker" type="text" >'
+    { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader, type: 'datetime',
+      filterHeaderTemplate: '<input name="datetime" id="datetimepicker" class="datepicker" type="text" onchange="dateentered()" >'
     },
     { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus',
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
