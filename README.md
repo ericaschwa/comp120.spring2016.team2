@@ -51,6 +51,7 @@ two primary goals in developing our product:
   - [Sinatra](http://www.sinatrarb.com/)
   - [DataMapper](http://datamapper.org/)
 - MySQL
+
 #### Why Sinatra over Ruby on Rails?
   Though Rails provides a lot of pre-built structures to work with,
   it can be easy to lose sight of what exactly is going on behind-the-scenes.
@@ -58,6 +59,7 @@ two primary goals in developing our product:
   more control over our codebase and spending a little extra time for simplicity's sake
   seems to be an advantage to our group. In addition, one member of our group had 
   experience with Sinatra, whereas no one had experience with Rails.
+
 #### Why MySQL?
   We chose MySQL because of its thorough documentation and active community. Since
   most of the database manipulation is handled by an ORM (Datamapper), PostgreSQL would
