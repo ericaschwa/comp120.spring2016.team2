@@ -19,6 +19,7 @@ $( document ).ready(function() {
 				})
 				.done(function(msg) {
 				  console.log(msg);
+				  window.location = 'issuedisplay.html'
 				});
 	        } else {
 	        	values[this.name] = $(this).val();
