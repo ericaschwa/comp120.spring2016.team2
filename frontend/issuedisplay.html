@@ -40,10 +40,12 @@
           <li role="presentation" ><a href="form.html">Report an Incident</a></li>
           <li role="presentation" class="active"><a href="#">View Incident Reports</a></li>
         </ul>
-    		<div ng-controller="incidentCtrl" ng-app="incidentApp">
-      			<div ui-grid="gridOptions" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns class="myGrid"></div>
-            <button type="button" class="btn btn-primary" ng-click="showResolved()" id="showresolved">Show Resolved Incidents</button>
-            <button type="button" class="btn btn-primary" ng-click="hideResolved()" id="hideresolved">Hide Resolved Incidents</button>
+    	<div ng-controller="incidentCtrl" ng-app="incidentApp">
+      		<div ui-grid="gridOptions" ui-grid-selection ui-grid-resize-columns ui-grid-move-columns class="myGrid"></div>
+            <div class="buttons">
+                <button type="button" class="btn btn-primary" ng-click="showResolved()" id="showresolved">Show Resolved Incidents</button>
+                <button type="button" class="btn btn-primary" ng-click="hideResolved()" id="hideresolved">Hide Resolved Incidents</button>
+            </div>
             <!-- Modal that will allow the user to view and edit information-->
             <div class="modal fade" id="myModal" role="dialog">
               <div class="modal-dialog">
@@ -56,7 +58,7 @@
                 </div>
               </div>
             </div>
-    		</div>
+    	</div>
     </div>
 	</body>
 </html>

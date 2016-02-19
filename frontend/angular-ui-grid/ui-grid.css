@@ -17,7 +17,7 @@
   clear: both;
 }
 .ui-grid {
-  /*border: 1px solid #d4d4d4;*/
+  border: 1px solid #d4d4d4;
   box-sizing: content-box;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
@@ -366,7 +366,7 @@ select.ui-grid-filter-select:hover {
 }*/
 
 .ui-grid-row {
-  background-color: #e6f2ff;
+  background-color: #E1EAF4;
   margin-bottom:10px;
   
   box-shadow: 1px 1px 1px #888888;

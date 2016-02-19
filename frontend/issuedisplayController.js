@@ -203,7 +203,6 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
  
   // defining the formatting etc. for each column in the table
   $scope.gridOptions.columnDefs = [
-    { name: 'submitter', displayName:"Submitted By", headerCellClass: $scope.highlightFilteredHeader, width: '10%'},
     { name: 'severity', displayName:"Severity", headerCellClass: $scope.highlightFilteredHeader, width:'10%',
       cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) { // color-codes severity column
         var severity = grid.getCellValue(row,col);
@@ -214,14 +213,15 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
         }
       }, filters: [{condition: uiGridConstants.filter.GREATER_THAN, placeholder: 'greater than'}]
     },
+    { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus', width:'12%',
+      filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
+    },
     { name: 'description', displayName: "Description", headerCellClass: $scope.highlightFilteredHeader, width: '30%'},
-    { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader, width:'20%'},
     { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader, width:'18%',
       filters: [{placeholder: 'yyyy/mm/dd hh:min:sec'}]
     },
-    { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus', width:'12%',
-      filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
-    }
+    { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader, width:'20%'},
+    { name: 'submitter', displayName:"Submitted By", headerCellClass: $scope.highlightFilteredHeader, width: '10%'}
   ];
   
   $scope.hideResolved();
