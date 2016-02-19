@@ -34,6 +34,7 @@ var app = angular.module('incidentApp', ['ui.grid', 'ui.grid.selection', 'ui.gri
 
 app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants) {
 
+  // make get request to access all incidents
   $scope.make_api_get = function() {
     var success = false;
     var http = new XMLHttpRequest();
@@ -50,6 +51,7 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
     http.send();
   }
 
+  // make post request to edit a given incident
   $scope.make_api_post = function(value) {
     console.log(value);
     var j = jQuery.noConflict();
@@ -174,7 +176,6 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
       status = "Resolved";
     }
     body.innerHTML += "<span class='title'>Time</span>: " + "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" + "<br>";
-    //body.innerHTML += "<span class='title'>Time</span>: " + '<input name="datetime" id="datetimepicker" type="text" >' + "<br>";
     body.innerHTML += "<span class='title'>Submitter</span>: " + "<input class='formedit' id='submitter' name='submitter' type='text' value='" + data.submitter + "' />" + "<br>";
     body.innerHTML += "<span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "<br>";
     body.innerHTML += "<button type='button' class='btn btn-primary' onclick='edit()' data-dismiss='modal'>Save</button>";
