@@ -17,7 +17,7 @@
   clear: both;
 }
 .ui-grid {
-  border: 1px solid #d4d4d4;
+  /*border: 1px solid #d4d4d4;*/
   box-sizing: content-box;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
@@ -41,15 +41,15 @@
   background-color: transparent;
 }
 .ui-grid-header-cell:not(:last-child) .ui-grid-vertical-bar {
-  background-color: #d4d4d4;
+  background-color: yellow;
 }
 .ui-grid-cell:not(:last-child) .ui-grid-vertical-bar {
-  background-color: #d4d4d4;
+  background-color: yellow
 }
 .ui-grid-header-cell:last-child .ui-grid-vertical-bar {
   right: -1px;
   width: 1px;
-  background-color: #d4d4d4;
+  background-color: yellow;
 }
 .ui-grid-clearfix:before,
 .ui-grid-clearfix:after {
@@ -352,12 +352,30 @@ select.ui-grid-filter-select:hover {
   position: relative;
   padding-top: 1px;
 }
-.ui-grid-row:nth-child(odd) .ui-grid-cell {
-  background-color: #fdfdfd;
+/*.ui-grid-row:nth-child(odd) .ui-grid-cell {
+  background-color: #e6f2ff;
+  margin-bottom:10px;
+ 
+  box-shadow: 1px 1px 1px #888888;
 }
 .ui-grid-row:nth-child(even) .ui-grid-cell {
-  background-color: #f3f3f3;
+  background-color: #e6f2ff;
+  margin-bottom:10px;
+  
+  box-shadow: 1px 1px 1px #888888;
+}*/
+
+.ui-grid-row {
+  background-color: #e6f2ff;
+  margin-bottom:10px;
+  
+  box-shadow: 1px 1px 1px #888888;
 }
+
+.ui-grid-row:hover {
+  box-shadow: 5px 5px 5px #888888;
+}
+
 .ui-grid-row:last-child .ui-grid-cell {
   border-bottom-color: #d4d4d4;
   border-bottom-style: solid;
@@ -409,8 +427,9 @@ select.ui-grid-filter-select:hover {
   overflow: hidden;
   float: left;
   background-color: inherit;
-  border-right: 1px solid;
-  border-color: #d4d4d4;
+  /*border-right: 1px solid;
+  border-color: #d4d4d4;*/
+  margin-top:10px;
   box-sizing: border-box;
 }
 .ui-grid-cell:last-child {
@@ -1087,10 +1106,10 @@ div.ui-grid-cell input.ng-valid {
 */
 /*-- END VARIABLES (DO NOT REMOVE THESE COMMENTS) --*/
 .expandableRow .ui-grid-row:nth-child(odd) .ui-grid-cell {
-  background-color: #fdfdfd;
+  background-color: yellow;
 }
 .expandableRow .ui-grid-row:nth-child(even) .ui-grid-cell {
-  background-color: #f3f3f3;
+  background-color: yellow;
 }
 .ui-grid-cell.ui-grid-disable-selection.ui-grid-row-header-cell {
   pointer-events: none;
@@ -1783,7 +1802,7 @@ select[multiple].ui-grid-pager-row-count-picker select {
 */
 /*-- END VARIABLES (DO NOT REMOVE THESE COMMENTS) --*/
 .ui-grid-row.ui-grid-row-selected > [ui-grid-row] > .ui-grid-cell {
-  background-color: #c9dde1;
+  /*background-color: #c9dde1;*/
 }
 .ui-grid-disable-selection {
   -webkit-touch-callout: none;
