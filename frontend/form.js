@@ -22,12 +22,19 @@ $( document ).ready(function() {
 				  window.location = 'issuedisplay.html'
 				});
 	        } else {
-	        	values[this.name] = $(this).val();
+	        	values[this.name] = escapeHtml($(this).val());
 	        }
 	    });
 	});
 	document.getElementById('submitbutton').disabled = true;
 });
+
+// from http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+};
 
 // activates "submit" button only when description contains text
 var descriptionedit = function() {

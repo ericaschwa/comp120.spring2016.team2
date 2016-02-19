@@ -28,6 +28,13 @@ var convertsortable = function(datetime) {
       return yyyy + "/" + (mm[1]?mm:"0"+mm[0]) + "/" + (dd[1]?dd:"0"+dd[0]) + " " + (hh[1]?hh:"0"+hh[0]) + ":" + (min[1]?min:"0"+min[0]) + ":" + (sec[1]?sec:"0"+sec[0]);
 };
 
+// from http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+};
+
 var setmodal;
 var edit;
 var fromServer;
@@ -64,6 +71,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     })
     .done(function(msg) {
           console.log(msg);
+          // TODO: will the server then return all incidents??? will need to make get request if they don't
     });
   };
 
@@ -213,13 +221,13 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   // edit an incident
   $scope.edit = function() {
     var obj = {
-      'description': document.getElementById('description').value,
-      'location': document.getElementById('pac-input').value,
-      'severity': document.getElementById('severity').value,
-      'status': document.getElementById('status').value,
-      'time': new Date(document.getElementById('time').value),
-      'submitter': document.getElementById('submitter').value,
-      'departments': document.getElementById('departments').value,
+      'description': escapeHtml(document.getElementById('description').value),
+      'location': escapeHtml(document.getElementById('pac-input').value),
+      'severity': escapeHtml(document.getElementById('severity').value),
+      'status': escapeHtml(document.getElementById('status').value),
+      'time': escapeHtml(new Date(document.getElementById('time').value)),
+      'submitter': escapeHtml(document.getElementById('submitter').value),
+      'departments': escapeHtml(document.getElementById('departments').value),
       'permission': permission,
       'id': modalid
     };
