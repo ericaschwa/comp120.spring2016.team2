@@ -1,11 +1,11 @@
 $( document ).ready(function() {
 	// adapted from http://seiyria.com/bootstrap-slider/
-	jQuery.noConflict();
+	/*jQuery.noConflict();
 	$("#severity").slider({
 	    formatter: function(value) {
 	        return 'Current value: ' + value;
 	    }
-	});
+	});*/
 	// from http://stackoverflow.com/questions/169506/obtain-form-input-fields-using-jquery
 	$( "#form" ).on( "submit", function( event ) {
 	 	event.preventDefault();
@@ -18,7 +18,7 @@ $( document ).ready(function() {
             	values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
             	values['departments'] = []; // this will be coded in later (TODO)
             	values['status'] = 0; // all incidents start as unresolved
-            	values['severity'] = parseInt(values['severity'])
+            	values['severity'] = parseInt(values['severity']);
             	$.ajax({
 				  method: "POST",
 				  url: URL + '/incidents/new',
