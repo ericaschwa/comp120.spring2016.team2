@@ -1,2 +1,2 @@
-URL = 'http://b9e1de30.ngrok.io';
+URL = 'http://ssh.frontfish.net:4567/';
 USER = 1;

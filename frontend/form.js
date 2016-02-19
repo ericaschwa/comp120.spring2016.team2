@@ -35,6 +35,7 @@ $( document ).ready(function() {
 	document.getElementById('submitbutton').disabled = true;
 });
 
+// activates "submit" button only when description contains text
 var descriptionedit = function() {
 	var desc = document.getElementById('description');
 	if (desc.value == "") {
@@ -44,6 +45,7 @@ var descriptionedit = function() {
 	}
 }
 
+// load map on page init
 google.maps.event.addDomListener(window, "load", init);
 
 function previewFile(){
