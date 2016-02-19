@@ -43,7 +43,11 @@
     <style type="text/css">
     img {
         max-width: 110%;
-        height: auto;      
+        height: auto;    
+        max-height:300px;  
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     .clearfix {
@@ -83,6 +87,9 @@
     .Unresolved {
         font-weight: bold;
     }
+    .severity {
+        font-weight: bold;
+    }
     </style>
 
 
@@ -96,21 +103,21 @@
           <li role="presentation" class="active"><a href="#">View Incident Reports</a></li>
         </ul>
   
-    		<div ng-controller="incidentCtrl2" ng-app="incidentApp2" id="chart">
-            
-            <!-- Modal that will allow the user to view and edit information-->
-            <div class="modal fade" id="myModal" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="modal-title"></h4>
+    		<div ng-controller="incidentCtrl2" ng-app="incidentApp2">
+                <div id="chart"></div>
+                <!-- Modal that will allow the user to view and edit information-->
+                <div class="modal fade" id="myModal" role="dialog">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="modal-title">Edit Incident</h4>
+                      </div>
+                      <div class="modal-body" id="modal-body"></div>
+                    </div>
                   </div>
-                  <div class="modal-body" id="modal-body"></div>
                 </div>
-              </div>
-            </div>
-    		</div>
+    	   </div>
     </div>
 	</body>
 </html>

@@ -150,11 +150,9 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
 
   // set data for modal
   setmodal = function(data) {
-    var heading = document.getElementById('modal-title');
     var body = document.getElementById('modal-body');
     permission = data['edit'];
     id = data['id'];
-    heading.innerHTML = "Edit Incident";
     body.innerHTML = "";
     body.innerHTML += "<span class='title'>Severity</span> (1 = Minor Incident, 4 = Emergency)</span>: " +
                       '<select id="severity"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>' +
@@ -227,22 +225,6 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
   ];
   
   $scope.hideResolved();
-})
-
-// for table's view/edit dropdown filter
-.filter('mapEdit', function() {
-      var editHash = {
-        1: 'View Only',
-        2: 'View and Edit'
-      };
-     
-      return function(input) {
-        if (!input){
-          return '';
-        } else {
-          return editHash[input];
-        }
-    };
 })
 
 // for table's status dropdown filter
