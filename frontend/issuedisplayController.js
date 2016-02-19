@@ -14,14 +14,6 @@ function compare(a,b) {
 	   return 0;
 }
 
-function setDatetimePicker() {
-  jQuery.noConflict();
-  jQuery('#datetimepicker').datetimepicker();
-}
-
-var dateentered;
-
-
 // from http://stackoverflow.com/questions/3066586/get-string-in-yyyymmdd-format-from-js-date-object
 // converts date object to yyyy-mm-dd hh:min:sec (sortable) time format
 var convertsortable = function(datetime) { 
@@ -31,7 +23,7 @@ var convertsortable = function(datetime) {
       var hh = datetime.getHours().toString();
       var min = datetime.getMinutes().toString();
       var sec = datetime.getSeconds().toString();
-      return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]) + " " + (hh[1]?hh:"0"+hh[0]) + ":" + (min[1]?min:"0"+min[0]) + ":" + (sec[1]?sec:"0"+sec[0]);
+      return yyyy + "/" + (mm[1]?mm:"0"+mm[0]) + "/" + (dd[1]?dd:"0"+dd[0]) + " " + (hh[1]?hh:"0"+hh[0]) + ":" + (min[1]?min:"0"+min[0]) + ":" + (sec[1]?sec:"0"+sec[0]);
 };
 
 var setmodal;
@@ -56,17 +48,14 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
       }
     }
     http.send();
-    // TODO: COMMENT THIS OUT
-    fromServer = [{created_at:new Date()}];
-    $scope.setupData();
   }
 
   $scope.make_api_post = function(value) {
-    //console.log(value);
+    console.log(value);
     var j = jQuery.noConflict();
     j.ajax({
           method: "POST",
-          url: URL + '/incidents/' + value['id'],
+          url: URL + 'incidents/' + value['id'],
           data: value
     })
     .done(function(msg) {
@@ -111,30 +100,7 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
       });
     }
     $scope.gridOptions.data = incidentData;
-    allData = incidentData;
-    setTimeout(setDatetimePicker, 1000);
   }
-
-
-  $scope.dateentered = function() {
-    //$scope.colFilter.listTerm = [];
-    //$scope.colFilter.listTerm.push();
-    //$scope.colFilter.term = "";
-    //$scope.colFilter.term = $scope.colFilter.listTerm.join(', ');
-    /*console.log(colFilter);
-    $scope.colFilter.condition = new RegExp($scope.colFilter.listTerm.join('|'));
-    console.log(":)");*/
-    /*for (var i = 0; i < $scope.gridOptions.data.length; i++) {
-      if ($scope.gridOptions.data[i]['time'] == document.)
-    }
-    $scope.gridOptions.data = newData;*/
-    // TODO: QUESTIONS.
-    // DO WE WANT A DATETIME PICKER, OR JUST A DATEPICKER?
-    //       this one would force them to filter by date and time, even if they just want to filter by date
-    //       how useful is this? may just be better to sort?
-    console.log(new Date(document.getElementById('datetimepicker').value));
-  }
-  dateentered = $scope.dateentered;
 
   // optional features that we add to this table
   $scope.gridOptions = { 
@@ -184,7 +150,8 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
   setmodal = function(data) {
     var heading = document.getElementById('modal-title');
     var body = document.getElementById('modal-body');
-    permission = data.edit;
+    permission = data['edit'];
+    id = data['id'];
     heading.innerHTML = "Edit Incident";
     body.innerHTML = "";
     body.innerHTML += "<span class='title'>Severity</span> (1 = Minor Incident, 4 = Emergency)</span>: " +
@@ -207,12 +174,12 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
       status = "Resolved";
     }
     body.innerHTML += "<span class='title'>Time</span>: " + "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" + "<br>";
+    //body.innerHTML += "<span class='title'>Time</span>: " + '<input name="datetime" id="datetimepicker" type="text" >' + "<br>";
     body.innerHTML += "<span class='title'>Submitter</span>: " + "<input class='formedit' id='submitter' name='submitter' type='text' value='" + data.submitter + "' />" + "<br>";
     body.innerHTML += "<span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "<br>";
     body.innerHTML += "<button type='button' class='btn btn-primary' onclick='edit()' data-dismiss='modal'>Save</button>";
-    //jQuery.noConflict(); 
-    //$('#myModal').modal('show'); 
-    var j = jQuery.noConflict(); 
+    
+    var j =jQuery.noConflict(); 
     j('#myModal').modal('show'); 
     setTimeout(init, 1000); // needs slight delay
   };
@@ -227,7 +194,8 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
       'time': new Date(document.getElementById('time').value),
       'submitter': document.getElementById('submitter').value,
       'departments': document.getElementById('departments').value,
-      'permission': permission
+      'permission': permission,
+      'id': id
     };
     $scope.make_api_post(obj);
   };
@@ -249,8 +217,8 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
     },
     { name: 'description', displayName: "Description", headerCellClass: $scope.highlightFilteredHeader},
     { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader},
-    { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader, type: 'datetime',
-      filterHeaderTemplate: '<input name="datetime" id="datetimepicker" class="datepicker" type="text" onchange="dateentered()" >'
+    { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader,
+      filters: [{placeholder: 'yyyy/mm/dd hh:min:sec'}]
     },
     { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus',
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
