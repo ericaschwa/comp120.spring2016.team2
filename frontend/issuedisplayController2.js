@@ -138,17 +138,23 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
           bordercolor = 'red';
         }
         var photo="incident.JPG"
-        document.getElementById('chart').innerHTML += '<li>'
-                                               + '<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">'
-                                               + '<div class="panel panel-default ' + bordercolor +'" onclick="setmodal(' + incidentData[i]['id'] + ')">'
-                                               + '<div class="row padall">'
-                                               + '<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><span></span><img src="' + photo + '" /></div>'
-                                               + '<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">'
-                                               + '<div class="clearfix">'
-                                                  + '<div class="pull-right">Severity: <span class="severity">' + incidentData[i]['severity'] + '</span><br>'
-                                                  + '<span class="' + status + '">' + status + '</span> | ' + incidentData[i]['time'] + ' | ' + incidentData[i]['submitter']
-                                               + '<div>Location: <span class="fa fa-map-marker icon"></span>' + location + '<br> Description: ' + incidentData[i]['description'] + '</div>'
-                                               + '</div></div></div></div></div></li>';
+        var text = '<li><div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">'
+                 + '<div class="panel panel-default ' + bordercolor +'" onclick="setmodal(' + incidentData[i]['id'] + ')">'
+                 + '<div class="row padall">'
+                 + '<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><span></span><img src="' + photo + '" /></div>'
+                 + '<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">'
+                 + '<div class="clearfix">';
+        var j;
+        for (j = 0; j < incidentData[i]['severity']; j++) {
+           text += '<i class="black fa fa-exclamation-circle">&nbsp;</i>';
+        }
+        for (; j < 4; j++) {
+           text += '<i class="gray fa fa-exclamation-circle">&nbsp;</i>';
+        }
+        text += '<br><span class="' + status + '">' + status + '</span> | ' + incidentData[i]['time'] + ' | ' + incidentData[i]['submitter']
+              + '<div>Location: ' + location + '<br> Description: ' + incidentData[i]['description'] + '</div>'
+              + '</div></div></div></div></div></li>';
+        document.getElementById('chart').innerHTML += text;
     }
     document.getElementById('chart').innerHTML += '</ul></div>';
   };

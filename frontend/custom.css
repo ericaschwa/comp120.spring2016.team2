@@ -72,3 +72,11 @@ a:hover {
 .buttons {
     margin-top: 20px;
 }
+
+.black {
+    color: black;
+}
+
+.gray {
+    color: #bfbfbf;
+}
