@@ -110,6 +110,7 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
       });
     }
     $scope.gridOptions.data = incidentData;
+    $scope.$apply();
   }
 
   // optional features that we add to this table
