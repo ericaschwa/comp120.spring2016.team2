@@ -225,12 +225,12 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
     { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus', width:'12%',
       filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
     },
-    { name: 'description', displayName: "Description", headerCellClass: $scope.highlightFilteredHeader, width: '30%'},
+    { name: 'description', displayName: "Description", headerCellClass: $scope.highlightFilteredHeader, width: '40%'},
     { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader, width:'18%',
       filters: [{placeholder: 'yyyy/mm/dd hh:min:sec'}]
     },
-    { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader, width:'20%'},
-    { name: 'submitter', displayName:"Submitted By", headerCellClass: $scope.highlightFilteredHeader, width: '10%'}
+    { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader, width:'20%'}
+    //{ name: 'submitter', displayName:"Submitted By", headerCellClass: $scope.highlightFilteredHeader, width: '10%'}
   ];
   
   $scope.hideResolved();

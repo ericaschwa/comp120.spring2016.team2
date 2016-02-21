@@ -138,11 +138,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
           bordercolor = 'red';
         }
         var photo="incident.JPG"
-        var text = '<li><div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">'
+        var text = '<li><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
                  + '<div class="panel panel-default ' + bordercolor +'" onclick="setmodal(' + incidentData[i]['id'] + ')">'
                  + '<div class="row padall">'
-                 + '<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><span></span><img src="' + photo + '" /></div>'
-                 + '<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">'
+                 //+ '<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><span></span><img src="' + photo + '" /></div>'
+                 + '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
                  + '<div class="clearfix">';
         var j;
         for (j = 0; j < incidentData[i]['severity']; j++) {
