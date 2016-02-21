@@ -4,6 +4,8 @@
  * comp120-s16-team2
  */
 
+
+
 // used to sort arrays of structs that the server returns by severity
 function compare(a,b) {
 	if (parseInt(a.severity) < parseInt(b.severity))
@@ -37,15 +39,15 @@ var setmodal;
 var edit;
 var fromServer;
 
-var app = angular.module('incidentApp', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns']);
+var app = angular.module('incidentApp2', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns']);
 
-app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants) {
+app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants) {
 
   // make get request to access all incidents
   $scope.make_api_get = function() {
     var success = false;
     var http = new XMLHttpRequest();
-    var url = URL + '/incidents';
+    var url = URL + 'incidents';
     http.open("GET", url, true);
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     http.onreadystatechange = function(request, response) {
@@ -56,7 +58,7 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
       }
     }
     http.send();
-  }
+  };
 
   // make post request to edit a given incident
   $scope.make_api_post = function(value) {
@@ -69,9 +71,9 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
     })
     .done(function(msg) {
           console.log(msg);
-           // TODO: will the server then return all incidents??? will need to make get request if they don't
+          // TODO: will the server then return all incidents??? will need to make get request if they don't
     });
-  }
+  };
 
   // create array, incidentData, that will become the input to our table
   $scope.setupData = function() {
@@ -109,59 +111,89 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
         "id": fromServer[i]['id']
       });
     }
-    $scope.gridOptions.data = incidentData;
-    $scope.$apply();
-  }
-
-  // optional features that we add to this table
-  $scope.gridOptions = { 
-	  	enableRowSelection: true,
-	  	enableRowHeaderSelection: false,
-	  	rowHeight: 60,
-      enableFiltering: true,
-      multiSelect: false,
-      modifierKeysToMultiSelect: false,
-      noUnselect: false
-	};
-
-  // highlights headers of columns by which we have filtered
-  $scope.highlightFilteredHeader = function( row, rowRenderIndex, col, colRenderIndex ) {
-      if( col.filters[0].term ){
-          return 'header-filtered';
-      } else {
-          return '';
-      }
+    $scope.data = incidentData;
+    document.getElementById('chart').innerHTML = '<div class="row">'
+    document.getElementById('chart').innerHTML += '<ul>';
+    for (var i = 0; i < incidentData.length; i++) {
+        var status;
+        if (incidentData[i]['status'] === 1) {
+          status = 'Unresolved';
+        } else if (incidentData[i]['status'] === 2) {
+          status = 'In Progress';
+        } else {
+          status = 'Resolved';
+        }
+        var location = incidentData[i]['location'];
+        if (location === null || location === "") {
+          location = "";
+        }
+        var bordercolor;
+        if (incidentData[i]['severity'] === 1) {
+          bordercolor = 'white';
+        } else if (incidentData[i]['severity'] === 2) {
+          bordercolor = 'yellow';
+        } else if (incidentData[i]['severity'] === 3) {
+          bordercolor = 'orange';
+        } else {
+          bordercolor = 'red';
+        }
+        var photo="incident.JPG"
+        var text = '<li><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
+                 + '<div class="panel panel-default ' + bordercolor +'" onclick="setmodal(' + incidentData[i]['id'] + ')">'
+                 + '<div class="row padall">'
+                 //+ '<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"><span></span><img src="' + photo + '" /></div>'
+                 + '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
+                 + '<div class="clearfix">';
+        var j;
+        for (j = 0; j < incidentData[i]['severity']; j++) {
+           text += '<i class="black fa fa-exclamation-circle">&nbsp;</i>';
+        }
+        for (; j < 4; j++) {
+           text += '<i class="gray fa fa-exclamation-circle">&nbsp;</i>';
+        }
+        text += '<br><span class="' + status + '">' + status + '</span> | ' + incidentData[i]['time'] + ' | ' + incidentData[i]['submitter']
+              + '<div>Location: ' + location + '<br> Description: ' + incidentData[i]['description'] + '</div>'
+              + '</div></div></div></div></div></li>';
+        document.getElementById('chart').innerHTML += text;
+    }
+    document.getElementById('chart').innerHTML += '</ul></div>';
   };
 
   // show resolved incidents
   $scope.showResolved = function() {
       show_resolved_incidents = true;
       $scope.make_api_get();
-      document.getElementById('showresolved').disabled = true;
-      document.getElementById('hideresolved').disabled = false;
-  }
+      //document.getElementById('showresolved').disabled = true;
+      //document.getElementById('hideresolved').disabled = false;
+  };
 
     // show resolved incidents
   $scope.hideResolved = function() {
       show_resolved_incidents = false;
       $scope.make_api_get();
-      document.getElementById('hideresolved').disabled = true;
-      document.getElementById('showresolved').disabled = false;
-  }
-
-  //set gridApi on scope
-  $scope.gridOptions.onRegisterApi = function(gridApi){
-      $scope.gridApi = gridApi;
-      gridApi.selection.on.rowSelectionChanged($scope,function(row){
-        setmodal(row.entity);
-      });
+      //document.getElementById('hideresolved').disabled = true;
+      //document.getElementById('showresolved').disabled = false;
   };
 
+
   // set data for modal
-  setmodal = function(data) {
+  setmodal = function(id) {
     var body = document.getElementById('modal-body');
+    var data = "";
+    for (var i = 0; i < incidentData.length; i++) {
+      if (id === incidentData[i]['id']) {
+        data = incidentData[i];
+        break;
+      }
+    }
+
+    if (data === "") {
+      return;
+    }
+
+    modalid = id;
+
     permission = data['edit'];
-    id = data['id'];
     body.innerHTML = "";
     body.innerHTML += "<span class='title'>Severity</span> (1 = Minor Incident, 4 = Emergency)</span>: " +
                       '<select id="severity"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>' +
@@ -194,64 +226,23 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
 
   // edit an incident
   $scope.edit = function() {
-    var e = document.getElementById("severity");
-    var severity = e.options[e.selectedIndex].value;
     var obj = {
       'description': escapeHtml(document.getElementById('description').value),
       'location': escapeHtml(document.getElementById('pac-input').value),
-      'severity': escapeHtml(severity),
+      'severity': escapeHtml(document.getElementById('severity').value),
       'status': escapeHtml(document.getElementById('status').value),
       'time': escapeHtml(new Date(document.getElementById('time').value)),
       'submitter': escapeHtml(document.getElementById('submitter').value),
       'departments': escapeHtml(document.getElementById('departments').value),
       'permission': permission,
-      'id': id
+      'id': modalid
     };
     $scope.make_api_post(obj);
   };
 
   edit = $scope.edit;
- 
-  // defining the formatting etc. for each column in the table
-  $scope.gridOptions.columnDefs = [
-    { name: 'severity', displayName:"Severity", headerCellClass: $scope.highlightFilteredHeader, width:'10%',
-      cellClass: function(grid, row, col, rowRenderIndex, colRenderIndex) { // color-codes severity column
-        var severity = grid.getCellValue(row,col);
-        if (severity > 3) {
-          return 'red';
-        } else if (severity > 2) {
-          return 'orange';
-        }
-      }, filters: [{condition: uiGridConstants.filter.GREATER_THAN, placeholder: 'greater than'}]
-    },
-    { name: 'status', displayName: "Status", headerCellClass: $scope.highlightFilteredHeader, cellFilter: 'mapStatus', width:'12%',
-      filter: {type: uiGridConstants.filter.SELECT, selectOptions: [{ value: '1', label: 'Unresolved' }, { value: '2', label: 'In Progress' }, { value: '3', label: 'Resolved'}]}
-    },
-    { name: 'description', displayName: "Description", headerCellClass: $scope.highlightFilteredHeader, width: '40%'},
-    { name: 'time', displayName: "Date and Time", headerCellClass: $scope.highlightFilteredHeader, width:'18%',
-      filters: [{placeholder: 'yyyy/mm/dd hh:min:sec'}]
-    },
-    { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader, width:'20%'}
-  ];
   
   $scope.hideResolved();
-})
-
-// for table's status dropdown filter
-.filter('mapStatus', function() {
-      var statusHash = {
-        1: 'Unresolved',
-        2: 'In Progress',
-        3: 'Resolved'
-      };
-     
-      return function(input) {
-        if (!input){
-          return '';
-        } else {
-          return statusHash[input];
-        }
-    };
 });
 
 

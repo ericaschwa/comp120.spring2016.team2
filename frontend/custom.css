@@ -68,3 +68,15 @@ a:hover {
     width: 80%;
     margin-left:10px;
 }
+
+.buttons {
+    margin-top: 20px;
+}
+
+.black {
+    color: black;
+}
+
+.gray {
+    color: #bfbfbf;
+}

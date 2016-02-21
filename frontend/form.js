@@ -1,11 +1,4 @@
 $( document ).ready(function() {
-	// adapted from http://seiyria.com/bootstrap-slider/
-	/*jQuery.noConflict();
-	$("#severity").slider({
-	    formatter: function(value) {
-	        return 'Current value: ' + value;
-	    }
-	});*/
 	// from http://stackoverflow.com/questions/169506/obtain-form-input-fields-using-jquery
 	$( "#form" ).on( "submit", function( event ) {
 	 	event.preventDefault();
@@ -18,7 +11,10 @@ $( document ).ready(function() {
             	values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
             	values['departments'] = []; // this will be coded in later (TODO)
             	values['status'] = 0; // all incidents start as unresolved
-            	values['severity'] = parseInt(values['severity']);
+            	var e = document.getElementById("severity");
+    			var severity = e.options[e.selectedIndex].value;
+            	values['severity'] = parseInt(severity) - 1;
+            	console.log(values);
             	$.ajax({
 				  method: "POST",
 				  url: URL + '/incidents/new',
@@ -26,14 +22,22 @@ $( document ).ready(function() {
 				})
 				.done(function(msg) {
 				  console.log(msg);
+				  window.location = 'issuedisplay.html'
 				});
 	        } else {
-	        	values[this.name] = $(this).val();
+	        	values[this.name] = escapeHtml($(this).val());
 	        }
 	    });
 	});
 	document.getElementById('submitbutton').disabled = true;
 });
+
+// from http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+};
 
 // activates "submit" button only when description contains text
 var descriptionedit = function() {
