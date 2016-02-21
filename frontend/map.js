@@ -1,12 +1,12 @@
 //Google Maps JavaScript
 function init() {
-   	var latlng = new google.maps.LatLng(35.9886, -78.9072);
-   	var options = {
-      	zoom: 13,
-      	center: latlng,
-      	mapTypeId: google.maps.MapTypeId.ROADMAP
-    }; 
-  	var map = new google.maps.Map(document.getElementById('map'), options);
+  var initialLocation = new google.maps.LatLng(35.9886, -78.9072);
+  var options = {
+    zoom: 13,
+    center: initialLocation,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }; 
+  var map = new google.maps.Map(document.getElementById('map'), options);
 
   
   //searchbox: code adapted from https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
@@ -65,5 +65,32 @@ function init() {
     });
     map.fitBounds(bounds);
   });
-  // [END region_getplaces]
+  
+
+  //Geolocation attempt
+  var browserSupportFlag = new Boolean;
+  if (navigator.geolocation) {
+    browserSupportFlag = true;
+    navigator.geolocation.getCurrentPosition(function(position) {
+      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      map.setCenter(initialLocation);
+    }, function() {
+      //handleNoGeolocation(browserSupportFlag);
+    });
+  }
+
+  //Geolocation not supported by browser
+  else {
+    browserSupportFlag = false;
+    handleNoGeolocation(browserSupportFlag);
+  }
+
+  function handleNoGeolocation(errorFlag) {
+    if (errorFlag == true) {
+      alert("Geolocation service failed.");
+    } else {
+      alert("Your browser doesn't support geolocation.")
+    }
+    map.setCenter(initialLocation);
+  }
 }
