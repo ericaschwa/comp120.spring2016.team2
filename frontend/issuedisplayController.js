@@ -99,7 +99,7 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
       var datetime = new Date(fromServer[i]['created_at']);
       incidentData.push({
         "submitter": fromServer[i]['submitterln'] + ", " + fromServer[i]['submitterfn'],
-        "severity": parseInt(fromServer[i]['severity']),
+        "severity": parseInt(fromServer[i]['severity']) + 1,
         "description": fromServer[i]['description'],
         "departments": incidentdepts,
         "location": fromServer[i]['location'],
@@ -194,10 +194,12 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
 
   // edit an incident
   $scope.edit = function() {
+    var e = document.getElementById("severity");
+    var severity = e.options[e.selectedIndex].value;
     var obj = {
       'description': escapeHtml(document.getElementById('description').value),
       'location': escapeHtml(document.getElementById('pac-input').value),
-      'severity': escapeHtml(document.getElementById('severity').value),
+      'severity': escapeHtml(severity),
       'status': escapeHtml(document.getElementById('status').value),
       'time': escapeHtml(new Date(document.getElementById('time').value)),
       'submitter': escapeHtml(document.getElementById('submitter').value),
@@ -230,7 +232,6 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
       filters: [{placeholder: 'yyyy/mm/dd hh:min:sec'}]
     },
     { name: 'location', displayName: "Location", headerCellClass: $scope.highlightFilteredHeader, width:'20%'}
-    //{ name: 'submitter', displayName:"Submitted By", headerCellClass: $scope.highlightFilteredHeader, width: '10%'}
   ];
   
   $scope.hideResolved();

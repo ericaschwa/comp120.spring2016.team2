@@ -47,7 +47,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   $scope.make_api_get = function() {
     var success = false;
     var http = new XMLHttpRequest();
-    var url = URL + '/incidents';
+    var url = URL + 'incidents';
     http.open("GET", url, true);
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     http.onreadystatechange = function(request, response) {
@@ -101,7 +101,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       var datetime = new Date(fromServer[i]['created_at']);
       incidentData.push({
         "submitter": fromServer[i]['submitterln'] + ", " + fromServer[i]['submitterfn'],
-        "severity": parseInt(fromServer[i]['severity']),
+        "severity": parseInt(fromServer[i]['severity']) + 1,
         "description": fromServer[i]['description'],
         "departments": incidentdepts,
         "location": fromServer[i]['location'],

@@ -11,7 +11,10 @@ $( document ).ready(function() {
             	values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
             	values['departments'] = []; // this will be coded in later (TODO)
             	values['status'] = 0; // all incidents start as unresolved
-            	values['severity'] = parseInt(values['severity']);
+            	var e = document.getElementById("severity");
+    			var severity = e.options[e.selectedIndex].value;
+            	values['severity'] = parseInt(severity) - 1;
+            	console.log(values);
             	$.ajax({
 				  method: "POST",
 				  url: URL + '/incidents/new',
