@@ -101,6 +101,15 @@
           <li role="presentation" ><a href="form.html">Report an Incident</a></li>
           <li role="presentation" class="active"><a href="#">View Incident Reports</a></li>
         </ul>
+        <div class="row">
+            <div class="pull-left col-xs-4 col-s-4 col-md-4 col-lg-4">
+                <label for="sortby">Sort By: &nbsp;</label><select id="sortby" name="sortby" onchange="sort()"><option value=""></option><option value="severity">Severity</option><option value="status">Status</option><option value="time">Time</option></select>
+            </div>
+            <div class="pull-right col-xs-8 col-s-8 col-md-8 col-lg-8">
+                <button type="button" class="btn btn-primary" ng-click="showResolved()" id="showresolved">Show Resolved Incidents</button>
+                <button type="button" class="btn btn-primary" ng-click="hideResolved()" id="hideresolved">Hide Resolved Incidents</button>
+            </div>
+        </div>
   
     		<div ng-controller="incidentCtrl2" ng-app="incidentApp2">
                 <div id="chart"></div>
