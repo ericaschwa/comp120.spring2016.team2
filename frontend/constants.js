@@ -1,2 +1,2 @@
-URL = 'http://ssh.frontfish.net:4567/';
+URL = 'http://dirt.frontfish.net/';
 USER = 1;
