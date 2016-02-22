@@ -5,10 +5,10 @@
 
 .red-highlight { color: red; background-color: yellow !important;}
 .orange-highlight { color: orange; background-color: yellow !important;}
-.red { border-color: red; }
-.orange { border-color: orange; }
-.yellow { border-color: yellow; }
-.black { border-color: gray;}
+.red { color: red; }
+.orange { color: orange; }
+.yellow { color: yellow; }
+.black { color: black;}
 
 .header-filtered {
   color: blue;

@@ -60,21 +60,21 @@
     }
     li{ list-style-type: none; } 
 
-    .red {
+    .redborder {
             border-style: solid 3px;
-            /*border-color: red;*/
+            border-color: red;
     }
-    .orange {
+    .orangeborder {
             border-style: solid 3px;
-            /*border-color: #ff704d;*/
+            border-color: orange;
     }
-    .yellow {
+    .yellowborder {
             border-style: solid 3px;
-            /*border-color: #ff9933;*/
+            border-color: yellow;
     }
-    .white {
+    .blackborder {
             border-style: solid 3px;
-            /*border-color: yellow;*/
+            border-color: gray;
     }
     .Unresolved {
         font-weight: bold;
@@ -87,7 +87,7 @@
         box-shadow: 2px 2px 1px #888888;
     }
     .panel:hover {
-        box-shadow: 10px 10px 5px #888888;
+        box-shadow: 6px 6px 3px #888888;
     }
     </style>
 
@@ -101,31 +101,31 @@
           <li role="presentation" ><a href="form.html">Report an Incident</a></li>
           <li role="presentation" class="active"><a href="#">View Incident Reports</a></li>
         </ul>
-        <div class="row">
-            <div class="pull-left col-xs-4 col-s-4 col-md-4 col-lg-4">
-                <label for="sortby">Sort By: &nbsp;</label><select id="sortby" name="sortby" onchange="sort()"><option value=""></option><option value="severity">Severity</option><option value="status">Status</option><option value="time">Time</option></select>
-            </div>
-            <div class="pull-right col-xs-8 col-s-8 col-md-8 col-lg-8">
-                <button type="button" class="btn btn-primary" ng-click="showResolved()" id="showresolved">Show Resolved Incidents</button>
-                <button type="button" class="btn btn-primary" ng-click="hideResolved()" id="hideresolved">Hide Resolved Incidents</button>
-            </div>
-        </div>
   
-    		<div ng-controller="incidentCtrl2" ng-app="incidentApp2">
-                <div id="chart"></div>
-                <!-- Modal that will allow the user to view and edit information-->
-                <div class="modal fade" id="myModal" role="dialog">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title" id="modal-title">Edit Incident</h4>
-                      </div>
-                      <div class="modal-body" id="modal-body"></div>
-                    </div>
-                  </div>
+    	<div ng-controller="incidentCtrl2" ng-app="incidentApp2">
+            <div class="row">
+                <div class="pull-left col-xs-4 col-s-4 col-md-4 col-lg-4">
+                    <label for="sortby">Sort By: &nbsp;</label><select id="sortby" name="sortby" onchange="sort()"><option value=""></option><option value="severity">Severity</option><option value="status">Status</option><option value="time">Time</option></select>
                 </div>
-    	   </div>
+                <div class="pull-right col-xs-8 col-s-8 col-md-8 col-lg-8">
+                    <button type="button" class="btn btn-primary" ng-click="showResolved()" id="showresolved">Show Resolved Incidents</button>
+                    <button type="button" class="btn btn-primary" ng-click="hideResolved()" id="hideresolved">Hide Resolved Incidents</button>
+                </div>
+            </div>
+            <div id="chart"></div>
+            <!-- Modal that will allow the user to view and edit information-->
+            <div class="modal fade" id="myModal" role="dialog">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="modal-title">Edit Incident</h4>
+                  </div>
+                  <div class="modal-body" id="modal-body"></div>
+                </div>
+              </div>
+            </div>
+    	</div>
     </div>
 	</body>
 </html>

@@ -4,40 +4,35 @@
  * comp120-s16-team2
  */
 
-
-
 // used to sort arrays of structs that the server returns by severity
 var compareseverity = function(a,b) {
   var aval = parseInt(a.severity);
   var bval = parseInt(b.severity);
-  if (aval < bval)
-     return 1;
-  else if (bval < aval)
-     return -1;
-  else 
-     return 0;
+  if (aval >= bval) {
+    return 0;
+  } else {
+    return 1;
+  }
 };
 // used to sort arrays of structs that the server returns by status
 var comparestatus = function(a,b) {
   var aval = parseInt(a.status);
   var bval = parseInt(b.status);
-  if (aval < bval)
-     return 1;
-  else if (bval < aval)
-     return -1;
-  else 
-     return 0;
+  if (aval > bval) {
+    return 1;
+  } else {
+    return 0;
+  }
 };
 // used to sort arrays of structs that the server returns by time
 var comparetime = function(a,b) {
-  var aval = new Date(a.time);
-  var bval = new Date(b.time);
-  if (aval < bval)
-     return 1;
-  else if (bval < aval)
-     return -1;
-  else 
-     return 0;
+  var aval = new Date(a.created_at);
+  var bval = new Date(b.created_at);
+  if (aval >= bval) {
+    return 0;
+  } else {
+    return 1;
+  }
 };
 
 // from http://stackoverflow.com/questions/3066586/get-string-in-yyyymmdd-format-from-js-date-object
@@ -51,6 +46,49 @@ var convertsortable = function(datetime) {
       var sec = datetime.getSeconds().toString();
       return yyyy + "/" + (mm[1]?mm:"0"+mm[0]) + "/" + (dd[1]?dd:"0"+dd[0]) + " " + (hh[1]?hh:"0"+hh[0]) + ":" + (min[1]?min:"0"+min[0]) + ":" + (sec[1]?sec:"0"+sec[0]);
 };
+
+
+// following 5 functions from http://en.literateprograms.org/Merge_sort_%28JavaScript%29
+function msort(array, begin, end, comp)
+{
+  var size=end-begin;
+  if(size<2) return;
+
+  var begin_right=begin+Math.floor(size/2);
+
+  msort(array, begin, begin_right, comp);
+  msort(array, begin_right, end, comp);
+  merge(array, begin, begin_right, end, comp);
+}
+function merge_sort(array, comp)
+{
+  msort(array, 0, array.length, comp);
+}
+function merge(array, begin, begin_right, end, comp)
+{
+  for(;begin<begin_right; ++begin) {
+    if(comp(array[begin],array[begin_right])) {
+      var v=array[begin];
+      array[begin]=array[begin_right];
+      insert(array, begin_right, end, v, comp);
+    }
+  }
+}
+Array.prototype.swap=function(a, b)
+{
+  var tmp=this[a];
+  this[a]=this[b];
+  this[b]=tmp;
+}
+function insert(array, begin, end, v, comp)
+{
+  while(begin+1<end && comp(v, array[begin+1])) {
+    array.swap(begin, begin+1);
+    ++begin;
+  }
+  array[begin]=v;
+}
+
 
 // from http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
 function escapeHtml(str) {
@@ -82,7 +120,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
         document.getElementById('hideresolved').disabled = true;
         document.getElementById('showresolved').disabled = false;
         $scope.sort();
-        $scope.setupData();
       }
     }
     http.send();
@@ -90,7 +127,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
 
   // make post request to edit a given incident
   $scope.make_api_post = function(value) {
-    console.log(value);
     var j = jQuery.noConflict();
     j.ajax({
           method: "POST",
@@ -98,8 +134,8 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
           data: value
     })
     .done(function(msg) {
-          var newIncident = JSON.parse(msg);
-          $scope.replaceat(value['id'], newIncident);
+          console.log(msg);
+          $scope.replaceat(value['id'], msg);
     });
   };
 
@@ -118,7 +154,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   $scope.setupData = function() {
     $scope.makeincidentdata();
     $scope.data = incidentData;
-    console.log(incidentData);
     $scope.maketable();
   };
 
@@ -155,6 +190,40 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     }
   };
 
+  $scope.filterincidentdata = function(str) {
+    incidentData = [];
+    for (var i = 0; i < fromServer.length; i++) {
+      // don't show incidents the user doesn't have permission to see
+      var edit;
+      if (fromServer[i]['permission'] === 0) {
+        continue;
+      } else if (fromServer[i]['permission'] === 1) {
+        edit = "View Only";
+      } else {
+        edit = "View and Edit";
+      }
+      //don't show incidents that have been resolved
+      var status = parseInt(fromServer[i]['status']) + 1;
+      if (!show_resolved_incidents && status == 3) {
+        continue;
+      }
+      // match department ID array to string list of departments
+      var datetime = new Date(fromServer[i]['created_at']);
+      var incident = {
+        "submitter": fromServer[i]['submitterln'] + ", " + fromServer[i]['submitterfn'],
+        "severity": parseInt(fromServer[i]['severity']) + 1,
+        "description": fromServer[i]['description'],
+        "departments": "", // TODO: make departments
+        "location": fromServer[i]['location'],
+        "time": convertsortable(datetime),
+        "edit": edit,
+        "status": status,
+        "id": fromServer[i]['id']
+      };
+      incidentData.push(incident);
+    }
+  }
+
   $scope.maketable = function() {
     document.getElementById('chart').innerHTML = '<div class="row">'
     document.getElementById('chart').innerHTML += '<ul>';
@@ -164,7 +233,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
         var bordercolor = $scope.getbordercolor(i);
         var photo="incident.JPG"
         var text = '<li><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
-                 + '<div class="panel panel-default ' + bordercolor +'" onclick="setmodal(' + incidentData[i]['id'] + ')">'
+                 + '<div class="panel panel-default ' + bordercolor +'border" onclick="setmodal(' + incidentData[i]['id'] + ')">'
                  + '<div class="row padall">'
                  + '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
                  + '<div class="clearfix">';
@@ -194,9 +263,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   };
 
   $scope.getlocation = function(i) {
-      incidentData[i]['location'];
+      var location = incidentData[i]['location'];
       if (location === null || location === "") {
-        location = "";
+        return "";
+      } else {
+        return location;
       }
   }
 
@@ -212,17 +283,21 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       }
   }
 
+  // sorts by various values
   $scope.sort = function() {
     var e = document.getElementById("sortby");
     var sort = e.options[e.selectedIndex].value;
     if (sort === "status") {
-        fromServer.sort(comparestatus);
+        //fromServer.sort(comparestatus);
+        merge_sort(fromServer,comparestatus);
         $scope.setupData();
     } else if (sort === "time") {
-        fromServer.sort(comparetime);
+        //fromServer.sort(comparetime);
+        merge_sort(fromServer,comparetime);
         $scope.setupData();
     } else {
-        fromServer.sort(compareseverity);
+        //fromServer.sort(compareseverity);
+        merge_sort(fromServer,compareseverity);
         $scope.setupData();
     }
   };
@@ -259,14 +334,15 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     }
     modalid = id;
     permission = data['edit'];
-    body.innerHTML = $scope.writemodal();
+    body.innerHTML = $scope.writemodal(data);
     var j =jQuery.noConflict(); 
     j('#myModal').modal('show'); 
+    document.getElementById('severity').value = data.severity;
     setTimeout(init, 1000); // needs slight delay
   };
 
   // writes body html of modal
-  $scope.writemodal = function() {
+  $scope.writemodal = function(data) {
     var str = "";
     str += "<span class='title'>Severity</span> (1 = Minor Incident, 4 = Emergency)</span>: " +
            '<select id="severity"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>' +
@@ -297,9 +373,9 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     var obj = {
       'description': escapeHtml(document.getElementById('description').value),
       'location': escapeHtml(document.getElementById('pac-input').value),
-      'severity': escapeHtml(document.getElementById('severity').value),
-      'status': escapeHtml(document.getElementById('status').value),
-      'time': escapeHtml(new Date(document.getElementById('time').value)),
+      'severity': parseInt(document.getElementById('severity').value) - 1,
+      'status': parseInt(document.getElementById('status').value) - 1,
+      'time': new Date(document.getElementById('time').value),
       'submitter': escapeHtml(document.getElementById('submitter').value),
       'departments': escapeHtml(document.getElementById('departments').value),
       'permission': permission,
