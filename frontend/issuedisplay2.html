@@ -89,6 +89,11 @@
     .panel:hover {
         box-shadow: 6px 6px 3px #888888;
     }
+    #filter {
+        margin-left:20px;
+        margin-top:20px;
+        margin-bottom:20px;
+    }
     </style>
 
 
@@ -104,10 +109,11 @@
   
     	<div ng-controller="incidentCtrl2" ng-app="incidentApp2">
             <div class="row">
-                <div class="pull-left col-xs-4 col-s-4 col-md-4 col-lg-4">
-                    <label for="sortby">Sort By: &nbsp;</label><select id="sortby" name="sortby" onchange="sort()"><option value=""></option><option value="severity">Severity</option><option value="status">Status</option><option value="time">Time</option></select>
+                <div class="pull-left col-xs-12 col-s-7 col-md-7 col-lg-7">
+                    <label for="sortby">Sort By: &nbsp;</label><select id="sortby" name="sortby" onchange="setupData()"><option value=""></option><option value="severity">Severity</option><option value="status">Status</option><option value="time">Time</option></select>
+                    <span id="filter"><label for="filterby">Filter By: &nbsp;</label><input type="text" id="filterby" onkeyup="setupData()" /></span>
                 </div>
-                <div class="pull-right col-xs-8 col-s-8 col-md-8 col-lg-8">
+                <div class="pull-right col-xs-12 col-s-5 col-md-5 col-lg-5">
                     <button type="button" class="btn btn-primary" ng-click="showResolved()" id="showresolved">Show Resolved Incidents</button>
                     <button type="button" class="btn btn-primary" ng-click="hideResolved()" id="hideresolved">Hide Resolved Incidents</button>
                 </div>

@@ -14,20 +14,21 @@ var compareseverity = function(a,b) {
     return 1;
   }
 };
+
 // used to sort arrays of structs that the server returns by status
 var comparestatus = function(a,b) {
   var aval = parseInt(a.status);
   var bval = parseInt(b.status);
-  if (aval > bval) {
-    return 1;
-  } else {
+  if (aval >= bval) {
     return 0;
+  } else {
+    return 1;
   }
 };
 // used to sort arrays of structs that the server returns by time
 var comparetime = function(a,b) {
-  var aval = new Date(a.created_at);
-  var bval = new Date(b.created_at);
+  var aval = new Date(a.time);
+  var bval = new Date(b.time);
   if (aval >= bval) {
     return 0;
   } else {
@@ -99,7 +100,7 @@ function escapeHtml(str) {
 
 var setmodal;
 var edit;
-var sort;
+var setupData;
 
 var app = angular.module('incidentApp2', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns']);
 
@@ -119,7 +120,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
         show_resolved_incidents = false;
         document.getElementById('hideresolved').disabled = true;
         document.getElementById('showresolved').disabled = false;
-        $scope.sort();
+        $scope.setupData();
       }
     }
     http.send();
@@ -144,7 +145,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     for (var i = 0; i < fromServer.length; i++) {
       if (fromServer[i]['id'] === id) {
         fromServer[i] = newIncident;
-        $scope.sort();
+        $scope.setupData();
         return;
       }
     }
@@ -152,43 +153,21 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
 
   // create array, incidentData, that will become the input to our table
   $scope.setupData = function() {
-    $scope.makeincidentdata();
-    $scope.data = incidentData;
+    var str = document.getElementById('filterby').value;
+    $scope.filterincidentdata(str.toLowerCase());
+    // TODO: problem is that it remakes incident data each time!!!!!
+    $scope.sort();
     $scope.maketable();
   };
-
-  $scope.makeincidentdata = function() {
-    incidentData = [];
-    for (var i = 0; i < fromServer.length; i++) {
-      // don't show incidents the user doesn't have permission to see
-      var edit;
-      if (fromServer[i]['permission'] === 0) {
-        continue;
-      } else if (fromServer[i]['permission'] === 1) {
-        edit = "View Only";
-      } else {
-        edit = "View and Edit";
-      }
-      //don't show incidents that have been resolved
-      var status = parseInt(fromServer[i]['status']) + 1;
-      if (!show_resolved_incidents && status == 3) {
-        continue;
-      }
-      // match department ID array to string list of departments
-      var datetime = new Date(fromServer[i]['created_at']);
-      incidentData.push({
-        "submitter": fromServer[i]['submitterln'] + ", " + fromServer[i]['submitterfn'],
-        "severity": parseInt(fromServer[i]['severity']) + 1,
-        "description": fromServer[i]['description'],
-        "departments": "", // TODO: make departments
-        "location": fromServer[i]['location'],
-        "time": convertsortable(datetime),
-        "edit": edit,
-        "status": status,
-        "id": fromServer[i]['id']
-      });
-    }
+  $scope.setupDataFilter = function() {
+    var str = document.getElementById('filterby').value;
+    $scope.filterincidentdata(str.toLowerCase());
+    // TODO: problem is that it remakes incident data each time!!!!!
+    $scope.sort();
+    $scope.maketable();
   };
+  setupData = $scope.setupData;
+  setupDataFilter = $scope.setupDataFilter;
 
   $scope.filterincidentdata = function(str) {
     incidentData = [];
@@ -220,8 +199,59 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
         "status": status,
         "id": fromServer[i]['id']
       };
-      incidentData.push(incident);
+      if (searchsubstr(incident, str)) {
+        incidentData.push(incident);
+      }
     }
+  }
+
+  function searchsubstr(incident,str) {
+      if (incident['submitter']) {
+        if (incident['submitter'].toLowerCase().includes(str)) {
+          return true;
+        }
+      }
+      if (incident['severity']) {
+        if (String(incident['severity']).includes(str)) {
+          return true;
+        }
+      }
+      if (incident['description']) {
+        if (incident['description'].toLowerCase().includes(str)) {
+          return true;
+        }
+      }
+      if (incident['departments']) {
+        if (incident['departments'].toLowerCase().includes(str)) {
+          return true;
+        }
+      }
+      if (incident['location']) {
+        if (incident['location'].toLowerCase().includes(str)) {
+          return true;
+        }
+      }
+      if (incident['time']) {
+        if (incident['time'].toLowerCase().includes(str)) {
+          return true;
+        }
+      }
+      if (incident['edit']) {
+        if (incident['edit'].toLowerCase().includes(str)) {
+          return true;
+        }
+      }
+      if (incident['status']) {
+        if (String(incident['status']).includes(str)) {
+          return true;
+        }
+      }
+      if (incident['id']) {
+        if (String(incident['id']).includes(str)) {
+          return true;
+        }
+      }
+    return false;
   }
 
   $scope.maketable = function() {
@@ -288,20 +318,13 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     var e = document.getElementById("sortby");
     var sort = e.options[e.selectedIndex].value;
     if (sort === "status") {
-        //fromServer.sort(comparestatus);
-        merge_sort(fromServer,comparestatus);
-        $scope.setupData();
+        merge_sort(incidentData,comparestatus);
     } else if (sort === "time") {
-        //fromServer.sort(comparetime);
-        merge_sort(fromServer,comparetime);
-        $scope.setupData();
+        merge_sort(incidentData,comparetime);
     } else {
-        //fromServer.sort(compareseverity);
-        merge_sort(fromServer,compareseverity);
-        $scope.setupData();
+        merge_sort(incidentData,compareseverity);
     }
   };
-  sort = $scope.sort;
 
   // show resolved incidents
   $scope.showResolved = function() {
