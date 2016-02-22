@@ -110,8 +110,8 @@
     	<div ng-controller="incidentCtrl2" ng-app="incidentApp2">
             <div class="row">
                 <div class="pull-left col-xs-12 col-s-7 col-md-7 col-lg-7">
-                    <label for="sortby">Sort By: &nbsp;</label><select id="sortby" name="sortby" onchange="setupData()"><option value=""></option><option value="severity">Severity</option><option value="status">Status</option><option value="time">Time</option></select>
-                    <span id="filter"><label for="filterby">Filter By: &nbsp;</label><input type="text" id="filterby" onkeyup="setupData()" /></span>
+                    <label for="sortby">Sort By: &nbsp;</label><select id="sortby" name="sortby" onchange="sort()"><option value=""></option><option value="severity">Severity</option><option value="status">Status</option><option value="time">Time</option></select>
+                    <span id="filter"><label for="filterby">Filter By: &nbsp;</label><input type="text" id="filterby" onkeyup="sort()" /></span>
                 </div>
                 <div class="pull-right col-xs-12 col-s-5 col-md-5 col-lg-5">
                     <button type="button" class="btn btn-primary" ng-click="showResolved()" id="showresolved">Show Resolved Incidents</button>

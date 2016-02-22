@@ -189,6 +189,7 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
     
     var j =jQuery.noConflict(); 
     j('#myModal').modal('show'); 
+    document.getElementById('severity').value = data.severity;
     setTimeout(init, 1000); // needs slight delay
   };
 

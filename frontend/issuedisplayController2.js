@@ -8,6 +8,7 @@
 var compareseverity = function(a,b) {
   var aval = parseInt(a.severity);
   var bval = parseInt(b.severity);
+  console.log(aval,bval);
   if (aval >= bval) {
     return 0;
   } else {
@@ -19,7 +20,8 @@ var compareseverity = function(a,b) {
 var comparestatus = function(a,b) {
   var aval = parseInt(a.status);
   var bval = parseInt(b.status);
-  if (aval >= bval) {
+  console.log(aval,bval);
+  if (bval >= aval) {
     return 0;
   } else {
     return 1;
@@ -27,8 +29,9 @@ var comparestatus = function(a,b) {
 };
 // used to sort arrays of structs that the server returns by time
 var comparetime = function(a,b) {
-  var aval = new Date(a.time);
-  var bval = new Date(b.time);
+  var aval = new Date(a.created_at);
+  var bval = new Date(b.created_at);
+  console.log(aval,bval);
   if (aval >= bval) {
     return 0;
   } else {
@@ -100,7 +103,7 @@ function escapeHtml(str) {
 
 var setmodal;
 var edit;
-var setupData;
+var sort;
 
 var app = angular.module('incidentApp2', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns']);
 
@@ -120,7 +123,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
         show_resolved_incidents = false;
         document.getElementById('hideresolved').disabled = true;
         document.getElementById('showresolved').disabled = false;
-        $scope.setupData();
+        $scope.sort();
       }
     }
     http.send();
@@ -145,7 +148,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     for (var i = 0; i < fromServer.length; i++) {
       if (fromServer[i]['id'] === id) {
         fromServer[i] = newIncident;
-        $scope.setupData();
+        $scope.sort();
         return;
       }
     }
@@ -155,19 +158,8 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   $scope.setupData = function() {
     var str = document.getElementById('filterby').value;
     $scope.filterincidentdata(str.toLowerCase());
-    // TODO: problem is that it remakes incident data each time!!!!!
-    $scope.sort();
     $scope.maketable();
   };
-  $scope.setupDataFilter = function() {
-    var str = document.getElementById('filterby').value;
-    $scope.filterincidentdata(str.toLowerCase());
-    // TODO: problem is that it remakes incident data each time!!!!!
-    $scope.sort();
-    $scope.maketable();
-  };
-  setupData = $scope.setupData;
-  setupDataFilter = $scope.setupDataFilter;
 
   $scope.filterincidentdata = function(str) {
     incidentData = [];
@@ -211,11 +203,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
           return true;
         }
       }
-      if (incident['severity']) {
-        if (String(incident['severity']).includes(str)) {
-          return true;
-        }
-      }
       if (incident['description']) {
         if (incident['description'].toLowerCase().includes(str)) {
           return true;
@@ -233,16 +220,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       }
       if (incident['time']) {
         if (incident['time'].toLowerCase().includes(str)) {
-          return true;
-        }
-      }
-      if (incident['edit']) {
-        if (incident['edit'].toLowerCase().includes(str)) {
-          return true;
-        }
-      }
-      if (incident['status']) {
-        if (String(incident['status']).includes(str)) {
           return true;
         }
       }
@@ -318,18 +295,20 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     var e = document.getElementById("sortby");
     var sort = e.options[e.selectedIndex].value;
     if (sort === "status") {
-        merge_sort(incidentData,comparestatus);
+        merge_sort(fromServer,comparestatus);
     } else if (sort === "time") {
-        merge_sort(incidentData,comparetime);
+        merge_sort(fromServer,comparetime);
     } else {
-        merge_sort(incidentData,compareseverity);
+        merge_sort(fromServer,compareseverity);
     }
+    $scope.setupData();
   };
+  sort = $scope.sort;
 
   // show resolved incidents
   $scope.showResolved = function() {
       show_resolved_incidents = true;
-      $scope.setupData();
+      $scope.sort();
       document.getElementById('showresolved').disabled = true;
       document.getElementById('hideresolved').disabled = false;
   };
@@ -337,7 +316,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     // show resolved incidents
   $scope.hideResolved = function() {
       show_resolved_incidents = false;
-      $scope.setupData();
+      $scope.sort();
       document.getElementById('hideresolved').disabled = true;
       document.getElementById('showresolved').disabled = false;
   };
