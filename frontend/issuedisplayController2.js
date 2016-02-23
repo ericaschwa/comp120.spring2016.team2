@@ -372,10 +372,12 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
 
   // edit an incident
   $scope.edit = function() {
+    var e = document.getElementById("severity");
+    var severity = e.options[e.selectedIndex].value;
     var obj = {
       'description': escapeHtml(document.getElementById('description').value),
       'location': escapeHtml(document.getElementById('pac-input').value),
-      'severity': parseInt(document.getElementById('severity').value) - 1,
+      'severity': parseInt(severity) - 1,
       'status': parseInt(document.getElementById('status').value) - 1,
       'time': new Date(document.getElementById('time').value),
       'submitter': escapeHtml(document.getElementById('submitter').value),

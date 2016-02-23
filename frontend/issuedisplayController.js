@@ -69,9 +69,20 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
     })
     .done(function(msg) {
           console.log(msg);
-           // TODO: will the server then return all incidents??? will need to make get request if they don't
+          $scope.replaceat(value['id'], msg);
     });
-  }
+  };
+
+  // called when incident edited- replaces that incident with new, edited one
+  $scope.replaceat = function(id, newIncident) {
+    for (var i = 0; i < fromServer.length; i++) {
+      if (fromServer[i]['id'] === id) {
+        fromServer[i] = newIncident;
+        $scope.setupData();
+        return;
+      }
+    }
+  };
 
   // create array, incidentData, that will become the input to our table
   $scope.setupData = function() {
@@ -200,9 +211,9 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
     var obj = {
       'description': escapeHtml(document.getElementById('description').value),
       'location': escapeHtml(document.getElementById('pac-input').value),
-      'severity': escapeHtml(severity),
-      'status': escapeHtml(document.getElementById('status').value),
-      'time': escapeHtml(new Date(document.getElementById('time').value)),
+      'severity': parseInt(severity) - 1,
+      'status': parseInt(document.getElementById('status').value) - 1,
+      'time': new Date(document.getElementById('time').value),
       'submitter': escapeHtml(document.getElementById('submitter').value),
       'departments': escapeHtml(document.getElementById('departments').value),
       'permission': permission,
@@ -210,7 +221,6 @@ app.controller('incidentCtrl', function($scope, $http, $filter, uiGridConstants)
     };
     $scope.make_api_post(obj);
   };
-
   edit = $scope.edit;
  
   // defining the formatting etc. for each column in the table
