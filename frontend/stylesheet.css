@@ -59,3 +59,149 @@ html, body {
 .incidentbar {
   margin-bottom:15px;
 }
+
+.myGrid {
+    width: 100%;
+    height: 400px;
+}
+
+.red-highlight { color: red; background-color: yellow !important;}
+.orange-highlight { color: orange; background-color: yellow !important;}
+.red { color: red; }
+.orange { color: orange; }
+.yellow { color: yellow; }
+.black { color: black;}
+
+.header-filtered {
+  color: blue;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.mainimg {
+  display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.maintxt {
+  display: block;
+    margin-right: auto;
+    margin-left: auto;
+    color:#337ab7;
+    text-align: center;
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+a {text-decoration: none; }
+a:hover {
+   text-decoration:none;
+}
+
+.link {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #e6e6e6;
+}
+
+
+.link:hover{
+  background-color: #f2f2f2;
+}
+
+.options {
+  margin-top: 50px;
+}
+
+.formedit {
+    margin-top:5px;
+}
+
+#map {
+    width: 90%;
+    height:200px;
+}
+
+.datepicker {
+    width: 80%;
+    margin-left:10px;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.black {
+    color: black;
+}
+
+.gray {
+    color: #bfbfbf;
+}
+
+img {
+    max-width: 110%;
+    height: auto;    
+    max-height:300px;  
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.clearfix {
+    clear:both;
+}
+
+.rowcolor {
+    background-color:#CCCCCC;
+}
+
+.padall {
+    padding:10px;
+}
+
+.icon {
+    font-size:23px;
+    color:#197BB5;
+}
+li{ list-style-type: none; } 
+
+.redborder {
+        border-style: solid 3px;
+        border-color: red;
+}
+.orangeborder {
+        border-style: solid 3px;
+        border-color: orange;
+}
+.yellowborder {
+        border-style: solid 3px;
+        border-color: yellow;
+}
+.blackborder {
+        border-style: solid 3px;
+        border-color: gray;
+}
+.Unresolved {
+    font-weight: bold;
+}
+.severity {
+    font-weight: bold;
+}
+
+.panel {
+    box-shadow: 2px 2px 1px #888888;
+}
+.panel:hover {
+    box-shadow: 6px 6px 3px #888888;
+}
+#filter {
+    margin-left:20px;
+    margin-top:20px;
+    margin-bottom:20px;
+}

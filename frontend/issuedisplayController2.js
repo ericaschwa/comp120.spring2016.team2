@@ -8,7 +8,6 @@
 var compareseverity = function(a,b) {
   var aval = parseInt(a.severity);
   var bval = parseInt(b.severity);
-  console.log(aval,bval);
   if (aval >= bval) {
     return 0;
   } else {
@@ -20,7 +19,6 @@ var compareseverity = function(a,b) {
 var comparestatus = function(a,b) {
   var aval = parseInt(a.status);
   var bval = parseInt(b.status);
-  console.log(aval,bval);
   if (bval >= aval) {
     return 0;
   } else {
@@ -31,7 +29,6 @@ var comparestatus = function(a,b) {
 var comparetime = function(a,b) {
   var aval = new Date(a.created_at);
   var bval = new Date(b.created_at);
-  console.log(aval,bval);
   if (aval >= bval) {
     return 0;
   } else {
@@ -134,7 +131,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     var j = jQuery.noConflict();
     j.ajax({
           method: "POST",
-          url: URL + 'incidents/' + value['id'],
+          url: URL + '/incidents/' + value['id'],
           data: value
     })
     .done(function(msg) {
@@ -372,10 +369,12 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
 
   // edit an incident
   $scope.edit = function() {
+    var e = document.getElementById("severity");
+    var severity = e.options[e.selectedIndex].value;
     var obj = {
       'description': escapeHtml(document.getElementById('description').value),
       'location': escapeHtml(document.getElementById('pac-input').value),
-      'severity': parseInt(document.getElementById('severity').value) - 1,
+      'severity': parseInt(severity) - 1,
       'status': parseInt(document.getElementById('status').value) - 1,
       'time': new Date(document.getElementById('time').value),
       'submitter': escapeHtml(document.getElementById('submitter').value),

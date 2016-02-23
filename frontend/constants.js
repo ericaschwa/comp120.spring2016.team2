@@ -1,2 +1,2 @@
-URL = 'http://dirt.frontfish.net/';
+URL = 'http://api.dirt.frontfish.net';
 USER = 1;

@@ -6,30 +6,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- bootstrap includes -->
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="bootstrap/node_modules/bootstrap-slider/dependencies/js/jquery.min.js"></script>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
     <!-- Optional theme -->
     <link rel="stylesheet" href="bootstrap/dist/css/bootstrap-theme.min.css">
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- Slider CSS-->
-    <link rel = "stylesheet" href="bootstrap/node_modules/bootstrap-slider/dependencies/css/bootstrap.min.css">
-    <link rel = "stylesheet" href="bootstrap/node_modules/bootstrap-slider/dist/css/bootstrap-slider.css">
-    <!-- Slide javascript-->
-    <script type='text/javascript' src="bootstrap/node_modules/bootstrap-slider/dependencies/js/modernizr.js"></script>
-    <script type='text/javascript' src="bootstrap/node_modules/bootstrap-slider/dependencies/js/jquery.min.js"></script>
-    <script type='text/javascript' src="bootstrap/node_modules/bootstrap-slider/src/js/bootstrap-slider.js"></script>
-
-    <!-- Google Maps -->
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true&libraries=places"></script>
-
+  
     <link rel="stylesheet" href="stylesheet.css"></link>
-    <script src="map.js"> </script>
-    <script src="constants.js"></script>
-    <script src="form.js"> </script>
+    <link rel="stylesheet" type="text/css" href="datetimepicker-master/jquery.datetimepicker.css"/ >
 </head>
 
 <body>
@@ -74,14 +57,25 @@
     <button id="submitbutton" type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
+  <!-- bootstrap includes -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="bootstrap/node_modules/bootstrap-slider/dependencies/js/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="bootstrap/dist/js/bootstrap.min.js"></script>
 
+    <!-- Google Maps -->
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true&libraries=places"></script>
+
+    <script src="map.js"> </script>
+    <script src="constants.js"></script>
+    <script src="form.js"> </script>
+
+    <script src="datetimepicker-master/jquery.js"></script>
+    <script src="datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
+    <script type="text/javascript">
+      jQuery('#datetimepicker').datetimepicker();
+    </script>
 </body>
-
-<link rel="stylesheet" type="text/css" href="datetimepicker-master/jquery.datetimepicker.css"/ >
-<script src="datetimepicker-master/jquery.js"></script>
-<script src="datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
-<script type="text/javascript">
-  jQuery('#datetimepicker').datetimepicker();
-</script>
 
 </html>
