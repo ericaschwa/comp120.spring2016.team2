@@ -29,6 +29,7 @@ $( document ).ready(function() {
 	        }
 	    });
 	});
+	document.getElementById('datetimepicker').defaultValue = new Date();
 	document.getElementById('submitbutton').disabled = true;
 });
 
