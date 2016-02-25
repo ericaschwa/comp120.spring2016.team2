@@ -1,8 +1,10 @@
 /*
- * issuedisplayController.js
- * used to control the table on the issues display page
+ * issuedisplayController2.js
+ * used to control the issues display page
  * comp120-s16-team2
  */
+
+/**************************   issuedisplayController.js   ***********************************/
 
 // used to sort arrays of structs that the server returns by severity
 var compareseverity = function(a,b) {

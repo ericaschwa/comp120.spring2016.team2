@@ -1,8 +1,11 @@
 # DIRT: Durham Incident Report Tracker
 A simple solution to Tina's problems
 
-Access the API [here](https://github.com/tuftsdev/comp120-spring2016-team2-api)
-##Goals For Product:
+Hosted at [dirt.frontfish.net](http://dirt.frontfish.net).
+API hosted at [api.dirt.frontfish.net](http://api.dirt.frontfish.net).
+
+Access the API repository [here](https://github.com/tuftsdev/comp120-spring2016-team2-api).
+## Goals For Product:
 
 According to Tina, the email feedback form on her institution's website 
 is "hardly used".  In creating DIRT,  we aimed to remove as many barriers
@@ -31,7 +34,6 @@ two primary goals in developing our product:
 - Viewing is a single table that can be sorted by time, departments, or other
   values
 
-
 ## Data Schema
 ### Primary tables
 - `Incident` store incident information
@@ -46,10 +48,11 @@ two primary goals in developing our product:
 - `IncidentDepartment` relation between Incident and Department
 
 ## Technology
-###Backend
+### Backend
 - Ruby 2.3.0
   - [Sinatra](http://www.sinatrarb.com/)
-  - [DataMapper](http://datamapper.org/)
+  - [DataMapper](http://datamapper.org/), an ORM
+  - [Unicorn](http://rubygems.org/gems/unicorn/versions/5.0.1) for proxying to NGINX
 - MySQL
 
 #### Why Sinatra over Ruby on Rails?
@@ -70,6 +73,9 @@ two primary goals in developing our product:
 - Google Maps API
 - JQuery
 - Bootstrap
+
+### Hosting
+- [Digital Ocean](http://digitalocean.com) LEMP stack
 
 ##MVP Details
 - Time spent learning ruby: 1-2 hours
