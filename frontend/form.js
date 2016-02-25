@@ -87,27 +87,31 @@ function init() {
   if (navigator.geolocation) {
     browserSupportFlag = true;
     navigator.geolocation.getCurrentPosition(function(position) {
+      console.log(position)
       initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
       map.setCenter(initialLocation);
-    }, function() {
-      //handleNoGeolocation(browserSupportFlag);
     });
   }
 
-  //Geolocation not supported by browser
-  else {
-    browserSupportFlag = false;
-    handleNoGeolocation(browserSupportFlag);
-  }
+  var marker = new google.maps.Marker({
+    position: initialLocation,
+    map: map,
+  });
 
-  function handleNoGeolocation(errorFlag) {
-    if (errorFlag == true) {
-      alert("Geolocation service failed.");
-    } else {
-      alert("Your browser doesn't support geolocation.")
-    }
-    map.setCenter(initialLocation);
-  }
+  // //Geolocation not supported by browser
+  // else {
+  //   browserSupportFlag = false;
+  //   handleNoGeolocation(browserSupportFlag);
+  // }
+
+  // function handleNoGeolocation(errorFlag) {
+  //   if (errorFlag == true) {
+  //     alert("Geolocation service failed.");
+  //   } else {
+  //     alert("Your browser doesn't support geolocation.")
+  //   }
+  //   map.setCenter(initialLocation);
+  // }
 }
 
 
