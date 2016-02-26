@@ -89,7 +89,6 @@ Tests can be found in the features folder of the api repository
 
 ### Why Cucumber?
 
-(You will find our unit tests in our API repository [here](https://github.com/tuftsdev/comp120-spring2016-team2-api)).
 
 ### User Testing
 We asked several people for their input on our current user interface, and most of the feedback given is frontend-specific. Many of them like how the page looks; however, they do see the mostly empty space on the right side of the page as a problem. Suggestions on what to fill the unused space with were made by these users, such as putting a field that helps to see the trend of what is going on in the table. We have taken this feedback and will consider this as we further develop our frontend.
