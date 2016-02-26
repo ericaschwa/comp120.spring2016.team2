@@ -4,115 +4,6 @@
  * comp120-s16-team2
  */
 
- /**************************   constants.js   ***********************************/
-
-URL = 'http://api.dirt.frontfish.net';
-USER = 1;
-
-/****************************   maps.js   **************************************/
-
-
- //Google Maps JavaScript
-function init() {
-  var initialLocation = new google.maps.LatLng(35.9886, -78.9072);
-  var options = {
-    zoom: 13,
-    center: initialLocation,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  }; 
-  var map = new google.maps.Map(document.getElementById('map'), options);
-
-  
-  //searchbox: code adapted from https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
-  // Create the search box and link it to the UI element.
-  var input = document.getElementById('pac-input');
-  var searchBox = new google.maps.places.SearchBox(input);
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-  // Bias the SearchBox results towards current map's viewport.
-  map.addListener('bounds_changed', function() {
-    searchBox.setBounds(map.getBounds());
-  });
-
-  var markers = [];
-  // [START region_getplaces]
-  // Listen for the event fired when the user selects a prediction and retrieve
-  // more details for that place.
-  searchBox.addListener('places_changed', function() {
-    var places = searchBox.getPlaces();
-
-    if (places.length == 0) {
-      return;
-    }
-
-    // Clear out the old markers.
-    markers.forEach(function(marker) {
-      marker.setMap(null);
-    });
-    markers = [];
-
-    // For each place, get the icon, name and location.
-    var bounds = new google.maps.LatLngBounds();
-    places.forEach(function(place) {
-      var icon = {
-        url: place.icon,
-        size: new google.maps.Size(71, 71),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(25, 25)
-      };
-
-      // Create a marker for each place.
-      markers.push(new google.maps.Marker({
-        map: map,
-        icon: icon,
-        title: place.name,
-        position: place.geometry.location
-      }));
-
-      if (place.geometry.viewport) {
-        // Only geocodes have viewport.
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
-    });
-    map.fitBounds(bounds);
-  });
-  
-
-  //Geolocation attempt
-  var browserSupportFlag = new Boolean;
-  if (navigator.geolocation) {
-    browserSupportFlag = true;
-    navigator.geolocation.getCurrentPosition(function(position) {
-      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-      map.setCenter(initialLocation);
-    }, function() {
-      //handleNoGeolocation(browserSupportFlag);
-    });
-  }
-
-  //Geolocation not supported by browser
-  else {
-    browserSupportFlag = false;
-    handleNoGeolocation(browserSupportFlag);
-  }
-
-  function handleNoGeolocation(errorFlag) {
-    if (errorFlag == true) {
-      alert("Geolocation service failed.");
-    } else {
-      alert("Your browser doesn't support geolocation.")
-    }
-    map.setCenter(initialLocation);
-  }
-}
-
-
-
-/****************************   issuedisplayController2.js   **************************************/
-
 // used to sort arrays of structs that the server returns by severity
 var compareseverity = function(a,b) {
   var aval = parseInt(a.severity);
@@ -159,6 +50,7 @@ var convertsortable = function(datetime) {
 
 
 // following 5 functions from http://en.literateprograms.org/Merge_sort_%28JavaScript%29
+// chose a merge sort because it is a stable sort; unlike the JS default
 function msort(array, begin, end, comp)
 {
   var size=end-begin;
@@ -201,6 +93,7 @@ function insert(array, begin, end, v, comp)
 
 
 // from http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+// partially combats XSS
 function escapeHtml(str) {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
@@ -267,6 +160,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     $scope.maketable();
   };
 
+  // used to filter the table by a given parameter
   $scope.filterincidentdata = function(str) {
     incidentData = [];
     for (var i = 0; i < fromServer.length; i++) {
@@ -303,6 +197,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     }
   }
 
+  // used to search the table for a given substring
   function searchsubstr(incident,str) {
       if (incident['submitter']) {
         if (incident['submitter'].toLowerCase().includes(str)) {
@@ -337,6 +232,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     return false;
   }
 
+  // given data, creates HTML code for table
   $scope.maketable = function() {
     document.getElementById('chart').innerHTML = '<div class="row">'
     document.getElementById('chart').innerHTML += '<ul>';
@@ -365,6 +261,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     document.getElementById('chart').innerHTML += '</ul></div>';
   };
 
+  // gets status based on index in incidentData
   $scope.getstatus = function(i) {
       if (incidentData[i]['status'] === 1) {
         return 'Unresolved';
@@ -375,6 +272,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       }
   };
 
+  // gets location based on index in incidentData
   $scope.getlocation = function(i) {
       var location = incidentData[i]['location'];
       if (location === null || location === "") {
@@ -384,6 +282,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       }
   }
 
+  // gets border color based on severity at index in incidentData
   $scope.getbordercolor = function(i) {
       if (incidentData[i]['severity'] === 1) {
         return 'black';
@@ -419,7 +318,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       document.getElementById('hideresolved').disabled = false;
   };
 
-    // show resolved incidents
+  // hide resolved incidents
   $scope.hideResolved = function() {
       show_resolved_incidents = false;
       $scope.sort();
@@ -493,8 +392,9 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     };
     $scope.make_api_post(obj);
   };
-
   edit = $scope.edit;
+
+  // makes get request for page's data
   $scope.make_api_get();
 });
 
