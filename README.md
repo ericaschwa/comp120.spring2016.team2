@@ -93,7 +93,7 @@ two primary goals in developing our product:
 We asked several people for their input on our current user interface, and most of the feedback given is frontend-specific. Many of them like how the page looks; however, they do see the mostly empty space on the right side of the page as a problem. Suggestions on what to fill the unused space with were made by these users, such as putting a field that helps to see the trend of what is going on in the table. We have taken this feedback and will consider this as we further develop our frontend.
 
 ## Considering n Users
-Our team has been thinking about how we will ensure that the product can handle 15,000 unique visits per day, once it is in production. As our app stands at this point in the development process, our app could not handle that many users. Future improvements that we plan to look into include 
+Our team has been thinking about how we will ensure that the app can handle 15,000 unique visits per day, once it is in production. As our product stands at this point in the development process, it could not handle that many users. Future improvements that we plan to look into include
 
 ## Contributors
 - [Max Ettelson](http://github.com/mdettelson)
