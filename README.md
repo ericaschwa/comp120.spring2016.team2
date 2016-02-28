@@ -85,7 +85,7 @@ two primary goals in developing our product:
 - http://tuftsdev.github.io/comp120-spring2016-team2/index.html
 
 ## Unit Testing
-Tests can be found in the features folder of the api repository.
+ -Tests can be found in the /features folder of the api repository.  We used Cucumber to create a testing suite for our API.  We are currently testing the GET and POST features of our /incidents, and our tests for editing incidents are a work-in-progress.
 
 ### Why Cucumber?
 In order to test for as many scenarios as possible, it is important that our tests are easy to understand and are clearly defined. Cucumber allows us to write very comprehensive tests without getting lost in test code because of the .feature file. Though it is more complicated than other test frameworks, we are willing to spend the extra time needed to create a more thorough and easy-to-understand test suite.
