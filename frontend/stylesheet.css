@@ -205,3 +205,26 @@ li{ list-style-type: none; }
     margin-top:20px;
     margin-bottom:20px;
 }
+#nav_button {
+  float: left ;
+}
+.container{
+height: 100%;
+margin-top: 20px;
+}
+.navbar{
+width: 100%;
+}
+#form{
+  margin: 10px;
+}
+#submitbutton{
+  margin-top: 10px;
+}
+
+
+
+
+
+
+
