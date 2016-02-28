@@ -5,4 +5,5 @@ CACHE MANIFEST
 /frontend/stylesheet.css
 /https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js
 /frontend/bootstrap/dist/js/bootstrap.min.js
-/test.png
+/frontend/report.png
+/frontend/view.png
