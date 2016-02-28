@@ -241,69 +241,25 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   $scope.maketimeline = function() {
     $scope.events = [];
     for (var i = 0; i < incidentData.length; i++) {
-      var status = $scope.getstatus(i);
-      var location = $scope.getlocation(i);
-      var glyph = $scope.getglyph(i);
-      var color = $scope.getbadgeClass(i);
-      var text = incidentData[i]['description'];
-      var loc = $scope.getlocation(i);
-      var time = incidentData[i]['time'];
-      var scl1 = $scope.getscale1();
-      var scl2 = $scope.getscale2(i);
-      var scl3 = $scope.getscale3(i);
-      var scl4 = $scope.getscale4(i);
-      var id_num = incidentData[i]['id'];
       //var photo = "incident.JPG";
       
       $scope.events.push({
-        badgeClass: color,
-        badgeIconClass: glyph,
-        title: status,
-        location: loc,
-        content: text,
+        badgeClass: $scope.getbadgeClass(i),
+        badgeIconClass: $scope.getglyph(i),
+        title: $scope.getstatus(i),
+        location: $scope.getlocation(i),
+        content: incidentData[i]['description'],
         time: incidentData[i]['time'],
         submitter: incidentData[i]['submitter'],
         id: incidentData[i]['id'],
-        scale1: scl1,
-        scale2: scl2,
-        scale3: scl3,
-        scale4: scl4,
-        id: id_num
+        scale1: $scope.getscale1(),
+        scale2: $scope.getscale2(i),
+        scale3: $scope.getscale3(i),
+        scale4: $scope.getscale4(i),
+        id: incidentData[i]['id']
       });
     }
   };
-
-
-
-
-  // given data, creates HTML code for table
-  // $scope.maketable = function() {
-  //   document.getElementById('chart').innerHTML = '<div class="row">'
-  //   document.getElementById('chart').innerHTML += '<ul>';
-  //   for (var i = 0; i < incidentData.length; i++) {
-  //       var status = $scope.getstatus(i);
-  //       var location = $scope.getlocation(i);
-  //       var bordercolor = $scope.getbordercolor(i);
-  //       var photo="incident.JPG"
-  //       var text = '<li><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
-  //                + '<div class="panel panel-default ' + bordercolor +'border" onclick="setmodal(' + incidentData[i]['id'] + ')">' //@@ reason we can't get the modal
-  //                + '<div class="row padall">'
-  //                + '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
-  //                + '<div class="clearfix">';
-  //       var j;
-  //       for (j = 0; j < incidentData[i]['severity']; j++) {
-  //          text += '<i class="black fa fa-exclamation-circle">&nbsp;</i>';
-  //       }
-  //       for (; j < 4; j++) {
-  //          text += '<i class="gray fa fa-exclamation-circle">&nbsp;</i>';
-  //       }
-  //       text += '<br><span class="' + status + '">' + status + '</span> | ' + incidentData[i]['time'] + ' | ' + incidentData[i]['submitter']
-  //             + '<div>Location: ' + location + '<br> Description: ' + incidentData[i]['description'] + '</div>'
-  //             + '</div></div></div></div></div></li>';
-  //       document.getElementById('chart').innerHTML += text;
-  //   }
-  //   document.getElementById('chart').innerHTML += '</ul></div>';
-  // };
 
    $scope.getscale1 = function() {
       return 'glyphicon-exclamation-sign'; 
