@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <title>Report an Incident</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- bootstrap includes -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="frontend/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="frontend/bootstrap/dist/css/bootstrap-theme.min.css">
+  
+    <link rel="stylesheet" href="frontend/stylesheet.css"></link>
+    <link rel="stylesheet" type="text/css" href="frontend/datetimepicker-master/jquery.datetimepicker.css"/ >
+</head>
+
+<body>
+  
+<div class="container">
+
+  <ul class="nav nav-pills nav-justified incidentbar">
+    <li role="presentation" ><a href="index.html">Home</a></li>
+    <li role="presentation" class="active" ><a href="#">Report an Incident</a></li>
+    <li role="presentation" ><a href="issuedisplay2.html">View Incident Reports</a></li>
+  </ul>
+
+  <form id="form">
+    <div class="row">
+
+      <div class="col-md-6">
+        <label for="Severity">Severity (1 = Minor Incident, 4 = Emergency)</label>
+        <fieldset class="form-group">
+          <select id="severity" name="severity"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="Textarea">Date and Time:</label>
+          <input name="datetime" id="datetimepicker" type="text" >
+        </fieldset>
+        <fieldset class="form-group">
+          <label for="Textarea">Incident Description</label>
+          <textarea name="description" class="form-control" id="description" rows="8" onkeyup="descriptionedit()"></textarea>
+        </fieldset>
+        <!--<fieldset class="form-group">
+          <label for="InputFile">Add file</label>
+          <input name="photo" type="file" class="form-control-file" id="InputFile">
+        </fieldset>-->
+      </div>
+      
+      <div class="col-md-6">
+        <input id="pac-input" class="controls" type="text" placeholder="Search" name="location">
+        <div id="map"></div>
+      </div>
+
+    </div>
+      
+    <button id="submitbutton" type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+  <!-- bootstrap includes -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="frontend/bootstrap/node_modules/bootstrap-slider/dependencies/js/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="frontend/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Google Maps -->
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true&libraries=places"></script>
+
+    <!-- includes for this page -->
+    <script src="frontend/map.js"> </script>
+    <script src="frontend/constants.js"></script> 
+    <script src="frontend/form.js"> </script>
+
+</body>
+    <script src="frontend/datetimepicker-master/jquery.js"></script>
+    <script src="frontend/datetimepicker-master/build/jquery.datetimepicker.full.min.js"></script>
+    <script type="text/javascript">
+      jQuery('#datetimepicker').datetimepicker();
+    </script>
+
+</body>
+</html>

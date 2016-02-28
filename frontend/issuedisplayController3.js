@@ -1,6 +1,6 @@
 /*
- * issuedisplayController.js
- * used to control the table on the issues display page
+ * issuedisplayController2.js
+ * used to control the issues display page
  * comp120-s16-team2
  */
 
@@ -8,7 +8,6 @@
 var compareseverity = function(a,b) {
   var aval = parseInt(a.severity);
   var bval = parseInt(b.severity);
-  console.log(aval,bval);
   if (aval >= bval) {
     return 0;
   } else {
@@ -20,7 +19,6 @@ var compareseverity = function(a,b) {
 var comparestatus = function(a,b) {
   var aval = parseInt(a.status);
   var bval = parseInt(b.status);
-  console.log(aval,bval);
   if (bval >= aval) {
     return 0;
   } else {
@@ -31,7 +29,6 @@ var comparestatus = function(a,b) {
 var comparetime = function(a,b) {
   var aval = new Date(a.created_at);
   var bval = new Date(b.created_at);
-  console.log(aval,bval);
   if (aval >= bval) {
     return 0;
   } else {
@@ -53,6 +50,7 @@ var convertsortable = function(datetime) {
 
 
 // following 5 functions from http://en.literateprograms.org/Merge_sort_%28JavaScript%29
+// chose a merge sort because it is a stable sort; unlike the JS default
 function msort(array, begin, end, comp)
 {
   var size=end-begin;
@@ -95,6 +93,7 @@ function insert(array, begin, end, v, comp)
 
 
 // from http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+// partially combats XSS
 function escapeHtml(str) {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
@@ -105,15 +104,16 @@ var setmodal;
 var edit;
 var sort;
 
-var app = angular.module('incidentApp2', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns']);
+var app = angular.module('incidentApp2', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns', 'angular-timeline']);
 
 app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants) {
+
 
   // make get request to access all incidents
   $scope.make_api_get = function() {
     var success = false;
     var http = new XMLHttpRequest();
-    var url = URL + 'incidents';
+    var url = URL + '/incidents';
     http.open("GET", url, true);
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     http.onreadystatechange = function(request, response) {
@@ -134,7 +134,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     var j = jQuery.noConflict();
     j.ajax({
           method: "POST",
-          url: URL + 'incidents/' + value['id'],
+          url: URL + '/incidents/' + value['id'],
           data: value
     })
     .done(function(msg) {
@@ -158,9 +158,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   $scope.setupData = function() {
     var str = document.getElementById('filterby').value;
     $scope.filterincidentdata(str.toLowerCase());
-    $scope.maketable();
+    $scope.maketimeline();
+    $scope.$apply();
   };
 
+  // used to filter the table by a given parameter
   $scope.filterincidentdata = function(str) {
     incidentData = [];
     for (var i = 0; i < fromServer.length; i++) {
@@ -197,7 +199,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     }
   }
 
+  // used to search the table for a given substring
   function searchsubstr(incident,str) {
+      if (str == "" || str == null) {
+        return true;
+      }
       if (incident['submitter']) {
         if (incident['submitter'].toLowerCase().includes(str)) {
           return true;
@@ -231,34 +237,52 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     return false;
   }
 
-  $scope.maketable = function() {
-    document.getElementById('chart').innerHTML = '<div class="row">'
-    document.getElementById('chart').innerHTML += '<ul>';
+
+  $scope.maketimeline = function() {
+    $scope.events = [];
     for (var i = 0; i < incidentData.length; i++) {
-        var status = $scope.getstatus(i);
-        var location = $scope.getlocation(i);
-        var bordercolor = $scope.getbordercolor(i);
-        var photo="incident.JPG"
-        var text = '<li><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
-                 + '<div class="panel panel-default ' + bordercolor +'border" onclick="setmodal(' + incidentData[i]['id'] + ')">'
-                 + '<div class="row padall">'
-                 + '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
-                 + '<div class="clearfix">';
-        var j;
-        for (j = 0; j < incidentData[i]['severity']; j++) {
-           text += '<i class="black fa fa-exclamation-circle">&nbsp;</i>';
-        }
-        for (; j < 4; j++) {
-           text += '<i class="gray fa fa-exclamation-circle">&nbsp;</i>';
-        }
-        text += '<br><span class="' + status + '">' + status + '</span> | ' + incidentData[i]['time'] + ' | ' + incidentData[i]['submitter']
-              + '<div>Location: ' + location + '<br> Description: ' + incidentData[i]['description'] + '</div>'
-              + '</div></div></div></div></div></li>';
-        document.getElementById('chart').innerHTML += text;
+      //var photo = "incident.JPG";
+      
+      $scope.events.push({
+        badgeClass: $scope.getbadgeClass(i),
+        badgeIconClass: $scope.getglyph(i),
+        title: $scope.getstatus(i),
+        location: $scope.getlocation(i),
+        content: incidentData[i]['description'],
+        time: incidentData[i]['time'],
+        submitter: incidentData[i]['submitter'],
+        id: incidentData[i]['id'],
+        scale1: $scope.getscale1(),
+        scale2: $scope.getscale2(i),
+        scale3: $scope.getscale3(i),
+        scale4: $scope.getscale4(i),
+        id: incidentData[i]['id']
+      });
     }
-    document.getElementById('chart').innerHTML += '</ul></div>';
   };
 
+   $scope.getscale1 = function() {
+      return 'glyphicon-exclamation-sign'; 
+   };
+   $scope.getscale2 = function(i) {
+      if (incidentData[i]['severity'] >= 2) {
+        return 'glyphicon-exclamation-sign';
+      }
+      else return 'glyphicon-exclamation-sign grey';
+   };
+   $scope.getscale3 = function(i) {
+      if (incidentData[i]['severity'] >= 3) {
+        return 'glyphicon-exclamation-sign';
+      }
+      else return 'glyphicon-exclamation-sign grey';
+   };
+   $scope.getscale4 = function(i) {
+      if (incidentData[i]['severity'] === 4) {
+        return 'glyphicon-exclamation-sign';
+      }
+      else return 'glyphicon-exclamation-sign grey';
+   };
+  // gets status based on index in incidentData
   $scope.getstatus = function(i) {
       if (incidentData[i]['status'] === 1) {
         return 'Unresolved';
@@ -269,6 +293,17 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       }
   };
 
+  $scope.getglyph = function(i) {
+      if (incidentData[i]['status'] === 1) {
+        return 'glyphicon-exclamation-sign';
+      } else if (incidentData[i]['status'] === 2) {
+        return 'glyphicon-time';
+      } else {
+        return 'glyphicon-check';
+      }
+  };
+
+  // gets location based on index in incidentData
   $scope.getlocation = function(i) {
       var location = incidentData[i]['location'];
       if (location === null || location === "") {
@@ -278,17 +313,35 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       }
   }
 
-  $scope.getbordercolor = function(i) {
-      if (incidentData[i]['severity'] === 1) {
-        return 'black';
-      } else if (incidentData[i]['severity'] === 2) {
-        return 'yellow';
-      } else if (incidentData[i]['severity'] === 3) {
-        return 'orange';
-      } else {
-        return 'red';
+  $scope.getbadgeClass = function(i) {
+      if ((incidentData[i]['severity'] === 1) && (incidentData[i]['status'] === 1)) {
+        return 'severity1';
+      } else if ((incidentData[i]['severity'] === 2) && (incidentData[i]['status'] === 1)) {
+        return 'severity2';
+      } else if ((incidentData[i]['severity'] === 3) && (incidentData[i]['status'] === 1)) {
+        return 'severity3';
+      } else if ((incidentData[i]['severity'] === 4) && (incidentData[i]['status'] === 1)) {
+        return 'severity4';
+      } else if ((incidentData[i]['severity'] === 1) && (incidentData[i]['status'] === 2)) {
+        return 'inprogress-severity1';
+      } else if ((incidentData[i]['severity'] === 2) && (incidentData[i]['status'] === 2)) {
+        return 'inprogress-severity2';
+      } else if ((incidentData[i]['severity'] === 3) && (incidentData[i]['status'] === 2)) {
+        return 'inprogress-severity3';
+      } else if ((incidentData[i]['severity'] === 4) && (incidentData[i]['status'] === 2)) {
+        return 'inprogress-severity4';
+      } else if ((incidentData[i]['severity'] === 1) && (incidentData[i]['status'] === 3)) {
+        return 'success-severity1';
+      } else if ((incidentData[i]['severity'] === 2) && (incidentData[i]['status'] === 3)) {
+        return 'success-severity2';
+      } else if ((incidentData[i]['severity'] === 3) && (incidentData[i]['status'] === 3)) {
+        return 'success-severity3';
+      } else if ((incidentData[i]['severity'] === 4) && (incidentData[i]['status'] === 3)) {
+        return 'success-severity4';
       }
   }
+
+
 
   // sorts by various values
   $scope.sort = function() {
@@ -313,7 +366,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       document.getElementById('hideresolved').disabled = false;
   };
 
-    // show resolved incidents
+  // hide resolved incidents
   $scope.hideResolved = function() {
       show_resolved_incidents = false;
       $scope.sort();
@@ -322,7 +375,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   };
 
   // set data for modal
-  setmodal = function(id) {
+  $scope.setmodal = function(id) {
     var body = document.getElementById('modal-body');
     var data = "";
     for (var i = 0; i < incidentData.length; i++) {
@@ -387,12 +440,8 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     };
     $scope.make_api_post(obj);
   };
-
   edit = $scope.edit;
+
+  // makes get request for page's data
   $scope.make_api_get();
 });
-
-
-
-
-

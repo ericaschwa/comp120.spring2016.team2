@@ -1,3 +1,9 @@
+/*
+ * form.js
+ * used to control the form page
+ * comp120-s16-team2
+ */
+
 $( document ).ready(function() {
 	// from http://stackoverflow.com/questions/169506/obtain-form-input-fields-using-jquery
 	$( "#form" ).on( "submit", function( event ) {
@@ -22,13 +28,14 @@ $( document ).ready(function() {
 				})
 				.done(function(msg) {
 				  console.log(msg);
-				  window.location = 'issuedisplay.html'
+				  window.location = 'issuedisplay2.html'
 				});
 	        } else {
 	        	values[this.name] = escapeHtml($(this).val());
 	        }
 	    });
 	});
+	$( "#datetimepicker" ).datetimepicker({value: new Date()});
 	document.getElementById('submitbutton').disabled = true;
 });
 

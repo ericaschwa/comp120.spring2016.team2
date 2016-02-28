@@ -1,13 +1,13 @@
 //Google Maps JavaScript
 function init() {
   var initialLocation = new google.maps.LatLng(35.9886, -78.9072);
+  
   var options = {
     zoom: 13,
     center: initialLocation,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }; 
   var map = new google.maps.Map(document.getElementById('map'), options);
-
   
   //searchbox: code adapted from https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
   // Create the search box and link it to the UI element.

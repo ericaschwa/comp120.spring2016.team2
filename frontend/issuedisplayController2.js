@@ -1,6 +1,6 @@
 /*
- * issuedisplayController.js
- * used to control the table on the issues display page
+ * issuedisplayController2.js
+ * used to control the issues display page
  * comp120-s16-team2
  */
 
@@ -50,6 +50,7 @@ var convertsortable = function(datetime) {
 
 
 // following 5 functions from http://en.literateprograms.org/Merge_sort_%28JavaScript%29
+// chose a merge sort because it is a stable sort; unlike the JS default
 function msort(array, begin, end, comp)
 {
   var size=end-begin;
@@ -92,6 +93,7 @@ function insert(array, begin, end, v, comp)
 
 
 // from http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
+// partially combats XSS
 function escapeHtml(str) {
     var div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
@@ -158,6 +160,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     $scope.maketable();
   };
 
+  // used to filter the table by a given parameter
   $scope.filterincidentdata = function(str) {
     incidentData = [];
     for (var i = 0; i < fromServer.length; i++) {
@@ -194,6 +197,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     }
   }
 
+  // used to search the table for a given substring
   function searchsubstr(incident,str) {
       if (incident['submitter']) {
         if (incident['submitter'].toLowerCase().includes(str)) {
@@ -228,6 +232,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     return false;
   }
 
+  // given data, creates HTML code for table
   $scope.maketable = function() {
     document.getElementById('chart').innerHTML = '<div class="row">'
     document.getElementById('chart').innerHTML += '<ul>';
@@ -256,6 +261,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     document.getElementById('chart').innerHTML += '</ul></div>';
   };
 
+  // gets status based on index in incidentData
   $scope.getstatus = function(i) {
       if (incidentData[i]['status'] === 1) {
         return 'Unresolved';
@@ -266,6 +272,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       }
   };
 
+  // gets location based on index in incidentData
   $scope.getlocation = function(i) {
       var location = incidentData[i]['location'];
       if (location === null || location === "") {
@@ -275,6 +282,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       }
   }
 
+  // gets border color based on severity at index in incidentData
   $scope.getbordercolor = function(i) {
       if (incidentData[i]['severity'] === 1) {
         return 'black';
@@ -310,7 +318,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       document.getElementById('hideresolved').disabled = false;
   };
 
-    // show resolved incidents
+  // hide resolved incidents
   $scope.hideResolved = function() {
       show_resolved_incidents = false;
       $scope.sort();
@@ -384,8 +392,9 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     };
     $scope.make_api_post(obj);
   };
-
   edit = $scope.edit;
+
+  // makes get request for page's data
   $scope.make_api_get();
 });
 
