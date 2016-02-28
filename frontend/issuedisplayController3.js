@@ -159,6 +159,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     var str = document.getElementById('filterby').value;
     $scope.filterincidentdata(str.toLowerCase());
     $scope.maketimeline();
+    $scope.$apply();
   };
 
   // used to filter the table by a given parameter
@@ -200,6 +201,9 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
 
   // used to search the table for a given substring
   function searchsubstr(incident,str) {
+      if (str == "" || str == null) {
+        return true;
+      }
       if (incident['submitter']) {
         if (incident['submitter'].toLowerCase().includes(str)) {
           return true;
@@ -282,7 +286,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   //       var bordercolor = $scope.getbordercolor(i);
   //       var photo="incident.JPG"
   //       var text = '<li><div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
-  //                + '<div class="panel panel-default ' + bordercolor +'border" onclick="setmodal(' + incidentData[i]['id'] + ')">'
+  //                + '<div class="panel panel-default ' + bordercolor +'border" onclick="setmodal(' + incidentData[i]['id'] + ')">' //@@ reason we can't get the modal
   //                + '<div class="row padall">'
   //                + '<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">'
   //                + '<div class="clearfix">';
@@ -353,7 +357,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       }
   }
 
-
   $scope.getbadgeClass = function(i) {
       if ((incidentData[i]['severity'] === 1) && (incidentData[i]['status'] === 1)) {
         return 'severity1';
@@ -416,10 +419,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   };
 
   // set data for modal
-
-
-
-  setmodal = function() {
+  $scope.setmodal = function(id) {
     var body = document.getElementById('modal-body');
     var data = "";
     for (var i = 0; i < incidentData.length; i++) {
