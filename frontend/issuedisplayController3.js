@@ -131,7 +131,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
         show_resolved_incidents = false;
         document.getElementById('hideresolved').disabled = true;
         document.getElementById('showresolved').disabled = false;
-        $scope.sort();
+        $scope.initialsort();
       }
     }
     http.send();
@@ -162,12 +162,19 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     }
   };
 
+  //initial setup of data
+  $scope.initialsetup = function() {
+    var str = document.getElementById('filterby').value;
+    $scope.filterincidentdata(str.toLowerCase());
+    $scope.maketimeline();
+    $scope.$apply();
+  };
+
   // create array, incidentData, that will become the input to our table
   $scope.setupData = function() {
     var str = document.getElementById('filterby').value;
     $scope.filterincidentdata(str.toLowerCase());
     $scope.maketimeline();
-    $scope.$apply();
   };
 
   // used to filter the table by a given parameter
@@ -350,7 +357,19 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       }
   }
 
-
+  // first sort page load
+  $scope.initialsort = function() {
+    var e = document.getElementById("sortby");
+    var sort = e.options[e.selectedIndex].value;
+    if (sort === "status") {
+        merge_sort(fromServer,comparestatus);
+    } else if (sort === "time") {
+        merge_sort(fromServer,comparetime);
+    } else {
+        merge_sort(fromServer,compareseverity);
+    }
+    $scope.initialsetup();
+  };
 
   // sorts by various values
   $scope.sort = function() {
