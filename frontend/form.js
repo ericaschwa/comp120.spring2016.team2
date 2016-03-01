@@ -28,7 +28,7 @@ $( document ).ready(function() {
 				})
 				.done(function(msg) {
 				  console.log(msg);
-				  window.location = 'issuedisplay2.html'
+				  window.location = 'issuedisplay3.html'
 				});
 	        } else {
 	        	values[this.name] = escapeHtml($(this).val());
