@@ -112,6 +112,10 @@ var app = angular.module('incidentApp2', ['ui.grid', 'ui.grid.selection', 'ui.gr
 
 app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants) {
 
+  $scope.currentPage = 0;
+  $scope.pageSize = 10;
+  incidentData = [];
+
 
   // make get request to access all incidents
   $scope.make_api_get = function() {
@@ -169,6 +173,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   // used to filter the table by a given parameter
   $scope.filterincidentdata = function(str) {
     incidentData = [];
+    $scope.currentPage = 0;
     for (var i = 0; i < fromServer.length; i++) {
       // don't show incidents the user doesn't have permission to see
       var edit;
@@ -446,10 +451,23 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   };
   edit = $scope.edit;
 
+  $scope.numberOfPages=function(){
+        return Math.ceil(incidentData.length/$scope.pageSize);                
+    }
+
   // makes get request for page's data
   $scope.make_api_get();
-});
 
+});
+app.filter('startFrom', function() {
+    return function(input, start) {
+        if (!input) {
+          return;
+        }
+        start = +start; //parse to int
+        return input.slice(start);
+    }
+  });
 
 /******** map **********/
 
