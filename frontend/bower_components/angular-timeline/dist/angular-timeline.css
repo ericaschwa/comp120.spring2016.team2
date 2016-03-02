@@ -1,13 +1,3 @@
-.alignleft {
-  float: left;
-}
-.alignright {
-  float: right;
-}
-.grey, .grey a {
-  color: #d3d3d3;
-}
-
 .timeline {
   padding: 0;
   list-style: none;
