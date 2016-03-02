@@ -370,7 +370,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   // show resolved incidents
   $scope.showResolved = function() {
       show_resolved_incidents = true;
-      $scope.sort();
+      //$scope.sort();
+      //$scope.setupData();
+      var str = document.getElementById('filterby').value;
+      $scope.filterincidentdata(str.toLowerCase());
+      $scope.maketimeline();
       document.getElementById('showresolved').disabled = true;
       document.getElementById('hideresolved').disabled = false;
   };
@@ -378,7 +382,10 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   // hide resolved incidents
   $scope.hideResolved = function() {
       show_resolved_incidents = false;
-      $scope.sort();
+      //$scope.sort();
+      var str = document.getElementById('filterby').value;
+      $scope.filterincidentdata(str.toLowerCase());
+      $scope.maketimeline();
       document.getElementById('hideresolved').disabled = true;
       document.getElementById('showresolved').disabled = false;
   };
