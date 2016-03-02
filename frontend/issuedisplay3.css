@@ -7647,7 +7647,7 @@ fieldset[disabled] .btn-danger.active {
 
   .timeline li timeline-panel.success-severity4 {
     float: left;
-    border: 3px solid #ffb732;
+    border: 3px solid #ff0000;
     border-radius: 10px;
     padding: 5px;
     padding-top: 0px;
@@ -7661,8 +7661,8 @@ fieldset[disabled] .btn-danger.active {
     right: -19px;
     display: inline-block;
     border-top: 20px solid transparent;
-    border-left: 20px solid #ffb732;
-    border-right: 20px solid #ffb732;
+    border-left: 20px solid #ff0000;
+    border-right: 20px solid #ff0000;
     border-bottom: 20px solid transparent;
     content: " "; }
   .timeline li timeline-panel.success-severity4:after {
@@ -7772,7 +7772,7 @@ fieldset[disabled] .btn-danger.active {
 
   .timeline li timeline-panel.inprogress-severity4 {
     float: left;
-    border: 3px solid #ffb732;
+    border: 3px solid #ff0000;
     border-radius: 10px;
     padding: 5px;
     padding-top: 0px;
@@ -7786,8 +7786,8 @@ fieldset[disabled] .btn-danger.active {
     right: -19px;
     display: inline-block;
     border-top: 20px solid transparent;
-    border-left: 20px solid #ffb732;
-    border-right: 20px solid #ffb732;
+    border-left: 20px solid #ff0000;
+    border-right: 20px solid #ff0000;
     border-bottom: 20px solid transparent;
     content: " "; }
   .timeline li timeline-panel.inprogress-severity4:after {
