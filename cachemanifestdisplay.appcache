@@ -1,7 +1,7 @@
 CACHE MANIFEST 
 /favicon.ico
-/frontend/issuedisplay3.css
-/frontend/issuedisplayController3.js
+/frontend/display3.css
+/frontend/display.js
 http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js
 http://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js
 http://maps.googleapis.com/maps/api/js?sensor=true&libraries=places
