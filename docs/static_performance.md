@@ -22,7 +22,7 @@ To see screenshots of our YSLOW audits before and after optimizations, please se
 ###Limitations of Github Pages CDN and foreign sources
 Since we are hosting our site on Github Pages, we are using the built-in Github Pages CDN.  Though this did save us time during this leg, it does come with some limitations.
 
-The first is that we were unable to add expires header to non-html files.  This is typically done using .htaccess files, which we cannot use with Github Pages.
+The first is that we were unable to add expires header to non-html files.  This is typically done by the server serving the static content. GitHub runs the servers hosting GitHub Pages and does not give us the ability to add expires headers.
 
 Cloudflare, which is managing our DNS and providing additional caching for content, sends the user a cookie called `__cfduid ` for security purposes. It barely affects performance, and the benefit of the Cloudflare caching most likely outweighs the harm of a single cookie.
 
