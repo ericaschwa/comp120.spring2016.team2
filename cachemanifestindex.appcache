@@ -1,8 +1,6 @@
 CACHE MANIFEST 
 /favicon.ico
-/frontend/bootstrap/dist/css/bootstrap.min.css
-/frontend/bootstrap/dist/css/bootstrap-theme.min.css
-/frontend/stylesheet.css
+/frontend/form.css
 /frontend/bootstrap/dist/js/bootstrap.min.js
 /frontend/report.png
 /frontend/view.png

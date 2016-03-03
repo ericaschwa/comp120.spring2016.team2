@@ -1,16 +1,7 @@
 CACHE MANIFEST 
 /favicon.ico
-/frontend/bootstrap/dist/css/bootstrap.min.css
-/frontend/bootstrap/dist/css/bootstrap-theme.min.css
-/frontend/stylesheet.css
-/frontend/datetimepicker-master/jquery.datetimepicker.css
-/frontend/bootstrap/node_modules/bootstrap-slider/dependencies/js/jquery.min.js
-/frontend/bootstrap/dist/js/bootstrap.min.js
-/frontend/map.js
-/frontend/constants.js
+/frontend/form.css
 /frontend/form.js
-/frontend/datetimepicker-master/jquery.js
-/frontend/datetimepicker-master/build/jquery.datetimepicker.full.min.js
 http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js
 http://maps.googleapis.com/maps/api/js?sensor=true&libraries=places
 
