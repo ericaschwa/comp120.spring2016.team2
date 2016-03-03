@@ -16,12 +16,16 @@
 ###Performance Improvements
 The optimizations we have performed have drastically improved the loading times of our html pages, especially our incident table page.  Before our optimizations, our incident table page loaded approximately 800 incidents in 11.67 seconds.  After our optimizations, load times were reduced to 5.6 seconds.  The other pages saw slight speed improvements, but already loaded quickly before our optimizations.
 
-To see screenshots of our YSLOW audits before and after optimizations, please see the folders titled `performanceBEFORE` and `performanceAFTER`.
+We were also able to reduce the number of CSS rules in our files significantly.  Using the `purify-css` script, we removed 43.1%  our css rules for our incident table page and 54.9% for our incident report form page.
+
+To see screenshots of our YSLOW audits before and after optimizations, please see the folders titled `/performanceBEFORE` and `/performanceAFTER`.
 
 ###Limitations of Github Pages CDN and foreign sources
 Since we are hosting our site on Github Pages, we are using the built-in Github Pages CDN.  Though this did save us time during this leg, it does come with some limitations.
 
 The first is that we were unable to add expires header to non-html files.  This is typically done using .htaccess files, which we cannot use with Github Pages.
+
+Cloudflare, which is hosting frontfish.net (our site that we use to link to our actual site hosted on github pages), sends the user a cookie called `__cfduid ` for security purposes.  We do not have control over this.  It does affect performance, but we are unable to remove this cookie without changing our host, and it is unclear whether other hosting sites wouldn't have similar cookies.
 
 Another optimization we were unable to complete was scaling images on form.html. The three images that are unscaled are all from maps.gstatic.com (the Google Maps API), and so we cannot control the fact that these images are unscaled.
 
