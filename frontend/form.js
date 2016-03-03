@@ -84,6 +84,11 @@ function init() {
     navigator.geolocation.getCurrentPosition(function(position) {
       initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
       map.setCenter(initialLocation);
+      var marker = new google.maps.Marker({
+    	position: initialLocation,
+    	map: map,
+    	title: 'You are here'
+  	  });
     }, function() {
       //handleNoGeolocation(browserSupportFlag);
     });
@@ -95,16 +100,14 @@ function init() {
     handleNoGeolocation(browserSupportFlag);
   }
 
-  function handleNoGeolocation(errorFlag) {
-    if (errorFlag == true) {
-      alert("Geolocation service failed.");
-    } else {
-      alert("Your browser doesn't support geolocation.")
-    }
-    map.setCenter(initialLocation);
-  }
-
-
+  // function handleNoGeolocation(errorFlag) {
+  //   if (errorFlag == true) {
+  //     alert("Geolocation service failed.");
+  //   } else {
+  //     alert("Your browser doesn't support geolocation.")
+  //   }
+  //   map.setCenter(initialLocation);
+  // }
   var marker = new google.maps.Marker({
     position: initialLocation,
     map: map,
