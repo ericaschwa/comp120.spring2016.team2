@@ -24,7 +24,7 @@ Since we are hosting our site on Github Pages, we are using the built-in Github 
 
 The first is that we were unable to add expires header to non-html files.  This is typically done using .htaccess files, which we cannot use with Github Pages.
 
-Cloudflare, which is hosting frontfish.net (our site that we use to link to our actual site hosted on github pages), sends the user a cookie called `__cfduid ` for security purposes.  We do not have control over this.  It does affect performance, but we are unable to remove this cookie without changing our host, and it is unclear whether other hosting sites wouldn't have similar cookies.
+Cloudflare, which is managing our DNS and providing additional caching for content, sends the user a cookie called `__cfduid ` for security purposes. It barely affects performance, and the benefit of the Cloudflare caching most likely outweighs the harm of a single cookie.
 
 Another optimization we were unable to complete was scaling images on form.html. The three images that are unscaled are all from maps.gstatic.com (the Google Maps API), and so we cannot control the fact that these images are unscaled.
 
