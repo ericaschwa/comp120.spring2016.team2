@@ -49,16 +49,16 @@
                             </p>
                             <p class ="alignleft"><h5><strong>{{event1.title}}</strong> | {{event1.time}} | {{event1.submitter}}</h5></p>
                         </timeline-heading>
-                            <p><b>Location: </b>{{event1.location}}<br><span class="description"><b>Description: </b></span>{{event1.content}}</p>
+                            <p><b>Location: </b>{{event1.location}}<br><b>Description: </b><span class="description">{{event1.content}}</p></span>
                         </div>
                     </timeline-panel>
                 </timeline-event>
             </timeline>
-            <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
+            <button ng-disabled="!currentPage" ng-click="currentPage=currentPage-1">
                 Previous
             </button>
             {{currentPage+1}}/{{numberOfPages()}}
-            <button ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+            <button ng-disabled="currentPage >= events.length/pageSize - 1" ng-click="currentPage=currentPage+1">
                 Next
             </button>
             <!-- Modal that will allow the user to view and edit information-->
