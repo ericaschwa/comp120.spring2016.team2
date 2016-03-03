@@ -7394,29 +7394,29 @@ fieldset[disabled] .btn-danger.active {
       padding: 0.8em 1em;
       margin: 0; }
   .timeline li timeline-badge.severity1 {
-    background-color: #ff0000 !important; }
+    background-color: #d8d8d8 !important; }
   .timeline li timeline-badge.severity2 {
-    background-color: #ff0000 !important; }
+    background-color: #ffff7f !important; }
   .timeline li timeline-badge.severity3 {
-    background-color: #ff0000 !important; }
+    background-color: #ffb732 !important; }
   .timeline li timeline-badge.severity4 {
     background-color: #ff0000 !important; }
   .timeline li timeline-badge.success-severity1 {
-    background-color: #74AE74 !important; }
+    background-color: #d8d8d8 !important; }
   .timeline li timeline-badge.success-severity2 {
-    background-color: #74AE74 !important; }
+    background-color: #ffff7f !important; }
   .timeline li timeline-badge.success-severity3 {
-    background-color: #74AE74 !important; }
+    background-color: #ffb732 !important; }
   .timeline li timeline-badge.success-severity4 {
-    background-color: #74AE74 !important; }
+    background-color: #ff0000 !important; }
   .timeline li timeline-badge.inprogress-severity1 {
-    background-color: #00bfff !important; }
+    background-color: #d8d8d8 !important; }
   .timeline li timeline-badge.inprogress-severity2 {
-    background-color: #00bfff !important; }
+    background-color: #ffff7f !important; }
   .timeline li timeline-badge.inprogress-severity3 {
-    background-color: #00bfff !important; }
+    background-color: #ffb732 !important; }
   .timeline li timeline-badge.inprogress-severity4 {
-    background-color: #00bfff !important; }
+    background-color: #ff0000 !important; }
 
 
   .timeline li .timeline-title {
