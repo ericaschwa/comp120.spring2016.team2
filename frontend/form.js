@@ -103,6 +103,13 @@ function init() {
     }
     map.setCenter(initialLocation);
   }
+
+
+  var marker = new google.maps.Marker({
+    position: initialLocation,
+    map: map,
+    title: 'You are here'
+  });
 }
 
 /***** CONSTANTS *****/
