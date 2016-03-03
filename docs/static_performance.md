@@ -35,4 +35,17 @@ There are two potential performance issues that we were unable to resolve during
 The second potential problem involves adding photo uploads to incident reports.  We plan to use a CDN to store our photos, but we can't be sure how exactly this will affect the performance of our site until it has been fully implemented.
 
 ## Appendix A: YSLOW screenshots
-![alt-text](/performanceBEFORE/issuereportyslow.png)
+###Index page before edits:
+![alt-text](performanceBEFORE/indexyslow.png)
+###Index page after edits:
+![alt-text](performanceAFTER/indexyslow2.png)
+###Report page before edits:
+![alt-text](performanceBEFORE/issuereportyslow.png)
+###Report page after edits:
+![alt-text](performanceAFTER/issuereportyslow2.png)
+###Display page before edits:
+![alt-text](performanceBEFORE/issuedisplayyslow.png)
+###Display page after edits:
+![alt-text](performanceAFTER/issuedisplayyslow2.png)
+
+Thanks for reading this! :)
