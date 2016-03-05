@@ -85,6 +85,9 @@ two primary goals in developing our product:
 ### User Testing
 We asked several people for their input on our current user interface, and most of the feedback given is frontend-specific. Many of them like how the page looks; however, they do see the mostly empty space on the right side of the page as a problem. Suggestions on what to fill the unused space with were made by these users, such as putting a field that helps to see the trend of what is going on in the table. We have taken this feedback and will consider this as we further develop our frontend.
 
+### Static Content Optimization
+Initially our website was really slow, loading about 800 incidents in 11.67 seconds. We therefore decided to perform some static content optimization, and when that was done we saw a great improvement of about 50%; the current issue display page now loads the same number of incidents in 5.6 seconds. Our optimization was performed using the following techniques: removing expired pages, uglifying and minifying css and htlm pages, combining all our javascript files and introducing pagination in the issue display page. Some of the tools that we used were Yslow and Google Chrome development tools(the audits and the network tab).
+
 ## Contributors
 - [Max Ettelson](http://github.com/mdettelson)
 - [Chris Hinstorff](http://github.com/chinstorff)
