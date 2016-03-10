@@ -126,7 +126,7 @@ USER = 1;
  * used to control the form page
  * comp120-s16-team2
  */
-
+var $ = jQuery.noConflict();
 $( document ).ready(function() {
 	// from http://stackoverflow.com/questions/169506/obtain-form-input-fields-using-jquery
 	$( "#form" ).on( "submit", function( event ) {
