@@ -61,20 +61,62 @@
             <button ng-disabled="currentPage >= events.length/pageSize - 1" ng-click="currentPage=currentPage+1">
                 Next
             </button>
-            <!-- Modal that will allow the user to view and edit information-->
-            <div class="modal fade" id="myModal" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title" id="modal-title">Edit Incident</h4>
-                  </div>
-                  <div class="modal-body" id="modal-body"></div>
+            <button type="button" class="btn btn-primary" ng-click="newIncident()">
+                Report Incident
+            </button>
+    <!-- Modal that will allow the user to view and edit information-->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" id="modal-title">Edit Incident</h4>
+          </div>
+          <div class="modal-body" id="modal-body"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal that will allow the user to report an incident-->
+    <div class="modal fade" id="myModal2" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title" id="modal-title">Report Incident</h4>
+          </div>
+          <div class="modal-body" id="modal-body">
+            <form id="form">
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="Severity">Severity (1 = Minor Incident, 4 = Emergency)</label>
+               
+                  <select id="severity" name="severity"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+                
+                  <label for="Textarea">Date and Time:</label>
+                  <input name="created_at" id="datetimepicker" type="text" >
+               
+                  <label for="Textarea">Incident Description</label>
+                  <!--<textarea name="description" class="form-control" id="description" rows="8" onkeyup="descriptionedit()"></textarea>-->
+                  <textarea name="description" class="form-control" id="description" rows="8"></textarea>
+               
+                  <label for="InputFile">Add file</label>
+                  <input name="photo" type="file" class="form-control-file" id="InputFile">
+               
+                </div>
+                <div class="col-md-6">
+                  <input id="pac-input" class="controls" type="text" placeholder="Search" name="location">
+                  <div id="map"></div>
                 </div>
               </div>
-            </div>
-    	</div>
+              <button type='button' class='btn btn-primary' ng-click='createIncident()' data-dismiss='modal'>Save</button>";
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
