@@ -402,22 +402,18 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
 
   // make get request to access all incidents
   $scope.make_api_get = function() {
-    var success = false;
-    var http = new XMLHttpRequest();
-    var url = URL + '/incidents';
-    http.open("GET", url, true);
-    http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    http.onreadystatechange = function(request, response) {
-      if (http.readyState == 4 && http.status == 200) { // OK, got response from server
-        success = true;
-        fromServer = JSON.parse(http.responseText);
+  	var j = jQuery.noConflict();
+  	j.ajax({
+  		method: "GET",
+  		url: URL + '/incidents'
+  	})
+  	.done(function(msg) {
+  		fromServer = msg;
         show_resolved_incidents = false;
         document.getElementById('hideresolved').disabled = true;
         document.getElementById('showresolved').disabled = false;
         $scope.sort();
-      }
-    }
-    http.send();
+  	});
   }
 
   // make post request to edit a given incident
