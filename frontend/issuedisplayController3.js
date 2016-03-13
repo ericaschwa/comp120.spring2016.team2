@@ -560,10 +560,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   	var j = jQuery.noConflict();
   	var inputs = j('#form :input');
   	var values = {};
+  	var date = new Date();
 	for (var i = 0; i < inputs.length - 1; i++) {
 		//console.log("name: " + inputs[i].name + " value: " + inputs[i].value);
 		if (inputs[i].name === "") {
-	        values['time'] = new Date();
+	        values['created_at'] = date.toISOString();
             values['user_id'] = USER; // this will be replaced by UserID when we get one (TODO)
             values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
             values['departments'] = []; // this will be coded in later (TODO)
@@ -855,7 +856,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
            '<select id="status"><option value="1">Unresolved</option><option value="2">In Progress</option><option value="3">Resolved</option></select>' +
            '</div>';
     str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Date & Time</span>: " + "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" + "<br></div></div>";
-    str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Submitter</span>: " + "<input class='formedit' id='submitter' name='submitter' type='text' value='" + data.submitter + "' />" + "</div>";
+    str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Submitter</span>: &nbsp; &nbsp;" + data.submitter + "</div>";
     str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "</div></div><br>";
     str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'>" + '<label for="Textarea">Incident Description</label>' +
      	   '<textarea name="description" class="formedit form-control" name="description" id="description" rows="8">'+ data.description +  '</textarea></div>'
