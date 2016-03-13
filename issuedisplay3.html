@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<meta http-equiv="expires" content="tues, 27 sep 2016 14:30:00 GMT">-->
     <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/ >
-    <link rel="stylesheet" href="frontend/issuedisplay.css"></link>
+    <link rel="stylesheet" href="frontend/issuedisplay3.css"></link>
     
 	<title>View Issues</title>
 
@@ -14,12 +14,16 @@
 	
     <body>
     <div class="container">
-        <ul class="nav nav-pills nav-justified incidentbar">
-          <li role="presentation" ><a href="form.html">Report an Incident</a></li>
-          <li role="presentation" class="active"><a href="#">View Incident Reports</a></li>
-          <li role="presentation" ><a href="">API</a></li>
+  <ul class="nav nav-pills">
+    <li class="dropdown"> 
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-menu-hamburger"></a>
+        <ul class="dropdown-menu">
+          <li><a href="form.html">Report an incident</a></li>
+          <li><a href="">API</a></li> 
         </ul>
-  
+    </li>
+    <li class="tab"><a href="index.html">Log out</a></li>
+  </ul>
     	<div ng-controller="incidentCtrl2" ng-app="incidentApp2">
             <div class="row">
                 <div class="pull-left col-xs-12 col-s-7 col-md-7 col-lg-7">
