@@ -8,7 +8,7 @@
     <link rel='shortcut icon' href='favicon.ico' type='image/x-icon'/ >
     <link rel="stylesheet" href="frontend/issuedisplay3.css"></link>
     
-	<title>View Issues</title>
+	<title>DIRT</title>
 
 	</head>
 	
@@ -26,13 +26,14 @@
   </ul>
     	<div ng-controller="incidentCtrl2" ng-app="incidentApp2">
             <div class="row">
-                <div class="pull-left col-xs-12 col-s-7 col-md-7 col-lg-7">
+                <div class="pull-left col-xs-12 col-s-8 col-md-8 col-lg-9">
+                    <button type="button" class="btn btn-primary" ng-click="newIncident()">Report Incident</button> &nbsp; &nbsp;
                     <label for="sortby">Sort By: &nbsp;</label><select id="sortby" name="sortby" onchange="sort()"><option value=""></option><option value="severity">Severity</option><option value="status">Status</option><option value="time">Time</option></select>
-                    <span id="filter"><label for="filterby">Filter By: &nbsp;</label><input type="text" id="filterby" onkeyup="sort()" /></span>
+                    <span id="filter"><label for="filterby">Search: &nbsp;</label><input type="text" id="filterby" onkeyup="sort()" /></span>
                 </div>
-                <div class="pull-right col-xs-12 col-s-5 col-md-5 col-lg-5">
-                    <button type="button" class="btn btn-primary" ng-click="showResolved()" id="showresolved">Show Resolved Incidents</button>
-                    <button type="button" class="btn btn-primary" ng-click="hideResolved()" id="hideresolved">Hide Resolved Incidents</button>
+                <div class="pull-right col-xs-12 col-s-4 col-md-4 col-lg-3">
+                    <button type="button" class="btn btn-primary col-xs-6 col-s-6 col-md-6 col-lg-6" ng-click="showResolved()" id="showresolved">Show Resolved</button>
+                    <button type="button" class="btn btn-primary col-xs-6 col-s-6 col-md-6 col-lg-6" ng-click="hideResolved()" id="hideresolved">Hide Resolved</button>
                 </div>
             </div>
             <!--<div id="chart"></div>-->
@@ -65,9 +66,6 @@
             <button ng-disabled="currentPage >= events.length/pageSize - 1" ng-click="currentPage=currentPage+1">
                 Next
             </button>
-            <button type="button" class="btn btn-primary" ng-click="newIncident()">
-                Report Incident
-            </button>
     <!-- Modal that will allow the user to view and edit information-->
     <div class="modal fade" id="myModal" role="dialog">
       <div class="modal-dialog">
@@ -91,29 +89,21 @@
           </div>
           <div class="modal-body" id="modal-body">
             <form id="form">
-              <div class="row">
-                <div class="col-md-6">
-                  <label for="Severity">Severity (1 = Minor Incident, 4 = Emergency)</label>
-               
-                  <select id="severity" name="severity"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
-                
-                  <label for="Textarea">Date and Time:</label>
-                  <input name="created_at" id="datetimepicker" type="text" >
-               
-                  <label for="Textarea">Incident Description</label>
-                  <!--<textarea name="description" class="form-control" id="description" rows="8" onkeyup="descriptionedit()"></textarea>-->
-                  <textarea name="description" class="form-control" id="description" rows="8"></textarea>
-               
-                  <label for="InputFile">Add file</label>
-                  <input name="photo" type="file" class="form-control-file" id="InputFile">
-               
+              <span class='title'>Severity</span> (1 = Minor Incident, 4 = Emergency):
+              <select id="severity"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select><br>
+              <span class='title'>Date & Time</span>:
+              <input class='formedit' id='time' name='created_at' type='text'/><br><br>
+              <div class='row'>
+                <div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><label for="Textarea">Incident Description</label><textarea name="description" class="formedit form-control" name="description" id="description" rows="8" onkeyup="descriptionedit()"></textarea>
                 </div>
-                <div class="col-md-6">
-                  <input id="pac-input" class="controls" type="text" placeholder="Search" name="location">
-                  <div id="map"></div>
+                <div class='col-xs-6 col-s-6 col-md-6 col-lg-6'>
+                  <input class='formedit controls' name='location' id='pac-input' type='text'/>
+                  <div id='map'></div>
                 </div>
-              </div>
-              <button type='button' class='btn btn-primary' ng-click='createIncident()' data-dismiss='modal'>Save</button>";
+              </div><br>
+              <label for="InputFile">Add file</label>
+                  <input name="photo" type="file" class="form-control-file" id="InputFile"><br>
+              <button type='button' id="submitbutton" class='btn btn-primary' ng-click='createIncident()' data-dismiss='modal'>Save</button>
             </form>
           </div>
         </div>

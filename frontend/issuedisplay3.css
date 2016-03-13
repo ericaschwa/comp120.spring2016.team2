@@ -7927,8 +7927,8 @@ html, body {
 }
 
 #map {
-    width: 90%;
-    height:338px;
+    width: 100%;
+    height:200px;
 }
 
 .mainimg {
@@ -7957,7 +7957,7 @@ html, body {
   margin-left: 12px;
   padding: 0 11px 0 13px;
   text-overflow: ellipsis;
-  width: 250px;
+  width: 130px;
 }
 
 #pac-input:focus {
@@ -8044,11 +8044,6 @@ a:hover {
 
 .formedit {
     margin-top:5px;
-}
-
-#map {
-    width: 90%;
-    height:200px;
 }
 
 .datepicker {

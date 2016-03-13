@@ -24,7 +24,114 @@ if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires j
 d.parent(".dropdown-menu").length&&(d=d.closest("li.dropdown").addClass("active")),d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector).parentsUntil(this.options.target,".active").removeClass("active")};var d=a.fn.scrollspy;a.fn.scrollspy=c,a.fn.scrollspy.Constructor=b,a.fn.scrollspy.noConflict=function(){return a.fn.scrollspy=d,this},a(window).on("load.bs.scrollspy.data-api",function(){a('[data-spy="scroll"]').each(function(){var b=a(this);c.call(b,b.data())})})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.tab");e||d.data("bs.tab",e=new c(this)),"string"==typeof b&&e[b]()})}var c=function(b){this.element=a(b)};c.VERSION="3.3.6",c.TRANSITION_DURATION=150,c.prototype.show=function(){var b=this.element,c=b.closest("ul:not(.dropdown-menu)"),d=b.data("target");if(d||(d=b.attr("href"),d=d&&d.replace(/.*(?=#[^\s]*$)/,"")),!b.parent("li").hasClass("active")){var e=c.find(".active:last a"),f=a.Event("hide.bs.tab",{relatedTarget:b[0]}),g=a.Event("show.bs.tab",{relatedTarget:e[0]});if(e.trigger(f),b.trigger(g),!g.isDefaultPrevented()&&!f.isDefaultPrevented()){var h=a(d);this.activate(b.closest("li"),c),this.activate(h,h.parent(),function(){e.trigger({type:"hidden.bs.tab",relatedTarget:b[0]}),b.trigger({type:"shown.bs.tab",relatedTarget:e[0]})})}}},c.prototype.activate=function(b,d,e){function f(){g.removeClass("active").find("> .dropdown-menu > .active").removeClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!1),b.addClass("active").find('[data-toggle="tab"]').attr("aria-expanded",!0),h?(b[0].offsetWidth,b.addClass("in")):b.removeClass("fade"),b.parent(".dropdown-menu").length&&b.closest("li.dropdown").addClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!0),e&&e()}var g=d.find("> .active"),h=e&&a.support.transition&&(g.length&&g.hasClass("fade")||!!d.find("> .fade").length);g.length&&h?g.one("bsTransitionEnd",f).emulateTransitionEnd(c.TRANSITION_DURATION):f(),g.removeClass("in")};var d=a.fn.tab;a.fn.tab=b,a.fn.tab.Constructor=c,a.fn.tab.noConflict=function(){return a.fn.tab=d,this};var e=function(c){c.preventDefault(),b.call(a(this),"show")};a(document).on("click.bs.tab.data-api",'[data-toggle="tab"]',e).on("click.bs.tab.data-api",'[data-toggle="pill"]',e)}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.affix"),f="object"==typeof b&&b;e||d.data("bs.affix",e=new c(this,f)),"string"==typeof b&&e[b]()})}var c=function(b,d){this.options=a.extend({},c.DEFAULTS,d),this.$target=a(this.options.target).on("scroll.bs.affix.data-api",a.proxy(this.checkPosition,this)).on("click.bs.affix.data-api",a.proxy(this.checkPositionWithEventLoop,this)),this.$element=a(b),this.affixed=null,this.unpin=null,this.pinnedOffset=null,this.checkPosition()};c.VERSION="3.3.6",c.RESET="affix affix-top affix-bottom",c.DEFAULTS={offset:0,target:window},c.prototype.getState=function(a,b,c,d){var e=this.$target.scrollTop(),f=this.$element.offset(),g=this.$target.height();if(null!=c&&"top"==this.affixed)return c>e?"top":!1;if("bottom"==this.affixed)return null!=c?e+this.unpin<=f.top?!1:"bottom":a-d>=e+g?!1:"bottom";var h=null==this.affixed,i=h?e:f.top,j=h?g:b;return null!=c&&c>=e?"top":null!=d&&i+j>=a-d?"bottom":!1},c.prototype.getPinnedOffset=function(){if(this.pinnedOffset)return this.pinnedOffset;this.$element.removeClass(c.RESET).addClass("affix");var a=this.$target.scrollTop(),b=this.$element.offset();return this.pinnedOffset=b.top-a},c.prototype.checkPositionWithEventLoop=function(){setTimeout(a.proxy(this.checkPosition,this),1)},c.prototype.checkPosition=function(){if(this.$element.is(":visible")){var b=this.$element.height(),d=this.options.offset,e=d.top,f=d.bottom,g=Math.max(a(document).height(),a(document.body).height());"object"!=typeof d&&(f=e=d),"function"==typeof e&&(e=d.top(this.$element)),"function"==typeof f&&(f=d.bottom(this.$element));var h=this.getState(g,b,e,f);if(this.affixed!=h){null!=this.unpin&&this.$element.css("top","");var i="affix"+(h?"-"+h:""),j=a.Event(i+".bs.affix");if(this.$element.trigger(j),j.isDefaultPrevented())return;this.affixed=h,this.unpin="bottom"==h?this.getPinnedOffset():null,this.$element.removeClass(c.RESET).addClass(i).trigger(i.replace("affix","affixed")+".bs.affix")}"bottom"==h&&this.$element.offset({top:g-b-f})}};var d=a.fn.affix;a.fn.affix=b,a.fn.affix.Constructor=c,a.fn.affix.noConflict=function(){return a.fn.affix=d,this},a(window).on("load",function(){a('[data-spy="affix"]').each(function(){var c=a(this),d=c.data();d.offset=d.offset||{},null!=d.offsetBottom&&(d.offset.bottom=d.offsetBottom),null!=d.offsetTop&&(d.offset.top=d.offsetTop),b.call(c,d)})})}(jQuery);
 
 
+/****** MAP *******/
 
+//Google Maps JavaScript
+function init() {
+  var initialLocation = new google.maps.LatLng(35.9886, -78.9072);
+  
+  var options = {
+    zoom: 13,
+    center: initialLocation,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }; 
+  var map = new google.maps.Map(document.getElementById('map'), options);
+  
+  //searchbox: code adapted from https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
+  // Create the search box and link it to the UI element.
+  var input = document.getElementById('pac-input');
+  var searchBox = new google.maps.places.SearchBox(input);
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+  // Bias the SearchBox results towards current map's viewport.
+  map.addListener('bounds_changed', function() {
+    searchBox.setBounds(map.getBounds());
+  });
+
+  var markers = [];
+  // [START region_getplaces]
+  // Listen for the event fired when the user selects a prediction and retrieve
+  // more details for that place.
+  searchBox.addListener('places_changed', function() {
+    var places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+
+    // Clear out the old markers.
+    markers.forEach(function(marker) {
+      marker.setMap(null);
+    });
+    markers = [];
+
+    // For each place, get the icon, name and location.
+    var bounds = new google.maps.LatLngBounds();
+    places.forEach(function(place) {
+      var icon = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      };
+
+      // Create a marker for each place.
+      markers.push(new google.maps.Marker({
+        map: map,
+        icon: icon,
+        title: place.name,
+        position: place.geometry.location
+      }));
+
+      if (place.geometry.viewport) {
+        // Only geocodes have viewport.
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+    });
+    map.fitBounds(bounds);
+  });
+  
+
+  //Geolocation attempt
+  var browserSupportFlag = new Boolean;
+  if (navigator.geolocation) {
+    browserSupportFlag = true;
+    navigator.geolocation.getCurrentPosition(function(position) {
+      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      map.setCenter(initialLocation);
+      var marker = new google.maps.Marker({
+    	position: initialLocation,
+    	map: map,
+    	title: 'You are here'
+  	  });
+    }, function() {
+      //handleNoGeolocation(browserSupportFlag);
+    });
+  }
+
+  //Geolocation not supported by browser
+  else {
+    browserSupportFlag = false;
+    handleNoGeolocation(browserSupportFlag);
+  }
+
+  // function handleNoGeolocation(errorFlag) {
+  //   if (errorFlag == true) {
+  //     alert("Geolocation service failed.");
+  //   } else {
+  //     alert("Your browser doesn't support geolocation.")
+  //   }
+  //   map.setCenter(initialLocation);
+  // }
+  var marker = new google.maps.Marker({
+    position: initialLocation,
+    map: map,
+    title: 'You are here'
+  });
+}
 
 
 /**************************** TIMELINE JS **********************************/
@@ -274,6 +381,8 @@ function init() {
     }
     map.setCenter(initialLocation);
   }
+
+  document.getElementById('submitbutton').disabled = true;
 }
 
 
@@ -387,6 +496,16 @@ function escapeHtml(str) {
     return div.innerHTML;
 };
 
+  // activates "submit" button only when description contains text
+  var descriptionedit = function() {
+  	var desc = document.getElementById('description');
+  	if (desc.value == "") {
+  		document.getElementById('submitbutton').disabled = true;
+  	} else {
+  		document.getElementById('submitbutton').disabled = false;
+  	}
+  };
+
 var setmodal;
 var edit;
 var sort;
@@ -434,13 +553,40 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   $scope.newIncident = function() {
   	var j =jQuery.noConflict(); 
     j('#myModal2').modal('show'); 
+    setTimeout(init,1000);
   };
 
   $scope.createIncident = function() {
   	var j = jQuery.noConflict();
   	var inputs = j('#form :input');
-	console.log(inputs);
+  	var values = {};
+	for (var i = 0; i < inputs.length - 1; i++) {
+		//console.log("name: " + inputs[i].name + " value: " + inputs[i].value);
+		if (inputs[i].name === "") {
+	        values['time'] = new Date();
+            values['user_id'] = USER; // this will be replaced by UserID when we get one (TODO)
+            values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
+            values['departments'] = []; // this will be coded in later (TODO)
+            values['status'] = 0; // all incidents start as unresolved
+            var e = document.getElementById("severity");
+    		var severity = e.options[e.selectedIndex].value;
+            values['severity'] = parseInt(severity) - 1;
+            console.log(values);
+            j.ajax({
+			  method: "POST",
+			  url: URL + '/incidents/new',
+			  data: values
+			})
+			.done(function(msg) {
+			  console.log(msg);
+			  $scope.make_api_get();
+			});
+	    } else {
+	        	values[inputs[i].name] = inputs[i].value;
+	    }
+	}
   };
+
 
   // called when incident edited- replaces that incident with new, edited one
   $scope.replaceat = function(id, newIncident) {
@@ -704,13 +850,17 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     var str = "";
     str += "<span class='title'>Severity</span> (1 = Minor Incident, 4 = Emergency)</span>: " +
            '<select id="severity"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>' +
-           '<br>'
-    str += "<span class='title'>Status</span>: " +
+           '<br><br>'
+    str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Status</span>: " +
            '<select id="status"><option value="1">Unresolved</option><option value="2">In Progress</option><option value="3">Resolved</option></select>' +
-           '<br></div><br>';
-    str += "<input class='formedit controls' name='location' id='pac-input' type='text' value='" + data.location + "' />" +
-           "<div id='map'></div><br>";
-    str += "<span class='title'>Description</span>: " + "<input class='formedit' name='description' id='description' type='text' value='" + data.description + "' />" + "<br>";
+           '</div>';
+    str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Date & Time</span>: " + "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" + "<br></div></div>";
+    str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Submitter</span>: " + "<input class='formedit' id='submitter' name='submitter' type='text' value='" + data.submitter + "' />" + "</div>";
+    str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "</div></div><br>";
+    str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'>" + '<label for="Textarea">Incident Description</label>' +
+     	   '<textarea name="description" class="formedit form-control" name="description" id="description" rows="8">'+ data.description +  '</textarea></div>'
+    str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><input class='formedit controls' name='location' id='pac-input' type='text' value='" + data.location + "' />" +
+           "<div id='map'></div></div></div><br>";
     var status;
     if (data.status == 0) {
       status = "Unresolved";
@@ -719,10 +869,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     } else {
       status = "Resolved";
     }
-    str += "<span class='title'>Time</span>: " + "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" + "<br>";
-    str += "<span class='title'>Submitter</span>: " + "<input class='formedit' id='submitter' name='submitter' type='text' value='" + data.submitter + "' />" + "<br>";
-    str += "<span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "<br>";
-    str += "<button type='button' class='btn btn-primary' onclick='edit()' data-dismiss='modal'>Save</button>";
+       str += "<button type='button' class='btn btn-primary' onclick='edit()' data-dismiss='modal'>Save</button>";
     return str;
   }
 
