@@ -185,6 +185,7 @@ function init() {
   var textid = 'pac-input'
   if (oneortwo != 1) {
   	document.getElementById('modal-body').innerHTML = "";
+  	document.getElementById('description').value = "";
   }
 
   var initialLocation = new google.maps.LatLng(35.9886, -78.9072);
@@ -292,6 +293,8 @@ function init() {
   });
 
   document.getElementById('submitbutton').disabled = true;
+  //var j = jQuery.noConflict();
+  //j( "#datetimepicker" ).datetimepicker({value: new Date()});
 }
 
 
@@ -418,13 +421,50 @@ var setmodal;
 var edit;
 var sort;
 
-var app = angular.module('incidentApp2', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns', 'angular-timeline']);
+var app = angular.module('incidentApp2', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns', 'angular-timeline', 'ui.bootstrap', 'ui.bootstrap.datetimepicker']);
 
-app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants) {
+app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGridConstants) {
 
   $scope.currentPage = 0;
   $scope.pageSize = 10;
   incidentData = [];
+
+
+  /**************************** DATETIMEPICKER **********************************/
+  $scope.dateTimeNow = function() {
+    $scope.date = new Date();
+  };
+  
+  $scope.toggleMinDate = function() {
+    var minDate = new Date();
+    // set to yesterday
+    minDate.setDate(minDate.getDate() - 1);
+    $scope.minDate = $scope.minDate ? null : minDate;
+  };
+  
+  // Disable weekend selection
+  $scope.disabled = function(calendarDate, mode) {
+    return mode === 'day' && ( calendarDate.getDay() === 0 || calendarDate.getDay() === 6 );
+  };
+  
+  $scope.open = function($event,opened) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    $scope.dateOpened = true;
+  };
+
+  $scope.timeToggleMode = function() {
+    $scope.showMeridian = !$scope.showMeridian;
+  };
+  
+  $scope.$watch("date", function(date) {
+    // read date value
+  }, true);
+  
+  $scope.resetHours = function() {
+    $scope.date.setHours(1);
+  };
+  /*********************************** end DATETIMEPICKER *********************************/
 
 
   // make get request to access all incidents
@@ -463,6 +503,20 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     j('#myModal2').modal('show'); 
     oneortwo = 2;
     setTimeout(init,1000);
+    $scope.dateTimeNow();
+  	$scope.toggleMinDate();
+  	$scope.dateOptions = {
+  	  showWeeks: false
+  	};
+  	$scope.dateOpened = false;
+  	$scope.hourStep = 1;
+  	$scope.format = "dd-MMM-yyyy";
+  	$scope.minuteStep = 1;
+  	$scope.timeOptions = {
+  	  hourStep: [1, 2, 3],
+  	  minuteStep: [1, 5, 10, 15, 25, 30]
+  	};
+  	$scope.showMeridian = true;
   };
 
   $scope.createIncident = function() {
@@ -470,33 +524,30 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   	var inputs = j('#form :input');
   	var values = {};
   	var date = new Date();
+  	var reportdate = $scope.date;
 	for (var i = 0; i < inputs.length - 1; i++) {
-		//console.log("name: " + inputs[i].name + " value: " + inputs[i].value);
-		if (inputs[i].name === "") {
-	        values['created_at'] = date.toISOString();
-            values['user_id'] = USER; // this will be replaced by UserID when we get one (TODO)
-            values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
-            values['departments'] = []; // this will be coded in later (TODO)
-            values['status'] = 0; // all incidents start as unresolved
-            values['description'] = String(document.getElementById('description').value);
-            var e = document.getElementById("severity");
-    		var severity = e.options[e.selectedIndex].value;
-            values['severity'] = parseInt(severity) - 1;
-            console.log(values);
-            j.ajax({
-			  method: "POST",
-			  url: URL + '/incidents/new',
-			  data: values
-			})
-			.done(function(msg) {
-			  console.log(msg);
-			  fromServer.push(msg);
-        	  $scope.sort();
-			});
-	    } else {
-	        values[inputs[i].name] = inputs[i].value;
-	    }
+		values[inputs[i].name] = inputs[i].value;
 	}
+	values['created_at'] = date.toISOString();
+	values['time'] = reportdate.toISOString();
+    values['user_id'] = USER; // this will be replaced by UserID when we get one (TODO)
+    values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
+    values['departments'] = []; // this will be coded in later (TODO)
+    values['status'] = 0; // all incidents start as unresolved
+    values['description'] = String(document.getElementById('description').value);
+    var e = document.getElementById("severity");
+    var severity = e.options[e.selectedIndex].value;
+    values['severity'] = parseInt(severity) - 1;
+    j.ajax({
+	  method: "POST",
+	  url: URL + '/incidents/new',
+	  data: values
+	})
+	.done(function(msg) {
+	  console.log(msg);
+	  fromServer.push(msg);
+         $scope.sort();
+	});
   };
 
 
@@ -756,6 +807,20 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     document.getElementById('severity').value = data.severity;
     document.getElementById('status').value = data.status;
     setTimeout(init, 1000); // needs slight delay
+    $scope.dateTimeNow();
+  	$scope.toggleMinDate();
+  	$scope.dateOptions = {
+  	  showWeeks: false
+  	};
+  	$scope.dateOpened = false;
+  	$scope.hourStep = 1;
+  	$scope.format = "dd-MMM-yyyy";
+  	$scope.minuteStep = 1;
+  	$scope.timeOptions = {
+  	  hourStep: [1, 2, 3],
+  	  minuteStep: [1, 5, 10, 15, 25, 30]
+  	};
+  	$scope.showMeridian = true;
   };
 
   // writes body html of modal
@@ -767,7 +832,12 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Status</span>: " +
            '<select id="status"><option value="1">Unresolved</option><option value="2">In Progress</option><option value="3">Resolved</option></select>' +
            '</div>';
-    str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Date & Time</span>: " + "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" + "<br></div></div>";
+    str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Date & Time</span>: " +
+    	   //'<datetimepicker min-date="minDate" hour-step="hourStep" minute-step="minuteStep" ng-model="date" show-meridian="showMeridian" ' +
+    	   //'date-format="{{format}}" date-options="dateOptions" date-disabled="disabled(date, mode)" datepicker-append-to-body="false" readonly-date="false" hidden-time="false" ' +
+    	   //'hidden-date="false" name="datetimepicker" show-spinners="true" readonly-time="false" date-opened="dateOpened"></datetimepicker>' +
+    	   "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" +
+           "<br></div></div>";
     str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Submitter</span>: &nbsp;<span id='submitter'>" + data.submitter + "</span></div>";
     str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "</div></div><br>";
     str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'>" + '<label for="Textarea">Incident Description</label>' +
@@ -790,12 +860,14 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   $scope.edit = function() {
     var e = document.getElementById("severity");
     var severity = e.options[e.selectedIndex].value;
+    var date = new Date();
     var obj = {
       'description': escapeHtml(document.getElementById('description').value),
       'location': escapeHtml(document.getElementById('pac-input').value),
       'severity': parseInt(severity) - 1,
       'status': parseInt(document.getElementById('status').value) - 1,
-      'time': new Date(document.getElementById('time').value),
+      'created_at': date.toISOString(),
+      'time': document.getElementById('time').value,
       'departments': escapeHtml(document.getElementById('departments').value),
       'permission': permission,
       'id': modalid
