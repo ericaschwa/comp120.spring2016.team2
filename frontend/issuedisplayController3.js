@@ -24,116 +24,6 @@ if("undefined"==typeof jQuery)throw new Error("Bootstrap's JavaScript requires j
 d.parent(".dropdown-menu").length&&(d=d.closest("li.dropdown").addClass("active")),d.trigger("activate.bs.scrollspy")},b.prototype.clear=function(){a(this.selector).parentsUntil(this.options.target,".active").removeClass("active")};var d=a.fn.scrollspy;a.fn.scrollspy=c,a.fn.scrollspy.Constructor=b,a.fn.scrollspy.noConflict=function(){return a.fn.scrollspy=d,this},a(window).on("load.bs.scrollspy.data-api",function(){a('[data-spy="scroll"]').each(function(){var b=a(this);c.call(b,b.data())})})}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.tab");e||d.data("bs.tab",e=new c(this)),"string"==typeof b&&e[b]()})}var c=function(b){this.element=a(b)};c.VERSION="3.3.6",c.TRANSITION_DURATION=150,c.prototype.show=function(){var b=this.element,c=b.closest("ul:not(.dropdown-menu)"),d=b.data("target");if(d||(d=b.attr("href"),d=d&&d.replace(/.*(?=#[^\s]*$)/,"")),!b.parent("li").hasClass("active")){var e=c.find(".active:last a"),f=a.Event("hide.bs.tab",{relatedTarget:b[0]}),g=a.Event("show.bs.tab",{relatedTarget:e[0]});if(e.trigger(f),b.trigger(g),!g.isDefaultPrevented()&&!f.isDefaultPrevented()){var h=a(d);this.activate(b.closest("li"),c),this.activate(h,h.parent(),function(){e.trigger({type:"hidden.bs.tab",relatedTarget:b[0]}),b.trigger({type:"shown.bs.tab",relatedTarget:e[0]})})}}},c.prototype.activate=function(b,d,e){function f(){g.removeClass("active").find("> .dropdown-menu > .active").removeClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!1),b.addClass("active").find('[data-toggle="tab"]').attr("aria-expanded",!0),h?(b[0].offsetWidth,b.addClass("in")):b.removeClass("fade"),b.parent(".dropdown-menu").length&&b.closest("li.dropdown").addClass("active").end().find('[data-toggle="tab"]').attr("aria-expanded",!0),e&&e()}var g=d.find("> .active"),h=e&&a.support.transition&&(g.length&&g.hasClass("fade")||!!d.find("> .fade").length);g.length&&h?g.one("bsTransitionEnd",f).emulateTransitionEnd(c.TRANSITION_DURATION):f(),g.removeClass("in")};var d=a.fn.tab;a.fn.tab=b,a.fn.tab.Constructor=c,a.fn.tab.noConflict=function(){return a.fn.tab=d,this};var e=function(c){c.preventDefault(),b.call(a(this),"show")};a(document).on("click.bs.tab.data-api",'[data-toggle="tab"]',e).on("click.bs.tab.data-api",'[data-toggle="pill"]',e)}(jQuery),+function(a){"use strict";function b(b){return this.each(function(){var d=a(this),e=d.data("bs.affix"),f="object"==typeof b&&b;e||d.data("bs.affix",e=new c(this,f)),"string"==typeof b&&e[b]()})}var c=function(b,d){this.options=a.extend({},c.DEFAULTS,d),this.$target=a(this.options.target).on("scroll.bs.affix.data-api",a.proxy(this.checkPosition,this)).on("click.bs.affix.data-api",a.proxy(this.checkPositionWithEventLoop,this)),this.$element=a(b),this.affixed=null,this.unpin=null,this.pinnedOffset=null,this.checkPosition()};c.VERSION="3.3.6",c.RESET="affix affix-top affix-bottom",c.DEFAULTS={offset:0,target:window},c.prototype.getState=function(a,b,c,d){var e=this.$target.scrollTop(),f=this.$element.offset(),g=this.$target.height();if(null!=c&&"top"==this.affixed)return c>e?"top":!1;if("bottom"==this.affixed)return null!=c?e+this.unpin<=f.top?!1:"bottom":a-d>=e+g?!1:"bottom";var h=null==this.affixed,i=h?e:f.top,j=h?g:b;return null!=c&&c>=e?"top":null!=d&&i+j>=a-d?"bottom":!1},c.prototype.getPinnedOffset=function(){if(this.pinnedOffset)return this.pinnedOffset;this.$element.removeClass(c.RESET).addClass("affix");var a=this.$target.scrollTop(),b=this.$element.offset();return this.pinnedOffset=b.top-a},c.prototype.checkPositionWithEventLoop=function(){setTimeout(a.proxy(this.checkPosition,this),1)},c.prototype.checkPosition=function(){if(this.$element.is(":visible")){var b=this.$element.height(),d=this.options.offset,e=d.top,f=d.bottom,g=Math.max(a(document).height(),a(document.body).height());"object"!=typeof d&&(f=e=d),"function"==typeof e&&(e=d.top(this.$element)),"function"==typeof f&&(f=d.bottom(this.$element));var h=this.getState(g,b,e,f);if(this.affixed!=h){null!=this.unpin&&this.$element.css("top","");var i="affix"+(h?"-"+h:""),j=a.Event(i+".bs.affix");if(this.$element.trigger(j),j.isDefaultPrevented())return;this.affixed=h,this.unpin="bottom"==h?this.getPinnedOffset():null,this.$element.removeClass(c.RESET).addClass(i).trigger(i.replace("affix","affixed")+".bs.affix")}"bottom"==h&&this.$element.offset({top:g-b-f})}};var d=a.fn.affix;a.fn.affix=b,a.fn.affix.Constructor=c,a.fn.affix.noConflict=function(){return a.fn.affix=d,this},a(window).on("load",function(){a('[data-spy="affix"]').each(function(){var c=a(this),d=c.data();d.offset=d.offset||{},null!=d.offsetBottom&&(d.offset.bottom=d.offsetBottom),null!=d.offsetTop&&(d.offset.top=d.offsetTop),b.call(c,d)})})}(jQuery);
 
 
-/****** MAP *******/
-
-//Google Maps JavaScript
-function init() {
-  var initialLocation = new google.maps.LatLng(35.9886, -78.9072);
-  
-  var options = {
-    zoom: 13,
-    center: initialLocation,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-  }; 
-  var map = new google.maps.Map(document.getElementById('map'), options);
-  
-  //searchbox: code adapted from https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
-  // Create the search box and link it to the UI element.
-  var input = document.getElementById('pac-input');
-  var searchBox = new google.maps.places.SearchBox(input);
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
-  // Bias the SearchBox results towards current map's viewport.
-  map.addListener('bounds_changed', function() {
-    searchBox.setBounds(map.getBounds());
-  });
-
-  var markers = [];
-  // [START region_getplaces]
-  // Listen for the event fired when the user selects a prediction and retrieve
-  // more details for that place.
-  searchBox.addListener('places_changed', function() {
-    var places = searchBox.getPlaces();
-
-    if (places.length == 0) {
-      return;
-    }
-
-    // Clear out the old markers.
-    markers.forEach(function(marker) {
-      marker.setMap(null);
-    });
-    markers = [];
-
-    // For each place, get the icon, name and location.
-    var bounds = new google.maps.LatLngBounds();
-    places.forEach(function(place) {
-      var icon = {
-        url: place.icon,
-        size: new google.maps.Size(71, 71),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(17, 34),
-        scaledSize: new google.maps.Size(25, 25)
-      };
-
-      // Create a marker for each place.
-      markers.push(new google.maps.Marker({
-        map: map,
-        icon: icon,
-        title: place.name,
-        position: place.geometry.location
-      }));
-
-      if (place.geometry.viewport) {
-        // Only geocodes have viewport.
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
-    });
-    map.fitBounds(bounds);
-  });
-  
-
-  //Geolocation attempt
-  var browserSupportFlag = new Boolean;
-  if (navigator.geolocation) {
-    browserSupportFlag = true;
-    navigator.geolocation.getCurrentPosition(function(position) {
-      initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
-      map.setCenter(initialLocation);
-      var marker = new google.maps.Marker({
-    	position: initialLocation,
-    	map: map,
-    	title: 'You are here'
-  	  });
-    }, function() {
-      //handleNoGeolocation(browserSupportFlag);
-    });
-  }
-
-  //Geolocation not supported by browser
-  else {
-    browserSupportFlag = false;
-    handleNoGeolocation(browserSupportFlag);
-  }
-
-  // function handleNoGeolocation(errorFlag) {
-  //   if (errorFlag == true) {
-  //     alert("Geolocation service failed.");
-  //   } else {
-  //     alert("Your browser doesn't support geolocation.")
-  //   }
-  //   map.setCenter(initialLocation);
-  // }
-  var marker = new google.maps.Marker({
-    position: initialLocation,
-    map: map,
-    title: 'You are here'
-  });
-}
-
-
 /**************************** TIMELINE JS **********************************/
 
 'use strict';
@@ -286,8 +176,17 @@ angular.module('angular-timeline').directive('timelinePanel', function() {
 
 /******************************* MAP  *******************************/
 
+var oneortwo;
+
 //Google Maps JavaScript
 function init() {
+
+  var mapid = 'map';
+  var textid = 'pac-input'
+  if (oneortwo != 1) {
+  	document.getElementById('modal-body').innerHTML = "";
+  }
+
   var initialLocation = new google.maps.LatLng(35.9886, -78.9072);
   
   var options = {
@@ -295,11 +194,11 @@ function init() {
     center: initialLocation,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }; 
-  var map = new google.maps.Map(document.getElementById('map'), options);
+  var input = document.getElementById(textid);
+  var map = new google.maps.Map(document.getElementById(mapid), options);
   
   //searchbox: code adapted from https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
   // Create the search box and link it to the UI element.
-  var input = document.getElementById('pac-input');
   var searchBox = new google.maps.places.SearchBox(input);
   map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
@@ -362,6 +261,11 @@ function init() {
     navigator.geolocation.getCurrentPosition(function(position) {
       initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
       map.setCenter(initialLocation);
+      var marker = new google.maps.Marker({
+    	position: initialLocation,
+    	map: map,
+    	title: 'You are here'
+  	  });
     }, function() {
       //handleNoGeolocation(browserSupportFlag);
     });
@@ -381,10 +285,14 @@ function init() {
     }
     map.setCenter(initialLocation);
   }
+  var marker = new google.maps.Marker({
+    position: initialLocation,
+    map: map,
+    title: 'You are here'
+  });
 
   document.getElementById('submitbutton').disabled = true;
 }
-
 
 
 /************************** CONSTANTS ****************************/
@@ -553,6 +461,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
   $scope.newIncident = function() {
   	var j =jQuery.noConflict(); 
     j('#myModal2').modal('show'); 
+    oneortwo = 2;
     setTimeout(init,1000);
   };
 
@@ -569,6 +478,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
             values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
             values['departments'] = []; // this will be coded in later (TODO)
             values['status'] = 0; // all incidents start as unresolved
+            values['description'] = String(document.getElementById('description').value);
             var e = document.getElementById("severity");
     		var severity = e.options[e.selectedIndex].value;
             values['severity'] = parseInt(severity) - 1;
@@ -580,10 +490,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
 			})
 			.done(function(msg) {
 			  console.log(msg);
-			  $scope.make_api_get();
+			  fromServer.push(msg);
+        	  $scope.sort();
 			});
 	    } else {
-	        	values[inputs[i].name] = inputs[i].value;
+	        values[inputs[i].name] = inputs[i].value;
 	    }
 	}
   };
@@ -841,6 +752,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
     body.innerHTML = $scope.writemodal(data);
     var j =jQuery.noConflict(); 
     j('#myModal').modal('show'); 
+    oneortwo = 1;
     document.getElementById('severity').value = data.severity;
     document.getElementById('status').value = data.status;
     setTimeout(init, 1000); // needs slight delay
@@ -856,7 +768,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
            '<select id="status"><option value="1">Unresolved</option><option value="2">In Progress</option><option value="3">Resolved</option></select>' +
            '</div>';
     str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Date & Time</span>: " + "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" + "<br></div></div>";
-    str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Submitter</span>: &nbsp; &nbsp;" + data.submitter + "</div>";
+    str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Submitter</span>: &nbsp;<span id='submitter'>" + data.submitter + "</span></div>";
     str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "</div></div><br>";
     str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'>" + '<label for="Textarea">Incident Description</label>' +
      	   '<textarea name="description" class="formedit form-control" name="description" id="description" rows="8">'+ data.description +  '</textarea></div>'
@@ -884,7 +796,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, uiGridConstants
       'severity': parseInt(severity) - 1,
       'status': parseInt(document.getElementById('status').value) - 1,
       'time': new Date(document.getElementById('time').value),
-      'submitter': escapeHtml(document.getElementById('submitter').value),
       'departments': escapeHtml(document.getElementById('departments').value),
       'permission': permission,
       'id': modalid
