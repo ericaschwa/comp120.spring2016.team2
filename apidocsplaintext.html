@@ -1,0 +1,113 @@
+<span style="font-family: monospace">
+DIRT API Documentation<br />
+<br />
+All API endpoints (other than those required for authentication)<br />
+will require authentication to be accessed.<br />
+<br />
+To ensure the privacy and safety of our users, no incident<br />
+reports will be publicly viewable.<br />
+<br />
+-----------------------------------------------------------------<br />
+<br />
+Schemata<br />
+<br />
+&lt;&lt; Incident &gt;&gt;<br />
+{<br />
+&nbsp;&nbsp; &nbsp;&quot;id&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int<br />
+&nbsp;&nbsp; &nbsp;&quot;severity&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int {0, 1, 2, 3}<br />
+&nbsp;&nbsp; &nbsp;&quot;status&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int {0, 1, 2}<br />
+&nbsp;&nbsp; &nbsp;&quot;description&quot; &nbsp; &nbsp; &nbsp; string<br />
+&nbsp;&nbsp; &nbsp;&quot;location&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;string<br />
+&nbsp;&nbsp; &nbsp;&quot;created_at&quot; &nbsp; &nbsp; &nbsp; &nbsp;string (ISO 8601)<br />
+&nbsp;&nbsp; &nbsp;&quot;user&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&lt;&lt; User &gt;&gt;<br />
+}<br />
+<br />
+&lt;&lt; User &gt;&gt;<br />
+{<br />
+&nbsp;&nbsp; &nbsp;&quot;id&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int<br />
+&nbsp;&nbsp; &nbsp;&quot;first_name&quot; &nbsp; &nbsp; &nbsp; &nbsp;string<br />
+&nbsp;&nbsp; &nbsp;&quot;last_name&quot; &nbsp; &nbsp; &nbsp; &nbsp; string<br />
+&nbsp;&nbsp; &nbsp;&quot;email_address&quot; &nbsp; &nbsp; string<br />
+&nbsp;&nbsp; &nbsp;&quot;phone_number&quot; &nbsp; &nbsp; &nbsp;string<br />
+}<br />
+<br />
+-----------------------------------------------------------------<br />
+<br />
+GET &nbsp;/incidents<br />
+<br />
+Query arguments<br />
+- &quot;user_id&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; int &nbsp; &nbsp; (defaults to ALL users)<br />
+<br />
+Response<br />
+[<br />
+&nbsp;&nbsp; &nbsp;&lt;&lt; Incident &gt;&gt;,<br />
+&nbsp;&nbsp; &nbsp;&lt;&lt; Incident &gt;&gt;,<br />
+&nbsp;&nbsp; &nbsp;...<br />
+&nbsp;&nbsp; &nbsp;&lt;&lt; Incident &gt;&gt;,<br />
+]<br />
+<br />
+-----------------------------------------------------------------<br />
+<br />
+POST /incidents/new<br />
+<br />
+Params<br />
+{<br />
+&nbsp;&nbsp; &nbsp;&quot;severity&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int {0, 1, 2, 3}<br />
+&nbsp;&nbsp; &nbsp;&quot;description&quot; &nbsp; &nbsp; &nbsp; string<br />
+&nbsp;&nbsp; &nbsp;&quot;location&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;string<br />
+&nbsp;&nbsp; &nbsp;&quot;created_at&quot; &nbsp; &nbsp; &nbsp; &nbsp;string (ISO 8601)<br />
+}<br />
+<br />
+Response<br />
+&lt;&lt; Incident &gt;&gt;<br />
+<br />
+-----------------------------------------------------------------<br />
+<br />
+GET &nbsp;/incidents/:id<br />
+<br />
+Query args<br />
+- None<br />
+<br />
+Response<br />
+&lt;&lt; Incident &gt;&gt;<br />
+<br />
+-----------------------------------------------------------------<br />
+<br />
+POST /incidents/:id<br />
+<br />
+Params<br />
+{<br />
+&nbsp;&nbsp; &nbsp;&quot;severity&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int {0, 1, 2, 3}<br />
+&nbsp;&nbsp; &nbsp;&quot;status&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int {0, 1, 2}<br />
+&nbsp;&nbsp; &nbsp;&quot;description&quot; &nbsp; &nbsp; &nbsp; string<br />
+&nbsp;&nbsp; &nbsp;&quot;location&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;string<br />
+}<br />
+<br />
+Response<br />
+&lt;&lt; Incident &gt;&gt;<br />
+<br />
+-----------------------------------------------------------------<br />
+<br />
+GET &nbsp;/users/:id<br />
+<br />
+Query args<br />
+- None<br />
+<br />
+Response<br />
+&lt;&lt; User &gt;&gt;<br />
+<br />
+-----------------------------------------------------------------<br />
+<br />
+POST /users/new<br />
+<br />
+Params<br />
+{<br />
+&nbsp;&nbsp; &nbsp;&quot;first_name&quot; &nbsp; &nbsp; &nbsp; &nbsp;string<br />
+&nbsp;&nbsp; &nbsp;&quot;last_name&quot; &nbsp; &nbsp; &nbsp; &nbsp; string<br />
+}<br />
+<br />
+Response<br />
+&lt;&lt; User &gt;&gt;<br />
+<br />
+-----------------------------------------------------------------
+</span>
