@@ -48,9 +48,21 @@
           <label for="Textarea">Incident Description</label>
           <textarea name="description" class="form-control" id="description" rows="8" onkeyup="descriptionedit()"></textarea>
         </fieldset>
+       <!--  https://aws.amazon.com/articles/1434 -->
         <fieldset class="form-group">
-          <label for="InputFile">Add file</label>
-          <input name="photo" type="file" class="form-control-file" id="InputFile">
+          <form action="https://logs.dirt.frontfish.net.s3-website-us-west-2.amazonaws.com" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="key" value="uploads/${filename}">
+      <input type="hidden" name="AWSAccessKeyId" value="AKIAJDUJMG7364YCNVXQ"> 
+      <input type="hidden" name="acl" value="private"> 
+      <input type="hidden" name="success_action_redirect" value="form.html">
+      <input type="hidden" name="policy" value="YOUR_POLICY_DOCUMENT_BASE64_ENCODED">
+      <input type="hidden" name="signature" value="zwYLmPAvnDE+VMJqBZVt7VC4hMTY5kAAyimeKDF4">
+      <input type="hidden" name="Content-Type" value="image/jpeg">
+      <!-- Include any additional input fields here -->
+      <input name="file" type="file"> 
+      <br> 
+      <input type="submit" value="Upload File to S3"> 
+    </form> 
         </fieldset>
 
       </div>
@@ -62,7 +74,9 @@
 
     </div>
       
-    <button id="submitbutton" type="submit" class="btn btn-primary">Submit</button>
+     <form action="https://s3-bucket.s3.amazonaws.com/" method="post" enctype="multipart/form-data">
+      <button id="submitbutton" type="submit" class="btn btn-primary">Submit to S3</button>
+    </form>
   </form>
 </div>
   <!-- bootstrap includes -->
