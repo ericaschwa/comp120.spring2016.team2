@@ -7,7 +7,7 @@ will require authentication to be accessed.<br />
 To ensure the privacy and safety of our users, no incident<br />
 reports will be publicly viewable.<br />
 <br />
------------------------------------------------------------------<br />
+------------------------------------------------------------------------------------------------<br />
 <br />
 Schemata<br />
 <br />
@@ -35,7 +35,7 @@ Note:<br />
 Severity is on a range from 0 to 3, where 0 is not severe and 3 is emergency.<br />
 Status is on a range from 0 to 2, where 0 is unresolved, 1 is in progress, and 2 is resolved.
 <br />
------------------------------------------------------------------<br />
+------------------------------------------------------------------------------------------------<br />
 <br />
 GET &nbsp;/incidents<br />
 <br />
@@ -50,16 +50,28 @@ Response<br />
 &nbsp;&nbsp; &nbsp;&lt;&lt; Incident &gt;&gt;,<br />
 ]<br />
 <br />
------------------------------------------------------------------<br />
+Example code:<br />
+<pre>
+	// Get all incidents. AJAX request, requires jQuery.
+	// Within the callback function, you may use msg however you'd like.
+
+	$.ajax({
+  		method: "GET",
+  		url: "http://api.dirt.frontfish.net/incidents"
+  	})
+  	.done(function(msg) {
+  	});
+ </pre>
+------------------------------------------------------------------------------------------------<br />
 <br />
 POST /incidents/new<br />
 <br />
 Params<br />
 {<br />
-&nbsp;&nbsp; &nbsp;&quot;severity&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int {0, 1, 2, 3}<br />
-&nbsp;&nbsp; &nbsp;&quot;description&quot; &nbsp; &nbsp; &nbsp; string<br />
-&nbsp;&nbsp; &nbsp;&quot;location&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;string<br />
-&nbsp;&nbsp; &nbsp;&quot;created_at&quot; &nbsp; &nbsp; &nbsp; &nbsp;string (ISO 8601)<br />
+&nbsp;&nbsp; &nbsp;&quot;severity&quot;* &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int {0, 1, 2, 3}<br />
+&nbsp;&nbsp; &nbsp;&quot;description&quot;* &nbsp; &nbsp; &nbsp; string<br />
+&nbsp;&nbsp; &nbsp;&quot;location&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string<br />
+&nbsp;&nbsp; &nbsp;&quot;created_at&quot;* &nbsp; &nbsp; &nbsp; &nbsp;string (ISO 8601)<br />
 }<br />
 <br />
 Response<br />
@@ -67,7 +79,23 @@ Response<br />
 <br />
 Note:<br />
 Severity is on a range from 0 to 3, where 0 is not severe and 3 is emergency.<br />
------------------------------------------------------------------<br />
+Required fields are marked with an asterisk "*"<br /><br />
+
+Example code:<br />
+<pre>
+	// Report new incident. AJAX request, requires jQuery.
+	// Requires some prior-created value object.
+	// Within the callback function, you may use msg however you'd like.
+	
+	$.ajax({
+  		method: "POST",
+  		url: "http://api.dirt.frontfish.net/incidents/new"
+  		data: value
+  	})
+  	.done(function(msg) {
+  	});
+ </pre>
+------------------------------------------------------------------------------------------------<br />
 <br />
 GET &nbsp;/incidents/:id<br />
 <br />
@@ -77,16 +105,28 @@ Query args<br />
 Response<br />
 &lt;&lt; Incident &gt;&gt;<br />
 <br />
------------------------------------------------------------------<br />
+Example code:<br />
+<pre>
+	// Get an existing incident. AJAX request, requires jQuery.
+	// Within the callback function, you may use msg however you'd like.
+
+	$.ajax({
+  		method: "GET",
+  		url: "http://api.dirt.frontfish.net/incidents/" + value['id']
+  	})
+  	.done(function(msg) {
+  	});
+ </pre>
+------------------------------------------------------------------------------------------------<br />
 <br />
 POST /incidents/:id<br />
 <br />
 Params<br />
 {<br />
-&nbsp;&nbsp; &nbsp;&quot;severity&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int {0, 1, 2, 3}<br />
-&nbsp;&nbsp; &nbsp;&quot;status&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int {0, 1, 2}<br />
-&nbsp;&nbsp; &nbsp;&quot;description&quot; &nbsp; &nbsp; &nbsp; string<br />
-&nbsp;&nbsp; &nbsp;&quot;location&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;string<br />
+&nbsp;&nbsp; &nbsp;&quot;severity&quot;* &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int {0, 1, 2, 3}<br />
+&nbsp;&nbsp; &nbsp;&quot;status&quot;* &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;int {0, 1, 2}<br />
+&nbsp;&nbsp; &nbsp;&quot;description&quot;* &nbsp; &nbsp; &nbsp; string<br />
+&nbsp;&nbsp; &nbsp;&quot;location&quot; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; string<br />
 }<br />
 <br />
 Response<br />
@@ -94,9 +134,23 @@ Response<br />
 <br />
 Note:<br />
 Severity is on a range from 0 to 3, where 0 is not severe and 3 is emergency.<br />
-Status is on a range from 0 to 2, where 0 is unresolved, 1 is in progress, and 2 is resolved.
-<br />
------------------------------------------------------------------<br />
+Status is on a range from 0 to 2, where 0 is unresolved, 1 is in progress, and 2 is resolved.<br />
+Required fields are marked with an asterisk "*"<br /><br />
+Example code:<br />
+<pre>
+	// Edit an existing incident. AJAX request, requires jQuery.
+	// Requires some prior-created value object.
+	// Within the callback function, you may use msg however you'd like.
+	
+	$.ajax({
+  		method: "POST",
+  		url: "http://api.dirt.frontfish.net/incidents/" + value['id'],
+  		data: value
+  	})
+  	.done(function(msg) {
+  	});
+ </pre>
+------------------------------------------------------------------------------------------------<br />
 <br />
 GET &nbsp;/users/:id<br />
 <br />
@@ -106,18 +160,36 @@ Query args<br />
 Response<br />
 &lt;&lt; User &gt;&gt;<br />
 <br />
------------------------------------------------------------------<br />
+Example code: <br />
+<pre>
+	get '/users/:id' do |id|
+  		return json User.get(id)
+  	end
+ </pre>
+------------------------------------------------------------------------------------------------<br />
 <br />
 POST /users/new<br />
 <br />
 Params<br />
 {<br />
-&nbsp;&nbsp; &nbsp;&quot;first_name&quot; &nbsp; &nbsp; &nbsp; &nbsp;string<br />
-&nbsp;&nbsp; &nbsp;&quot;last_name&quot; &nbsp; &nbsp; &nbsp; &nbsp; string<br />
+&nbsp;&nbsp; &nbsp;&quot;first_name&quot;* &nbsp; &nbsp; &nbsp; &nbsp;string<br />
+&nbsp;&nbsp; &nbsp;&quot;last_name&quot;* &nbsp; &nbsp; &nbsp; &nbsp; string<br />
 }<br />
 <br />
 Response<br />
 &lt;&lt; User &gt;&gt;<br />
 <br />
------------------------------------------------------------------
+Note: Required fields are marked with an asterisk "*"<br /><br />
+Example code: <br />
+<pre>
+	post '/users/new' do
+		user = User.create(first_name => params[:first_name], :last_name => params[:last_name])
+  		if user.saved?
+  			return json user
+  		else
+  			return "Failed to create user"
+  		end
+  	end
+ </pre>
+------------------------------------------------------------------------------------------------
 </span>
