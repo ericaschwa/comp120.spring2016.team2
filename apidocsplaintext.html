@@ -31,6 +31,10 @@ Schemata<br />
 &nbsp;&nbsp; &nbsp;&quot;phone_number&quot; &nbsp; &nbsp; &nbsp;string<br />
 }<br />
 <br />
+Note:<br />
+Severity is on a range from 0 to 3, where 0 is not severe and 3 is emergency.<br />
+Status is on a range from 0 to 2, where 0 is unresolved, 1 is in progress, and 2 is resolved.
+<br />
 -----------------------------------------------------------------<br />
 <br />
 GET &nbsp;/incidents<br />
@@ -61,6 +65,8 @@ Params<br />
 Response<br />
 &lt;&lt; Incident &gt;&gt;<br />
 <br />
+Note:<br />
+Severity is on a range from 0 to 3, where 0 is not severe and 3 is emergency.<br />
 -----------------------------------------------------------------<br />
 <br />
 GET &nbsp;/incidents/:id<br />
@@ -85,6 +91,10 @@ Params<br />
 <br />
 Response<br />
 &lt;&lt; Incident &gt;&gt;<br />
+<br />
+Note:<br />
+Severity is on a range from 0 to 3, where 0 is not severe and 3 is emergency.<br />
+Status is on a range from 0 to 2, where 0 is unresolved, 1 is in progress, and 2 is resolved.
 <br />
 -----------------------------------------------------------------<br />
 <br />
