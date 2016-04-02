@@ -420,6 +420,7 @@ function escapeHtml(str) {
 var setmodal;
 var edit;
 var sort;
+var refreshing = false;
 
 var app = angular.module('incidentApp2', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns', 'angular-timeline', 'ui.bootstrap', 'ui.bootstrap.datetimepicker']);
 
@@ -427,6 +428,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 
   $scope.currentPage = 0;
   $scope.pageSize = 10;
+  $scope.numnew = 0;
   incidentData = [];
 
 
@@ -466,7 +468,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   };
   /*********************************** end DATETIMEPICKER *********************************/
 
-
   // make get request to access all incidents
   $scope.make_api_get = function() {
   	var j = jQuery.noConflict();
@@ -481,10 +482,32 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
         document.getElementById('showresolved').disabled = false;
         $scope.sort();
   	});
-  }
+  };
+
+  $scope.refresh = function() {
+  	console.log("refresh");
+  	refreshing = true;
+  	$scope.sort();
+  	refreshing = false;
+  };
+  $scope.showrefresh = function() {
+  	console.log("loading more");
+  	var j = jQuery.noConflict();
+  	j.ajax({
+  		method: "GET",
+  		url: URL + '/incidents'
+  	})
+  	.done(function(msg) {
+  		fromServer = msg;
+  		$scope.numnew = fromServer.length - length;
+  		$scope.$apply();
+  	});
+  };
+  setInterval($scope.showrefresh, 5000);
 
   // make post request to edit a given incident
   $scope.make_api_post = function(value) {
+  	console.log(value);
     var j = jQuery.noConflict();
     j.ajax({
           method: "POST",
@@ -523,13 +546,13 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   	var j = jQuery.noConflict();
   	var inputs = j('#form :input');
   	var values = {};
-  	var date = new Date();
+  	var datenow = new Date();
   	var reportdate = $scope.date;
 	for (var i = 0; i < inputs.length - 1; i++) {
 		values[inputs[i].name] = inputs[i].value;
 	}
-	values['created_at'] = date.toISOString();
-	values['time'] = reportdate.toISOString();
+	values['modified_at'] = datenow.toISOString();
+	values['created_at'] = reportdate.toISOString();
     values['user_id'] = USER; // this will be replaced by UserID when we get one (TODO)
     values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
     values['departments'] = []; // this will be coded in later (TODO)
@@ -565,9 +588,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   // create array, incidentData, that will become the input to our table
   $scope.setupData = function() {
     var str = document.getElementById('filterby').value;
+    length = fromServer.length;
     $scope.filterincidentdata(str.toLowerCase());
     $scope.maketimeline();
-    $scope.$apply();
+    if (!refreshing)
+    	$scope.$apply();
   };
 
   // used to filter the table by a given parameter
@@ -590,14 +615,16 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
         continue;
       }
       // match department ID array to string list of departments
-      var datetime = new Date(fromServer[i]['created_at']);
+      var created = new Date(fromServer[i]['created_at']);
+      var modified = new Date(fromServer[i]['modified_at']);
       var incident = {
         "submitter": fromServer[i]['user']['last_name'] + ", " + fromServer[i]['user']['first_name'],
         "severity": parseInt(fromServer[i]['severity']) + 1,
         "description": fromServer[i]['description'],
         "departments": "", // TODO: make departments
         "location": fromServer[i]['location'],
-        "time": convertsortable(datetime),
+        "created_at": convertsortable(created),
+        "modified_at": convertsortable(modified),
         "edit": edit,
         "status": status,
         "id": fromServer[i]['id']
@@ -633,8 +660,13 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
           return true;
         }
       }
-      if (incident['time']) {
-        if (incident['time'].toLowerCase().includes(str)) {
+      if (incident['created_at']) {
+        if (incident['created_at'].toLowerCase().includes(str)) {
+          return true;
+        }
+      }
+      if (incident['modified_at']) {
+        if (incident['modified_at'].toLowerCase().includes(str)) {
           return true;
         }
       }
@@ -658,7 +690,8 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
         title: $scope.getstatus(i),
         location: $scope.getlocation(i),
         content: incidentData[i]['description'],
-        time: incidentData[i]['time'],
+        created_at: incidentData[i]['created_at'],
+        modified_at: incidentData[i]['modified_at'],
         submitter: incidentData[i]['submitter'],
         id: incidentData[i]['id'],
         scale1: $scope.getscale1(),
@@ -836,7 +869,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
     	   //'<datetimepicker min-date="minDate" hour-step="hourStep" minute-step="minuteStep" ng-model="date" show-meridian="showMeridian" ' +
     	   //'date-format="{{format}}" date-options="dateOptions" date-disabled="disabled(date, mode)" datepicker-append-to-body="false" readonly-date="false" hidden-time="false" ' +
     	   //'hidden-date="false" name="datetimepicker" show-spinners="true" readonly-time="false" date-opened="dateOpened"></datetimepicker>' +
-    	   "<input class='formedit' id='time' name='time' type='text' value='" + data.time + "' />" +
+    	   "<input class='formedit' id='time' name='time' type='text' value='" + data.created_at + "' />" +
            "<br></div></div>";
     str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Submitter</span>: &nbsp;<span id='submitter'>" + data.submitter + "</span></div>";
     str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "</div></div><br>";
@@ -866,8 +899,8 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
       'location': escapeHtml(document.getElementById('pac-input').value),
       'severity': parseInt(severity) - 1,
       'status': parseInt(document.getElementById('status').value) - 1,
-      'created_at': date.toISOString(),
-      'time': document.getElementById('time').value,
+      'modified_at': date.toISOString(),
+      'created_at': document.getElementById('time').value,
       'departments': escapeHtml(document.getElementById('departments').value),
       'permission': permission,
       'id': modalid
