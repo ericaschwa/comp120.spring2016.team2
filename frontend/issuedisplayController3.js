@@ -425,7 +425,7 @@ var refreshing = false;
 var app = angular.module('incidentApp2', ['ui.grid', 'ui.grid.selection', 'ui.grid.resizeColumns', 'ui.grid.moveColumns', 'angular-timeline', 'ui.bootstrap', 'ui.bootstrap.datetimepicker']);
 
 app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGridConstants) {
-
+  $scope.loaded = false;
   $scope.currentPage = 0;
   $scope.pageSize = 10;
   $scope.numnew = 0;
@@ -481,6 +481,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
         document.getElementById('hideresolved').disabled = true;
         document.getElementById('showresolved').disabled = false;
         $scope.sort();
+        $scope.loaded = true;
   	});
   };
 
