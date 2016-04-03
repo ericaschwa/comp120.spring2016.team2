@@ -480,8 +480,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
         show_resolved_incidents = false;
         document.getElementById('hideresolved').disabled = true;
         document.getElementById('showresolved').disabled = false;
+        refreshing = true;
         $scope.sort();
+        refreshing = false;
         $scope.loaded = true;
+        $scope.$apply();
   	});
   };
 
