@@ -82,6 +82,17 @@ two primary goals in developing our product:
 - Time spent learning ruby: 1-2 hours
 - Time spent implementing MVP: 20 hours
 
+##API Design choices
+We built our API using sinatra.  We chose Sinatra because of it is very
+lightweight compared to Rails and therefore easier to manage for a simple
+CRUD application like DIRT.  We built an API at the beginning of our
+project because it allows for complete separation of concerns between
+the frontend and the backend.  This separation means creating new interfaces
+(ie. mobile web, iOS/Android app, etc) doesn't require any adjustments to be
+made on the server side.  We also planned to create a refresh-free version of
+our interface in the future, and this is very easy to implement
+when using an API. 
+
 ### User Testing
 We asked several people for their input on our current user interface, and most of the feedback given is frontend-specific. Many of them like how the page looks; however, they do see the mostly empty space on the right side of the page as a problem. Suggestions on what to fill the unused space with were made by these users, such as putting a field that helps to see the trend of what is going on in the table. We have taken this feedback and will consider this as we further develop our frontend.
 
