@@ -279,7 +279,8 @@ function init() {
 
 
 /************************** CONSTANTS ****************************/
-URL = 'http://api.dirt.frontfish.net';
+//URL = 'http://api.dirt.frontfish.net';
+URL = 'http://localhost:9292';
 USER = 1;
 
 

@@ -116,7 +116,8 @@ function init() {
 }
 
 /***** CONSTANTS *****/
-URL = 'http://api.dirt.frontfish.net';
+//URL = 'http://api.dirt.frontfish.net' ;
+URL = 'http://localhost:9292';
 USER = 1;
 
 
@@ -146,12 +147,12 @@ $( document ).ready(function() {
             	var filename = document.getElementById("InputFile").files[0];
 
 
-            	console.log(filename.name);
-            	console.log("HERE")
+            	//console.log(filename.name);
+            	//console.log("HERE")
             	//console.log(values);
             	$.ajax({
 				  method: "POST",
-				  url: URL + '/incidents/new',
+				  url: 'URL' + '/incidents/new',
 				  data: values
 				})
 				.done(function(msg) {
@@ -200,6 +201,8 @@ function get_signed_request(file){
         if(xhr.readyState === 4){
             if(xhr.status === 200){
                 var response = JSON.parse(xhr.responseText);
+                console.log(response.signed_request);
+                console.log(response.url);
                 upload_file(file, response.signed_request, response.url);
             }
             else{
