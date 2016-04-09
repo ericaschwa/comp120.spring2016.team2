@@ -468,6 +468,20 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   };
   /*********************************** end DATETIMEPICKER *********************************/
 
+  //RABBITMQ
+  //var amqp = require('amqplib/callback_api');
+
+	/*amqp.connect('amqp://localhost', function(err, conn) {
+	  conn.createChannel(function(err, ch) {
+	    var q = 'hello';
+	    ch.assertQueue(q, {durable: false});
+	    console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q);
+	    ch.consume(q, function(msg) {
+	      console.log(" [x] Received %s", msg.content.toString());
+	    }, {noAck: true});
+	  });
+	});*/
+
   // make get request to access all incidents
   $scope.make_api_get = function() {
   	var j = jQuery.noConflict();
@@ -476,6 +490,29 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   		url: URL + '/incidents'
   	})
   	.done(function(msg) {
+  		//
+  		/*
+  		amqp.connect('amqp://localhost', function(err,conn) {
+  			conn.createChannel(function(err, ch) {
+  				var q = 'incidents';
+  				ch.assertQueue(q, {durable: false});
+  				ch.consume (q, function(msg) {
+  					msg.content.toString();
+			  		fromServer = msg;
+			        show_resolved_incidents = false;
+			        document.getElementById('hideresolved').disabled = true;
+			        document.getElementById('showresolved').disabled = false;
+			        refreshing = true;
+			        $scope.sort();
+			        refreshing = false;
+			        $scope.loaded = true;
+			        $scope.$apply();
+
+  				})
+  			})
+  		}
+  		*/
+  		//
   		fromServer = msg;
         show_resolved_incidents = false;
         document.getElementById('hideresolved').disabled = true;
@@ -494,6 +531,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   	$scope.sort();
   	refreshing = false;
   };
+
   $scope.showrefresh = function() {
   	console.log("loading more");
   	var j = jQuery.noConflict();
@@ -502,6 +540,22 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   		url: URL + '/incidents'
   	})
   	.done(function(msg) {
+  	/*
+  	  		amqp.connect('amqp://localhost', function(err,conn) {
+  			conn.createChannel(function(err, ch) {
+  				var q = 'incidents';
+  				ch.assertQueue(q, {durable: false});
+  				ch.consume (q, function(msg) {
+  					msg.content.toString()
+			  		fromServer = msg;
+			        $scope.numnew = fromServer.length - length;
+			        $scope.$apply();
+
+  				})
+  			})
+  		}
+  	*/
+  	
   		fromServer = msg;
   		$scope.numnew = fromServer.length - length;
   		$scope.$apply();
@@ -930,3 +984,5 @@ app.filter('startFrom', function() {
         return input.slice(start);
     }
 });
+
+
