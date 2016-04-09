@@ -22,7 +22,9 @@ and inefficient.
 ## Further plans
 We are beginning to implement a message queue to replace our current design. This message queue will
 act as middleware between our server and frontend, and will take away the necessity of constant polling
-from the server. However, it requires more time to fully incorporate into our code.
+from the server. The server will send data of new and edited incidents to the message queue, and the frontend
+will receive from the other end of the queue. However, it requires more time to fully incorporate into our code,
+as it requires some restructuring.
 
 ## Memory Caching - Design
 
