@@ -10,7 +10,7 @@ For this leg, we initially implemented a naive solution, polling the server ever
 for the most recently created and edited incidents. When new incidents arrive, our frontend will poll the server, and a new button will appear at the top right hand side of the page, showing the number of new incidents since the last refresh. Once users click the button, the page will refresh, the new incidents will show on the page, and the button will disappear.
 
 ## Benefits and Costs
-We chose to use this solution because it was easy to implement and incorporate into our current structure.  Small adjustments were made on both the front and back end.
+We chose to use this solution because it was easy to implement and incorporate into our current structure.  Only small adjustments were made on both the front and back end.
 For obvious reasons, this naive design is costly. Since our app will not be used constantly, polling every 5 seconds (or even every 60 seconds) means a lot of data will be sent back and forth whenever the page is left open in a browser. As size of our dataset increases, this can become extremely problematic and inefficient.
 
 ## Further plans
@@ -29,3 +29,4 @@ We are beginning to implement a message queue to replace our current design. Thi
 - [Janeth Jepkogei](http://github.com/janethjepkogei)
 - [Erica Schwartz](http://github.com/ericaschwa)
 - [Norman Young](http://github.com/nyoung01)
+
