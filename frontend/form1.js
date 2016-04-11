@@ -144,8 +144,14 @@ $( document ).ready(function() {
             	var e = document.getElementById("severity");
     			var severity = e.options[e.selectedIndex].value;
             	values['severity'] = parseInt(severity) - 1;
-            	var filename = document.getElementById("InputFile").files[0];
 
+
+            	var filename = document.getElementById("InputFile").files[0];
+    			if(file != null){
+      			  	get_signed_request(file);
+       			
+    			}
+   				
 
             	//console.log(filename.name);
             	//console.log("HERE")
@@ -191,10 +197,12 @@ function upload_file(file, signed_request, url){
 
 /*
     Function to get the temporary signed request from the app.
-    If request successful, continue to upload the file using this signed
+    If request is successful, continue to upload the file using this signed
     request.
 */
 function get_signed_request(file){
+	console.log(file.name);
+	alert("got a file");
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
     xhr.onreadystatechange = function(){

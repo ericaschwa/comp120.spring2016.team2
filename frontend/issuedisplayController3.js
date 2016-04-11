@@ -400,6 +400,31 @@ function insert(array, begin, end, v, comp)
 }
 
 
+
+/*
+    Function to get the temporary signed request from the app.
+    If request is successful, continue to upload the file using this signed
+    request.
+*/
+function get_signed_request(file){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState === 4){
+            if(xhr.status === 200){
+                var response = JSON.parse(xhr.responseText);
+                console.log(response.signed_request);
+                console.log(response.url);
+                upload_file(file, response.signed_request, response.url);
+            }
+            else{
+                alert("Could not get signed URL.");
+            }
+        }
+    };
+    xhr.send();
+}
+
 // from http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
 // partially combats XSS
 function escapeHtml(str) {
@@ -490,13 +515,13 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   };
 
   $scope.refresh = function() {
-  	console.log("refresh");
+  	//console.log("refresh");
   	refreshing = true;
   	$scope.sort();
   	refreshing = false;
   };
   $scope.showrefresh = function() {
-  	console.log("loading more");
+  	//console.log("loading more");
   	var j = jQuery.noConflict();
   	j.ajax({
   		method: "GET",
@@ -512,7 +537,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 
   // make post request to edit a given incident
   $scope.make_api_post = function(value) {
-  	console.log(value);
+  	//console.log(value);
     var j = jQuery.noConflict();
     j.ajax({
           method: "POST",
@@ -520,7 +545,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
           data: value
     })
     .done(function(msg) {
-          console.log(msg);
+          //console.log(msg);
           $scope.replaceat(value['id'], msg);
     });
   };
@@ -566,13 +591,19 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
     var e = document.getElementById("severity");
     var severity = e.options[e.selectedIndex].value;
     values['severity'] = parseInt(severity) - 1;
+
+    var filename = document.getElementById("InputFile").files[0];
+    if(filename != null){
+      	get_signed_request(filename);  			
+    }
+
     j.ajax({
 	  method: "POST",
 	  url: URL + '/incidents/new',
 	  data: values
 	})
 	.done(function(msg) {
-	  console.log(msg);
+	 // console.log(msg);
 	  fromServer.push(msg);
          $scope.sort();
 	});
