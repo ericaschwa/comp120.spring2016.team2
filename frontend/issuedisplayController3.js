@@ -469,30 +469,22 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   /*********************************** end DATETIMEPICKER *********************************/
 
   //RABBITMQ
-  //var amqp = require('amqplib/callback_api');
-
-	/*amqp.connect('amqp://localhost', function(err, conn) {
-	  conn.createChannel(function(err, ch) {
-	    var q = 'hello';
-	    ch.assertQueue(q, {durable: false});
-	    console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q);
-	    ch.consume(q, function(msg) {
-	      console.log(" [x] Received %s", msg.content.toString());
-	    }, {noAck: true});
-	  });
-	});*/
 
   // make get request to access all incidents
   $scope.make_api_get = function() {
-  	var j = jQuery.noConflict();
+	var j = jQuery.noConflict();
   	j.ajax({
   		method: "GET",
   		url: URL + '/incidents'
   	})
   	.done(function(msg) {
   		//
-  		/*
-  		amqp.connect('amqp://localhost', function(err,conn) {
+  		//var amqp = require('amqplib/callback_api');
+  	/*	var j = jQuery.noConflict();
+  		j.getScript("frontend/node_modules/amqplib/callback_api.js", function(){ */
+
+   //alert("Script loaded but not necessarily executed.");
+   /*amqp.connect('amqp://api.dirt.frontfish.net:5672', function(err,conn) {
   			conn.createChannel(function(err, ch) {
   				var q = 'incidents';
   				ch.assertQueue(q, {durable: false});
@@ -510,9 +502,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 
   				})
   			})
-  		}
-  		*/
-  		//
+  		});*/
+	//});
+  		
+  
+  		
   		fromServer = msg;
         show_resolved_incidents = false;
         document.getElementById('hideresolved').disabled = true;
