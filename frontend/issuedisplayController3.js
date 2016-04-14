@@ -399,7 +399,43 @@ function insert(array, begin, end, v, comp)
   array[begin]=v;
 }
 
+//https://github.com/flyingsparx/NodeDirectUploader/blob/master/views/account.html
+/*
+    Function to carry out the actual PUT request to S3 using the signed request from the app.
+*/
+/*function upload_file(file, signed_request, url){
 
+	var j = jQuery.noConflict();
+  	j.ajax({
+  		method: "PUT",
+  		url: signed_request
+  	})
+  	.done(function(msg) {
+  		console.log("HERE1");
+  		fromServer = msg;
+  		console.log(url);
+      	console.log (msg);
+  	});
+  };*/
+
+function upload_file(file, signed_request, url){
+    var xhr = new XMLHttpRequest();
+    xhr.open("PUT", signed_request);
+    xhr.setRequestHeader('x-amz-acl', 'public-read' );
+    xhr.setRequestHeader('Content-Type', 'file.type' );
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+        	console.log(url);
+        	console.log("HERE");
+            //document.getElementById("preview").src = url;            
+            //document.getElementById("avatar_url").value = url;
+        }
+    };
+    xhr.onerror = function() {
+        alert("Could not upload file."); 
+    };
+    xhr.send(file);
+}
 
 /*
     Function to get the temporary signed request from the app.
@@ -407,11 +443,28 @@ function insert(array, begin, end, v, comp)
     request.
 */
 function get_signed_request(file){
+  	var j = jQuery.noConflict();
+  	j.ajax({
+  		method: "GET",
+  		url: URL + '/sign_s3',
+  	})
+  	.done(function(msg) {
+  		console.log("here");
+  		fromServer = msg;
+  		//console.log (fromServer);
+        upload_file(file, fromServer.signed_request,fromServer.url);
+  	});
+  };
+
+/*function get_signed_request(file){
+
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
+    xhr.open("GET", "/sign_s3");
     xhr.onreadystatechange = function(){
         if(xhr.readyState === 4){
-            if(xhr.status === 200){
+        	console.log("Here");
+        	console.log(xhr.status);
+            if(xhr.status === 0){
                 var response = JSON.parse(xhr.responseText);
                 console.log(response.signed_request);
                 console.log(response.url);
@@ -423,7 +476,7 @@ function get_signed_request(file){
         }
     };
     xhr.send();
-}
+}*/
 
 // from http://shebang.brandonmintern.com/foolproof-html-escaping-in-javascript/
 // partially combats XSS
@@ -540,7 +593,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   	//console.log(value);
     var j = jQuery.noConflict();
     j.ajax({
-          method: "POST",
+          method: "GET",
           url: URL + '/incidents/' + value['id'],
           data: value
     })
@@ -592,9 +645,9 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
     var severity = e.options[e.selectedIndex].value;
     values['severity'] = parseInt(severity) - 1;
 
-    var filename = document.getElementById("InputFile").files[0];
-    if(filename != null){
-      	get_signed_request(filename);  			
+    var file = document.getElementById("InputFile").files[0];
+    if(file != null){
+      	get_signed_request(file);  			
     }
 
     j.ajax({
@@ -604,7 +657,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 	})
 	.done(function(msg) {
 	 // console.log(msg);
-	  fromServer.push(msg);
+	  	fromServer.push(msg); 
          $scope.sort();
 	});
   };
