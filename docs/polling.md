@@ -14,11 +14,10 @@ We chose to use our current polling solution because it was easy to implement an
 For obvious reasons, this naive design is costly. Since our app will not be used constantly, polling every 5 seconds (or even every 60 seconds) means a lot of data will be sent back and forth whenever the page is left open in a browser. As size of our dataset increases, this can become extremely problematic and inefficient.
 
 ## Caching
-We are still in the process of inocorporating RabbitMQ: a message queue, into our current design. The backend code for RabbitMQ is fully written, but RabbitMQ is not yet integrated with our frontend; it should be in the next couple of days, but currently it is not because we faced a lot of issues with finding RabbitMQ examples and resources for frontend code. We ended up deciding to use Stomp, and are currently implementing that.
+We are still in the process of inocorporating RabbitMQ: a message queue, into our current design. The backend code for RabbitMQ is fully written, as is the frontend code, but RabbitMQ is not yet fully integrated between the backend and frontend. It should be in the next couple of days, but currently it is not because we faced a lot of issues with finding RabbitMQ examples and resources for frontend code. We ended up deciding to use Stomp, and are currently implementing that. The frontend code for rabbitMQ is in our issuedisplayController3.js file, and in our stomp.js file, and you can look at that code and test it locally via a homebrew RabbitMQ installation. 
+
 RabbitMQ is a message queue that will act as middleware between our server and frontend, and will take away the necessity of constant polling from the server. The server will send data of new and edited incidents to the message queue, and the frontend will receive the cached information from the other end of the queue. However, it requires more time to fully incorporate into our code, as it requires some restructuring.
 
-##NOTE:
-We are currently in development mode on the server side with RabbitMQ. Therefore, the current ability to create new incidents is temporarily compromised. It should be back up within the coming day.
 
 ## Contributors
 - [Max Ettelson](http://github.com/mdettelson)
