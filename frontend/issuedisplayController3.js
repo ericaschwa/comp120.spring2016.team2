@@ -979,4 +979,63 @@ app.filter('startFrom', function() {
     }
 });
 
+//RABBITMQ AND SOCKJS CODE
+
+console.log("RABBIT?")
+if (location.search == '?ws') {
+	var ws = new WebSocket('ws://' + window.location.hostname + ':15674/ws');
+} else {
+	var ws = new SockJS('http://' + window.location.hostname + ':15674/stomp');
+}
+var client = Stomp.over(ws);
+var on_connect = function() {
+    console.log('connected');
+    //client.send("/amq/queue/incidents", {}, ":D");
+    id = client.subscribe("/amq/queue/incidents", function(msg) {
+    	console.log(msg);
+  //   	msg.content.toString();
+		// fromServer = msg;
+		// show_resolved_incidents = false;
+		// document.getElementById('hideresolved').disabled = true;
+		// document.getElementById('showresolved').disabled = false;
+		// refreshing = true;
+		// $scope.sort();
+		// refreshing = false;
+		// $scope.loaded = true;
+		// $scope.$apply();
+    // });
+};
+var on_error =  function() {
+	console.log('error');
+};
+client.connect('guest', 'guest', on_connect, on_error, '/');
+
+//EXAMPLE CODE FROM RABBITMQ
+      // client.debug = function(e) {
+      //   $('#second div').append($("<code>").text(e));
+      // };
+      // // default receive callback to get message from temporary queues
+      // client.onreceive = function(m) {
+      //   $('#first div').append($("<code>").text(m.body));
+      // }
+      // var on_connect = function(x) {
+      //     id = client.subscribe("/queue/test", function(m) {
+      //       // reply by sending the reversed text to the temp queue defined in the "reply-to" header
+      //       var reversedText = m.body.split("").reverse().join("");
+      //       client.send(m.headers['reply-to'], {"content-type":"text/plain"}, reversedText);
+      //     });
+      // };
+      // var on_error =  function() {
+      //   console.log('error');
+      // };
+      // client.connect('guest', 'guest', on_connect, on_error, '/');
+      // $('#first form').submit(function() {
+      //   var text = $('#first form input').val();
+      //   if (text) {
+      //     client.send('/queue/test', {'reply-to': '/temp-queue/foo'}, text);
+      //       $('#first form input').val("");
+      //     }
+      //     return false;
+      // });
+
 
