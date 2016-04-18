@@ -1004,6 +1004,7 @@ var on_connect = function() {
 		// $scope.loaded = true;
 		// $scope.$apply();
     // });
+	});
 };
 var on_error =  function() {
 	console.log('error');
