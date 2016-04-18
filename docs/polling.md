@@ -17,6 +17,9 @@ For obvious reasons, this naive design is costly. Since our app will not be used
 We are still in the process of inocorporating RabbitMQ: a message queue, into our current design. The backend code for RabbitMQ is fully written, but RabbitMQ is not yet integrated with our frontend; it should be in the next couple of days, but currently it is not because we faced a lot of issues with finding RabbitMQ examples and resources for frontend code. We ended up deciding to use Stomp, and are currently implementing that.
 RabbitMQ is a message queue that will act as middleware between our server and frontend, and will take away the necessity of constant polling from the server. The server will send data of new and edited incidents to the message queue, and the frontend will receive the cached information from the other end of the queue. However, it requires more time to fully incorporate into our code, as it requires some restructuring.
 
+##NOTE:
+We are currently in development mode on the server side with RabbitMQ. Therefore, the current ability to create new incidents is temporarily compromised. It should be back up within the coming day.
+
 ## Contributors
 - [Max Ettelson](http://github.com/mdettelson)
 - [Chris Hinstorff](http://github.com/chinstorff)
