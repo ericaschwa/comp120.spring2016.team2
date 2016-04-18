@@ -12,8 +12,10 @@ for the most recently created and edited incidents. When new incidents arrive, o
 ## Benefits, Costs, and Future Plans
 We chose to use our current polling solution because it was easy to implement and incorporate into our current structure.  Only small adjustments were made on both the front and back end.
 For obvious reasons, this naive design is costly. Since our app will not be used constantly, polling every 5 seconds (or even every 60 seconds) means a lot of data will be sent back and forth whenever the page is left open in a browser. As size of our dataset increases, this can become extremely problematic and inefficient.
-We are still in the process of inocorporating a message queue into our current design. This message queue will act as middleware between our server and frontend, and will take away the necessity of constant polling from the server. The server will send data of new and edited incidents to the message queue, and the frontend will receive the cached information from the other end of the queue. However, it requires more time to fully incorporate into our code, as it requires some restructuring.
 
+## Caching
+We are still in the process of inocorporating RabbitMQ: a message queue, into our current design. The backend code for RabbitMQ is fully written, but RabbitMQ is not yet integrated with our frontend; it should be in the next couple of days, but currently it is not because we faced a lot of issues with finding RabbitMQ examples and resources for frontend code. We ended up deciding to use Stomp, and are currently implementing that.
+RabbitMQ is a message queue that will act as middleware between our server and frontend, and will take away the necessity of constant polling from the server. The server will send data of new and edited incidents to the message queue, and the frontend will receive the cached information from the other end of the queue. However, it requires more time to fully incorporate into our code, as it requires some restructuring.
 
 ## Contributors
 - [Max Ettelson](http://github.com/mdettelson)
