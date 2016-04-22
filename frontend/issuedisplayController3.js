@@ -621,7 +621,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 	.done(function(msg) {
 	  console.log(msg);
 	  fromServer.push(msg);
-         $scope.sort();
+        $scope.sort();
 	});
   };
 
@@ -994,13 +994,13 @@ var on_connect = function() {
     //console.log('connected');
     //client.send("/amq/queue/incidents", {}, ":D");
 
-    client.subscribe("/amq/queue/fanout/incidents", function(msg) {
+    client.subscribe("/exchange/incidents", function(msg) {
      	console.log(msg);
-  //   	msg.content.toString();
+  //    	msg.content.toString();
 		// fromServer = msg;
 		// show_resolved_incidents = false;
 		// document.getElementById('hideresolved').disabled = true;
-		// document.getElementById('showresolved').disabled = false;
+		// ocument.getElementById('showresolved').disabled = false;
 		// refreshing = true;
 		// $scope.sort();
 		// refreshing = false;
