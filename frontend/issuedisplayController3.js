@@ -981,18 +981,21 @@ app.filter('startFrom', function() {
 
 //RABBITMQ AND SOCKJS CODE
 
-console.log("RABBIT?")
+console.log("RABBIT-TEST")
 if (location.search == '?ws') {
 	var ws = new WebSocket('ws://' + window.location.hostname + ':15674/ws');
+	console.log(ws);
 } else {
-	var ws = new SockJS('http://' + window.location.hostname + ':15674/stomp');
+	var ws = new WebSocket('ws://api.frontfish.net:15674/ws');
+	console.log(ws);
 }
 var client = Stomp.over(ws);
 var on_connect = function() {
-    console.log('connected');
+    //console.log('connected');
     //client.send("/amq/queue/incidents", {}, ":D");
-    id = client.subscribe("/amq/queue/incidents", function(msg) {
-    	console.log(msg);
+
+    client.subscribe("/amq/queue/fanout/incidents", function(msg) {
+     	console.log(msg);
   //   	msg.content.toString();
 		// fromServer = msg;
 		// show_resolved_incidents = false;
@@ -1003,13 +1006,13 @@ var on_connect = function() {
 		// refreshing = false;
 		// $scope.loaded = true;
 		// $scope.$apply();
-    // });
 	});
 };
 var on_error =  function() {
 	console.log('error');
 };
 client.connect('guest', 'guest', on_connect, on_error, '/');
+
 
 //EXAMPLE CODE FROM RABBITMQ
       // client.debug = function(e) {
