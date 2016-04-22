@@ -63,7 +63,7 @@
       <timeline-badge class="{{event1.badgeClass}}">
         <i class="glyphicon {{event1.badgeIconClass}}"></i>
       </timeline-badge>
-      <timeline-panel class="{{event1.badgeClass}}" ng-click="setmodal(event1.id)">
+      <timeline-panel class="{{event1.badgeClass}}" ng-click="setmodal(event1.id, event1.created_at)">
         <div id="textbox">
           <timeline-heading>
             <p class="alignright">
@@ -72,7 +72,7 @@
                 <i class="glyphicon {{event1.scale3}}"></i>
                 <i class="glyphicon {{event1.scale4}}"></i>
             </p>
-            <p class ="alignleft"><h5><strong>{{event1.title}}</strong> | {{event1.time}} | {{event1.submitter}}</h5></p>
+            <p class ="alignleft"><h5><strong>{{event1.title}}</strong> | {{event1.incident_time}} | {{event1.submitter}}</h5></p>
           </timeline-heading>
           <p><b>Location: </b>{{event1.location}}<br><b>Description: </b><span class="description">{{event1.content}}</p></span>
         </div>
