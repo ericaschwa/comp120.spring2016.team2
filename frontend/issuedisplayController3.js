@@ -293,8 +293,6 @@ function init() {
   });
 
   document.getElementById('submitbutton').disabled = true;
-  //var j = jQuery.noConflict();
-  //j( "#datetimepicker" ).datetimepicker({value: new Date()});
 }
 
 
@@ -468,9 +466,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   };
   /*********************************** end DATETIMEPICKER *********************************/
 
+  //RABBITMQ
+
   // make get request to access all incidents
   $scope.make_api_get = function() {
-  	var j = jQuery.noConflict();
+	var j = jQuery.noConflict();
   	j.ajax({
   		method: "GET",
   		url: URL + '/incidents'
@@ -480,8 +480,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
         show_resolved_incidents = false;
         document.getElementById('hideresolved').disabled = true;
         document.getElementById('showresolved').disabled = false;
+        refreshing = true;
         $scope.sort();
+        refreshing = false;
         $scope.loaded = true;
+        $scope.$apply();
   	});
   };
 
@@ -491,20 +494,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   	$scope.sort();
   	refreshing = false;
   };
-  $scope.showrefresh = function() {
-  	console.log("loading more");
-  	var j = jQuery.noConflict();
-  	j.ajax({
-  		method: "GET",
-  		url: URL + '/incidents'
-  	})
-  	.done(function(msg) {
-  		fromServer = msg;
-  		$scope.numnew = fromServer.length - length;
-  		$scope.$apply();
-  	});
-  };
-  setInterval($scope.showrefresh, 5000);
 
   // make post request to edit a given incident
   $scope.make_api_post = function(value) {
@@ -552,8 +541,9 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 	for (var i = 0; i < inputs.length - 1; i++) {
 		values[inputs[i].name] = inputs[i].value;
 	}
-	values['modified_at'] = datenow.toISOString();
-	values['created_at'] = reportdate.toISOString();
+	values['updated_at'] = datenow.toISOString();
+	values['created_at'] = datenow.toISOString();
+	values['incident_time'] = reportdate.toISOString();
     values['user_id'] = USER; // this will be replaced by UserID when we get one (TODO)
     values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
     values['departments'] = []; // this will be coded in later (TODO)
@@ -570,7 +560,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 	.done(function(msg) {
 	  console.log(msg);
 	  fromServer.push(msg);
-         $scope.sort();
+        $scope.sort();
 	});
   };
 
@@ -617,7 +607,8 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
       }
       // match department ID array to string list of departments
       var created = new Date(fromServer[i]['created_at']);
-      var modified = new Date(fromServer[i]['modified_at']);
+      var modified = new Date(fromServer[i]['updated_at']);
+      var time = new Date(fromServer[i]['incident_time'])
       var incident = {
         "submitter": fromServer[i]['user']['last_name'] + ", " + fromServer[i]['user']['first_name'],
         "severity": parseInt(fromServer[i]['severity']) + 1,
@@ -625,7 +616,8 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
         "departments": "", // TODO: make departments
         "location": fromServer[i]['location'],
         "created_at": convertsortable(created),
-        "modified_at": convertsortable(modified),
+        "updated_at": convertsortable(modified),
+        "incident_time":convertsortable(time),
         "edit": edit,
         "status": status,
         "id": fromServer[i]['id']
@@ -666,8 +658,13 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
           return true;
         }
       }
-      if (incident['modified_at']) {
-        if (incident['modified_at'].toLowerCase().includes(str)) {
+      if (incident['updated_at']) {
+        if (incident['updated_at'].toLowerCase().includes(str)) {
+          return true;
+        }
+      }
+      if (incident['incident_time']) {
+        if (incident['incident_time'].toLowerCase().includes(str)) {
           return true;
         }
       }
@@ -692,7 +689,8 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
         location: $scope.getlocation(i),
         content: incidentData[i]['description'],
         created_at: incidentData[i]['created_at'],
-        modified_at: incidentData[i]['modified_at'],
+        updated_at: incidentData[i]['updated_at'],
+        incident_time: incidentData[i]['incident_time'],
         submitter: incidentData[i]['submitter'],
         id: incidentData[i]['id'],
         scale1: $scope.getscale1(),
@@ -820,7 +818,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   };
 
   // set data for modal
-  $scope.setmodal = function(id) {
+  $scope.setmodal = function(id, created) {
     var body = document.getElementById('modal-body');
     var data = "";
     for (var i = 0; i < incidentData.length; i++) {
@@ -833,6 +831,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
       return;
     }
     modalid = id;
+    createdtime = created;
     permission = data['edit'];
     body.innerHTML = $scope.writemodal(data);
     var j =jQuery.noConflict(); 
@@ -867,9 +866,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
            '<select id="status"><option value="1">Unresolved</option><option value="2">In Progress</option><option value="3">Resolved</option></select>' +
            '</div>';
     str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Date & Time</span>: " +
-    	   //'<datetimepicker min-date="minDate" hour-step="hourStep" minute-step="minuteStep" ng-model="date" show-meridian="showMeridian" ' +
-    	   //'date-format="{{format}}" date-options="dateOptions" date-disabled="disabled(date, mode)" datepicker-append-to-body="false" readonly-date="false" hidden-time="false" ' +
-    	   //'hidden-date="false" name="datetimepicker" show-spinners="true" readonly-time="false" date-opened="dateOpened"></datetimepicker>' +
     	   "<input class='formedit' id='time' name='time' type='text' value='" + data.created_at + "' />" +
            "<br></div></div>";
     str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Submitter</span>: &nbsp;<span id='submitter'>" + data.submitter + "</span></div>";
@@ -900,8 +896,9 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
       'location': escapeHtml(document.getElementById('pac-input').value),
       'severity': parseInt(severity) - 1,
       'status': parseInt(document.getElementById('status').value) - 1,
-      'modified_at': date.toISOString(),
-      'created_at': document.getElementById('time').value,
+      'updated_at': date.toISOString(),
+      'created_at': createdtime, // TODO
+      'incident_time': document.getElementById('time').value,
       'departments': escapeHtml(document.getElementById('departments').value),
       'permission': permission,
       'id': modalid
@@ -917,7 +914,50 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   // makes get request for page's data
   $scope.make_api_get();
 
+  //RABBITMQ AND SOCKJS CODE
+  console.log("RABBIT-TEST")
+  if (location.search == '?ws') {
+  	var ws = new WebSocket('ws://' + window.location.hostname + ':15674/ws');
+  	console.log(ws);
+  } else {
+  	var ws = new WebSocket('ws://api.frontfish.net:15674/ws');
+  	console.log(ws);
+  }
+  var client = Stomp.over(ws);
+
+  $scope.on_connect = function() {
+    client.subscribe("/exchange/incidents", function(msg) {
+     	var newIncident = JSON.parse(msg.body);
+     	var alreadyIn = false;
+     	for (var i = 0; i < fromServer.length; i++) {
+     		if (fromServer[i].id == newIncident.id) {
+     			fromServer[i] = newIncident;
+     			alreadyIn = true;
+     		}
+     	}
+     	if (!alreadyIn) {
+     		fromServer.push(newIncident)
+     	}
+		
+		show_resolved_incidents = false;
+		document.getElementById('hideresolved').disabled = true;
+		document.getElementById('showresolved').disabled = false;
+		refreshing = true;
+		$scope.sort();
+		refreshing = false;
+		$scope.loaded = true;
+		$scope.$apply();
+	});
+  };
+
+  $scope.on_error =  function() {
+  	console.log('error');
+  };
+
+  client.connect('guest', 'guest', $scope.on_connect, $scope.on_error, '/');
+
 });
+
 app.filter('startFrom', function() {
     return function(input, start) {
         if (!input) {
@@ -927,3 +967,8 @@ app.filter('startFrom', function() {
         return input.slice(start);
     }
 });
+
+
+
+
+

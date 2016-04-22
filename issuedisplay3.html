@@ -13,7 +13,14 @@
 </head>
 	
 <body ng-controller="incidentCtrl2" ng-app="incidentApp2">
-<div ng-show="loaded">
+
+<div ng-show="!loaded" style="width: 100%; text-align: center">
+     <div style="margin: 10% auto;">
+          <img src="./img/ming-loading.gif">
+     </div>
+</div>
+
+<div ng-show="loaded" ng-hide>
   <ul class="nav nav-pills">
     <li class="dropdown pull-left"> 
       <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -56,7 +63,7 @@
       <timeline-badge class="{{event1.badgeClass}}">
         <i class="glyphicon {{event1.badgeIconClass}}"></i>
       </timeline-badge>
-      <timeline-panel class="{{event1.badgeClass}}" ng-click="setmodal(event1.id)">
+      <timeline-panel class="{{event1.badgeClass}}" ng-click="setmodal(event1.id, event1.created_at)">
         <div id="textbox">
           <timeline-heading>
             <p class="alignright">
@@ -65,7 +72,7 @@
                 <i class="glyphicon {{event1.scale3}}"></i>
                 <i class="glyphicon {{event1.scale4}}"></i>
             </p>
-            <p class ="alignleft"><h5><strong>{{event1.title}}</strong> | {{event1.time}} | {{event1.submitter}}</h5></p>
+            <p class ="alignleft"><h5><strong>{{event1.title}}</strong> | {{event1.incident_time}} | {{event1.submitter}}</h5></p>
           </timeline-heading>
           <p><b>Location: </b>{{event1.location}}<br><b>Description: </b><span class="description">{{event1.content}}</p></span>
         </div>
@@ -169,10 +176,14 @@
     
     <!-- Google Maps -->
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=true&libraries=places"></script>
+    <!-- SockJS -->
+    <script type = "text/javascript" src="http://cdn.jsdelivr.net/sockjs/1.0.3/sockjs.min.js"></script>
+    <script src="frontend/stomp.js"></script>
 
     <!-- code for this page 
     <script src="frontend/display.js"></script>-->
     <script src="frontend/issuedisplayController3.js"></script>
+
     <script src="http://cdn.rawgit.com/zhaber/datetimepicker/master/datetimepicker.js"></script>
 
 	</body>
