@@ -938,10 +938,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
      	if (!alreadyIn) {
      		fromServer.push(newIncident)
      	}
-		
-		show_resolved_incidents = false;
-		document.getElementById('hideresolved').disabled = true;
-		document.getElementById('showresolved').disabled = false;
 		refreshing = true;
 		$scope.sort();
 		refreshing = false;
