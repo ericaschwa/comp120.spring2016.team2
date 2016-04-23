@@ -915,14 +915,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   $scope.make_api_get();
 
   //RABBITMQ AND SOCKJS CODE
-  console.log("RABBIT-TEST")
-  if (location.search == '?ws') {
-  	var ws = new WebSocket('ws://' + window.location.hostname + ':15674/ws');
-  	console.log(ws);
-  } else {
-  	var ws = new WebSocket('ws://api.frontfish.net:15674/ws');
-  	console.log(ws);
-  }
+  var ws = new WebSocket('ws://api.frontfish.net:15674/ws')
   var client = Stomp.over(ws);
 
   $scope.on_connect = function() {
