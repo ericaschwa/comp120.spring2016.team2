@@ -915,10 +915,14 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   $scope.make_api_get();
 
   //RABBITMQ AND SOCKJS CODE
+
+  //establish a websocket connection
   var ws = new WebSocket('ws://api.frontfish.net:15674/ws')
+  //use the STOMP protocol
   var client = Stomp.over(ws);
 
   $scope.on_connect = function() {
+  	//connect to the message queue we are using, receive updates
     client.subscribe("/exchange/incidents", function(msg) {
      	var newIncident = JSON.parse(msg.body);
      	var alreadyIn = false;
@@ -928,9 +932,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
      			alreadyIn = true;
      		}
      	}
+     	//add new incident
      	if (!alreadyIn) {
      		fromServer.push(newIncident)
      	}
+     	//else edit pre-existing incident
 		refreshing = true;
 		$scope.sort();
 		refreshing = false;
