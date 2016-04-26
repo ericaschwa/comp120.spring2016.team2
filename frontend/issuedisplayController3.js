@@ -557,11 +557,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 	  url: URL + '/incidents/new',
 	  data: values
 	})
-	.done(function(msg) {
+	/*.done(function(msg) {
 	  console.log(msg);
 	  fromServer.push(msg);
         $scope.sort();
-	});
+	});*/
   };
 
 
