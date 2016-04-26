@@ -910,10 +910,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   $scope.numberOfPages=function(){
         return Math.ceil(incidentData.length/$scope.pageSize);                
     }
-
-  // makes get request for page's data
-  $scope.make_api_get();
-
+    
   //RABBITMQ AND SOCKJS CODE
 
   //establish a websocket connection
@@ -922,6 +919,8 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   var client = Stomp.over(ws);
 
   $scope.on_connect = function() {
+  	// makes get request for page's data
+  	$scope.make_api_get();
   	//connect to the message queue we are using, receive updates
     client.subscribe("/exchange/incidents", function(msg) {
      	var newIncident = JSON.parse(msg.body);
