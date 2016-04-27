@@ -466,7 +466,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   };
   /*********************************** end DATETIMEPICKER *********************************/
 
-  //RABBITMQ
 
   // make get request to access all incidents
   $scope.make_api_get = function() {
@@ -488,13 +487,6 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   	});
   };
 
-  $scope.refresh = function() {
-  	console.log("refresh");
-  	refreshing = true;
-  	$scope.sort();
-  	refreshing = false;
-  };
-
   // make post request to edit a given incident
   $scope.make_api_post = function(value) {
   	console.log(value);
@@ -510,7 +502,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
     });
   };
 
-
+  // show modal to create a new incident
   $scope.newIncident = function() {
   	var j =jQuery.noConflict(); 
     j('#myModal2').modal('show'); 
@@ -532,6 +524,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   	$scope.showMeridian = true;
   };
 
+  // create new incident, post it to the server
   $scope.createIncident = function() {
   	var j = jQuery.noConflict();
   	var inputs = j('#form :input');
@@ -557,11 +550,9 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 	  url: URL + '/incidents/new',
 	  data: values
 	})
-	/*.done(function(msg) {
+	.done(function(msg) {
 	  console.log(msg);
-	  fromServer.push(msg);
-        $scope.sort();
-	});*/
+	});
   };
 
 
@@ -914,7 +905,9 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   // makes get request for page's data
   $scope.make_api_get();
 
-  //RABBITMQ AND SOCKJS CODE
+  
+
+  /***********************************  RABBITMQ  *********************************/
 
   //establish a websocket connection
   var ws = new WebSocket('ws://api.frontfish.net:15674/ws')
