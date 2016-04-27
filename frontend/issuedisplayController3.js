@@ -909,12 +909,15 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 
   /***********************************  RABBITMQ  *********************************/
 
+
   //establish a websocket connection
   var ws = new WebSocket('ws://api.frontfish.net:15674/ws')
   //use the STOMP protocol
   var client = Stomp.over(ws);
 
   $scope.on_connect = function() {
+  	// makes get request for page's data
+  	$scope.make_api_get();
   	//connect to the message queue we are using, receive updates
     client.subscribe("/exchange/incidents", function(msg) {
      	var newIncident = JSON.parse(msg.body);
