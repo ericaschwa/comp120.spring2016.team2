@@ -515,7 +515,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   	//console.log(value);
     var j = jQuery.noConflict();
     j.ajax({
-          method: "GET",
+          method: "POST",
           url: URL + '/incidents/' + value['id'],
           data: value
     })
