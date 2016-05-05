@@ -556,12 +556,8 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   	var reportdate = $scope.date;
     if (!document.getElementById("InputFile").files.length == 0){
       var file_data = document.getElementById("InputFile").files[0];
-      if (!file_data.type.match('image/jpeg')){
-      }
-      else {
-      	console.log(file_data.type);
-      	values.append('file', file_data, 'image');
-      }
+      console.log(file_data.type);
+      values.append('file', file_data, 'image');
 	}
 	  values.append('modified_at', datenow.toISOString());
 	  values.append('created_at', reportdate.toISOString());
