@@ -554,6 +554,8 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   	var values = new FormData();
   	var datenow = new Date();
   	var reportdate = $scope.date;
+  	console.log(document.getElementById("InputFile"))
+
     if (!document.getElementById("InputFile").files.length == 0){
       console.log(document.getElementById("InputFile").files.length);
       var file_data = document.getElementById("InputFile").files[0];
