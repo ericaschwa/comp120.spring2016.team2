@@ -554,13 +554,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   	var values = new FormData();
   	var datenow = new Date();
   	var reportdate = $scope.date;
-  	console.log(document.getElementById("InputFile").files);
-
     if (!document.getElementById("InputFile").files.length == 0){
-      console.log(document.getElementById("InputFile").files.length);
       var file_data = document.getElementById("InputFile").files[0];
-      console.log(file_data)
+      console.log(file_data);
       if (!file_data.type.match('image.*')){
+      	console.log("not the right image")
       }
       else values.append('file', file_data.type, file_data);
 	}
