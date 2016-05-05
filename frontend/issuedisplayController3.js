@@ -560,7 +560,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
       }
       else {
       	console.log(file_data.type);
-      	values.append('file', file_data.type, file_data);
+      	values.append('file', file_data, 'image');
       }
 	}
 	  values.append('modified_at', datenow.toISOString());
