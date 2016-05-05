@@ -583,9 +583,10 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
       data: values, 
       processData: false,
       crossDomain:true,
+      cache: false,
     })
+
 	.done(function(msg) {
-	    alert("Done!");
       console.log(values);
     });
   };
