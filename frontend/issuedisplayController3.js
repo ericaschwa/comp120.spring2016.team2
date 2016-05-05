@@ -559,6 +559,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
       values.append('file', file_data, 'image');
 	}
 	  values.append('modified_at', datenow.toISOString());
+	  values.append('location', String(document.getElementById('pac-input').value));
 	  values.append('created_at', reportdate.toISOString());
     values.append('user_id', USER); // this will be replaced by UserID when we get one (TODO)
     values.append('permission', 2); // this will be based on the UserID when we get one (TODO)
