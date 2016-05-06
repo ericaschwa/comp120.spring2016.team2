@@ -101,6 +101,9 @@ We asked several people for their input on our current user interface, and most 
 ### Static Content Optimization
 Initially our website was really slow, loading about 800 incidents in 11.67 seconds. We therefore decided to perform some static content optimization, and when that was done we saw a great improvement of about 50%; the current issue display page now loads the same number of incidents in 5.6 seconds. Our optimization was performed using the following techniques: removing expired pages, uglifying and minifying css and htlm pages, combining all our javascript files and introducing pagination in the issue display page. Some of the tools that we used were Yslow and Google Chrome development tools(the audits and the network tab).
 
+### Photo Uploading
+After researching possible ways to deal with them, our team decided to use S3 to store images that the user can upload with an incident.  Instead of using our server as a middleman between client and S3, we originally wanted to retrieve a one-time-use upload link from S3 that would be passed to the front-end.  Using this method, however, proved much more complicated than anticipated due to poor documentation.  We are currently passing images from our front-end to our API, which then uploads the files to S3 and stores a link to the image in our database as part of the corresponding incident.  The link allows anyone with it to view the image.  File sizes are limited via nginx.
+
 ## Contributors
 - [Max Ettelson](http://github.com/mdettelson)
 - [Chris Hinstorff](http://github.com/chinstorff)
