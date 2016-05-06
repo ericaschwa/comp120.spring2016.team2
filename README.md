@@ -54,7 +54,9 @@ two primary goals in developing our product:
   - [DataMapper](http://datamapper.org/), an ORM
   - [Unicorn](http://rubygems.org/gems/unicorn/versions/5.0.1) for proxying to NGINX
   - [Cucumber](https://cucumber.io) for API testing
+  - [Amazon Web Services Ruby SDK](https://aws.amazon.com/sdk-for-ruby/) for uploading and retrieving photos from S3
 - MySQL
+- [Amazon S3](https://aws.amazon.com/s3/) for photo storage
 
 #### Why Sinatra over Ruby on Rails?
   Though Rails provides a lot of pre-built structures to work with,
