@@ -10,6 +10,13 @@
   <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
   <link href="http://cdn.rawgit.com/zhaber/datetimepicker/master/datetimepicker.css" type="text/css" rel="stylesheet">
 	<title>DIRT</title>
+  <style>
+    .thumbnail {
+      width:100px;
+      margin: 0;
+      padding:0;
+    }
+  </style>
 </head>
 	
 <body ng-controller="incidentCtrl2" ng-app="incidentApp2">
@@ -71,6 +78,7 @@
                 <i class="glyphicon {{event1.scale2}}"></i>
                 <i class="glyphicon {{event1.scale3}}"></i>
                 <i class="glyphicon {{event1.scale4}}"></i>
+                <img ng-src="{{ event1.image }}" class="thumbnail" alt="thumbnail">
             </p>
             <p class ="alignleft"><h5><strong>{{event1.title}}</strong> | {{event1.incident_time}} | {{event1.submitter}}</h5></p>
           </timeline-heading>

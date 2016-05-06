@@ -633,7 +633,16 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
       // match department ID array to string list of departments
       var created = new Date(fromServer[i]['created_at']);
       var modified = new Date(fromServer[i]['updated_at']);
-      var time = new Date(fromServer[i]['incident_time'])
+      var time = new Date(fromServer[i]['incident_time']);
+      var image = fromServer[i]['photo_link'];
+      if (image == null) {
+      	image = 'img/img-placeholder.jpg';
+      }
+      
+	  else {
+		image = image.slice(0,4) + image.slice(5,image.length);
+	  }
+      
       var incident = {
         "submitter": fromServer[i]['user']['last_name'] + ", " + fromServer[i]['user']['first_name'],
         "severity": parseInt(fromServer[i]['severity']) + 1,
@@ -645,6 +654,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
         "incident_time":convertsortable(time),
         "edit": edit,
         "status": status,
+        "image": image,
         "id": fromServer[i]['id']
       };
       if (searchsubstr(incident, str)) {
@@ -722,9 +732,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
         scale2: $scope.getscale2(i),
         scale3: $scope.getscale3(i),
         scale4: $scope.getscale4(i),
+        image: incidentData[i]['image'],
         id: incidentData[i]['id']
       });
     }
+    console.log($scope.events);
   };
 
    $scope.getscale1 = function() {
