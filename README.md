@@ -4,7 +4,7 @@ A simple solution to Tina's problems
 Hosted at [dirt.frontfish.net](http://dirt.frontfish.net).
 API hosted at [api.dirt.frontfish.net](http://api.dirt.frontfish.net).
 
-Access the API repository [here](https://github.com/tuftsdev/comp120-spring2016-team2-api).
+Access the API repository [here](https://github.com/chinstorff/dirt-api).
 ## Goals For Product:
 
 According to Tina, the email feedback form on her institution's website 
