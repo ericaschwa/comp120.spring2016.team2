@@ -638,11 +638,11 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
       if (image == null) {
       	image = 'img/img-placeholder.jpg';
       }
-      
+      /*
 	  else {
 		image = image.slice(0,4) + image.slice(5,image.length);
 	  }
-      
+      */
       var incident = {
         "submitter": fromServer[i]['user']['last_name'] + ", " + fromServer[i]['user']['first_name'],
         "severity": parseInt(fromServer[i]['severity']) + 1,
