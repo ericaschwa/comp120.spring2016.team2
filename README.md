@@ -106,7 +106,7 @@ Initially our website was really slow, loading about 800 incidents in 11.67 seco
 ### Photo Uploading
 After researching possible ways to deal with them, our team decided to use S3 to store images that the user can upload with an incident.  Instead of using our server as a middleman between client and S3, we originally wanted to retrieve a one-time-use upload link from S3 that would be passed to the front-end.  Using this method, however, proved much more complicated than anticipated due to poor documentation.  We are currently passing images from our front-end to our API, which then uploads the files to S3 and stores a link to the image in our database as part of the corresponding incident.  The link allows anyone with it to view the image.  File sizes are limited via nginx.
 
-## Final Leg: RabbitMQ and DigitalOcean
+## Final Leg: RabbitMQ and Digital Ocean
 
 ### Message Queues
 For the final leg of this project, our team decided to implement message queue middleware. Message queues allow for further decoupling of the backend from the frontend and scalability. This also helps efficiency of information flow whenever there are spikes in the number of users using our app. 
