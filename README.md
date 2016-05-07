@@ -57,6 +57,7 @@ two primary goals in developing our product:
   - [Amazon Web Services Ruby SDK](https://aws.amazon.com/sdk-for-ruby/) for uploading and retrieving photos from S3
 - MySQL
 - [Amazon S3](https://aws.amazon.com/s3/) for photo storage
+- [RabbitMQ](https://www.rabbitmq.com/)
 
 #### Why Sinatra over Ruby on Rails?
   Though Rails provides a lot of pre-built structures to work with,
@@ -76,11 +77,12 @@ two primary goals in developing our product:
 - Google Maps API
 - JQuery
 - Bootstrap
+- [RabbitMQ](https://www.rabbitmq.com/)
 
 ### Hosting
 - [Digital Ocean](http://digitalocean.com) LEMP stack
 
-##MVP Details
+## MVP Details
 - Time spent learning ruby: 1-2 hours
 - Time spent implementing MVP: 20 hours
 
@@ -103,6 +105,18 @@ Initially our website was really slow, loading about 800 incidents in 11.67 seco
 
 ### Photo Uploading
 After researching possible ways to deal with them, our team decided to use S3 to store images that the user can upload with an incident.  Instead of using our server as a middleman between client and S3, we originally wanted to retrieve a one-time-use upload link from S3 that would be passed to the front-end.  Using this method, however, proved much more complicated than anticipated due to poor documentation.  We are currently passing images from our front-end to our API, which then uploads the files to S3 and stores a link to the image in our database as part of the corresponding incident.  The link allows anyone with it to view the image.  File sizes are limited via nginx.
+
+## Final Leg: RabbitMQ and DigitalOcean
+
+### Message Queues
+For the final leg of this project, our team decided to implement message queue middleware. Message queues allow for further decoupling of the backend from the frontend and scalability. This also helps efficiency of information flow whenever there are spikes in the number of users using our app. 
+
+### RabbitMQ
+RabbitMQ is a messaging broker that offers a common platform for our frontend and backend to send and receive messages. RabbitMQ uses the technology of websockets, so it makes real-time communications between our frontend and backend possible, and replaces our previous need to poll the server every few seconds. Some features that RabbitMQ offers include reliability, flexible routing, and a variety of plugins for specific needs. For our frontend, we had to use the Web-Stomp Plugin, which makes it possible to use RabbitMQ from web browsers by exposing the STOMP protocol over websockets. By using this plugin, we can simply follow the STOMP protocol to receive incoming messages from the backend. For our backend, we simply create a queue called "incidents" for each client we are communicating with, and send new and edited incidents through a fanout exchange (the fanout exchange simply a type of routing that sends the same information to every queue).
+
+### Digital Ocean
+Several weeks before the final project was due, we noticed some inconsistencies with the server that was hosting our backend. We decided to use digital ocean to host and redo the server-side of the app. We did this as a team so that more members would get experience with setting up a server, and so that we would produce a server we can all understand and access. Furthermore, creating this server allowed us to demonstrate how easy it was to swap out one server with another, without needing to change things about the frontend or RabbitMQ. This highlights the independence of the backend and frontend and modularity that RabbitMQ implies.
+
 
 ## Contributors
 - [Max Ettelson](http://github.com/mdettelson)
