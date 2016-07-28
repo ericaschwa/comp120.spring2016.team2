@@ -185,8 +185,8 @@ function init() {
   var mapid = 'map';
   var textid = 'pac-input'
   if (oneortwo != 1) {
-  	document.getElementById('modal-body').innerHTML = "";
-  	document.getElementById('description').value = "";
+      document.getElementById('modal-body').innerHTML = "";
+      document.getElementById('description').value = "";
   }
 
   var initialLocation = new google.maps.LatLng(35.9886, -78.9072);
@@ -264,10 +264,10 @@ function init() {
       initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
       map.setCenter(initialLocation);
       var marker = new google.maps.Marker({
-    	position: initialLocation,
-    	map: map,
-    	title: 'You are here'
-  	  });
+        position: initialLocation,
+        map: map,
+        title: 'You are here'
+        });
     }, function() {
       //handleNoGeolocation(browserSupportFlag);
     });
@@ -409,12 +409,12 @@ function escapeHtml(str) {
 
   // activates "submit" button only when description contains text
   var descriptionedit = function() {
-  	var desc = document.getElementById('description');
-  	if (desc.value == "") {
-  		document.getElementById('submitbutton').disabled = true;
-  	} else {
-  		document.getElementById('submitbutton').disabled = false;
-  	}
+      var desc = document.getElementById('description');
+      if (desc.value == "") {
+          document.getElementById('submitbutton').disabled = true;
+      } else {
+          document.getElementById('submitbutton').disabled = false;
+      }
   };
 
 var setmodal;
@@ -471,13 +471,13 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 
   // make get request to access all incidents
   $scope.make_api_get = function() {
-	var j = jQuery.noConflict();
-  	j.ajax({
-  		method: "GET",
-  		url: URL + '/incidents'
-  	})
-  	.done(function(msg) {
-  		fromServer = msg;
+    var j = jQuery.noConflict();
+      j.ajax({
+          method: "GET",
+          url: URL + '/incidents'
+      })
+      .done(function(msg) {
+          fromServer = msg;
         show_resolved_incidents = false;
         document.getElementById('hideresolved').disabled = true;
         document.getElementById('showresolved').disabled = false;
@@ -486,33 +486,33 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
         refreshing = false;
         $scope.loaded = true;
         $scope.$apply();
-  	});
+      });
   };
 
   $scope.refresh = function() {
-  	//console.log("refresh");
-  	refreshing = true;
-  	$scope.sort();
-  	refreshing = false;
+      //console.log("refresh");
+      refreshing = true;
+      $scope.sort();
+      refreshing = false;
   };
   $scope.showrefresh = function() {
-  	//console.log("loading more");
-  	var j = jQuery.noConflict();
-  	j.ajax({
-  		method: "GET",
-  		url: URL + '/incidents'
-  	})
-  	.done(function(msg) {
-  		fromServer = msg;
-  		$scope.numnew = fromServer.length - length;
-  		$scope.$apply();
-  	});
+      //console.log("loading more");
+      var j = jQuery.noConflict();
+      j.ajax({
+          method: "GET",
+          url: URL + '/incidents'
+      })
+      .done(function(msg) {
+          fromServer = msg;
+          $scope.numnew = fromServer.length - length;
+          $scope.$apply();
+      });
   };
   setInterval($scope.showrefresh, 5000);
 
   // make post request to edit a given incident
   $scope.make_api_post = function(value) {
-  	//console.log(value);
+      //console.log(value);
     var j = jQuery.noConflict();
     j.ajax({
           method: "POST",
@@ -527,40 +527,40 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
 
   // show modal to create a new incident
   $scope.newIncident = function() {
-  	var j =jQuery.noConflict(); 
+      var j =jQuery.noConflict(); 
     j('#myModal2').modal('show'); 
     oneortwo = 2;
     setTimeout(init,1000);
     $scope.dateTimeNow();
-  	$scope.toggleMinDate();
-  	$scope.dateOptions = {
-  	  showWeeks: false
-  	};
-  	$scope.dateOpened = false;
-  	$scope.hourStep = 1;
-  	$scope.format = "dd-MMM-yyyy";
-  	$scope.minuteStep = 1;
-  	$scope.timeOptions = {
-  	  hourStep: [1, 2, 3],
-  	  minuteStep: [1, 5, 10, 15, 25, 30]
-  	};
-  	$scope.showMeridian = true;
+      $scope.toggleMinDate();
+      $scope.dateOptions = {
+        showWeeks: false
+      };
+      $scope.dateOpened = false;
+      $scope.hourStep = 1;
+      $scope.format = "dd-MMM-yyyy";
+      $scope.minuteStep = 1;
+      $scope.timeOptions = {
+        hourStep: [1, 2, 3],
+        minuteStep: [1, 5, 10, 15, 25, 30]
+      };
+      $scope.showMeridian = true;
   };
 
   // create new incident, post it to the server
   $scope.createIncident = function() {
-  	var j = jQuery.noConflict();
-  	var inputs = j('#form :input');
-  	var values = new FormData();
-  	var datenow = new Date();
-  	var reportdate = $scope.date;
+      var j = jQuery.noConflict();
+      var inputs = j('#form :input');
+      var values = new FormData();
+      var datenow = new Date();
+      var reportdate = $scope.date;
     if (!document.getElementById("InputFile").files.length == 0){
       var file_data = document.getElementById("InputFile").files[0];
       values.append('file', file_data, 'image');
-	}
-	  values.append('modified_at', datenow.toISOString());
-	  values.append('location', String(document.getElementById('pac-input').value));
-	  values.append('created_at', reportdate.toISOString());
+    }
+      values.append('modified_at', datenow.toISOString());
+      values.append('location', String(document.getElementById('pac-input').value));
+      values.append('created_at', reportdate.toISOString());
     values.append('user_id', USER); // this will be replaced by UserID when we get one (TODO)
     values.append('permission', 2); // this will be based on the UserID when we get one (TODO)
     values.append('status', 0); // all incidents start as unresolved
@@ -576,7 +576,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
    
     j.ajax({
       type:"POST",
-	    url: URL + '/incidents/new',
+        url: URL + '/incidents/new',
       contentType: false, 
       data: values, 
       processData: false,
@@ -584,7 +584,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
       cache: false,
     })
 
-	.done(function(msg) {
+    .done(function(msg) {
       console.log(msg);
     });
   };
@@ -608,7 +608,7 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
     $scope.filterincidentdata(str.toLowerCase());
     $scope.maketimeline();
     if (!refreshing)
-    	$scope.$apply();
+        $scope.$apply();
   };
 
   // used to filter the table by a given parameter
@@ -636,12 +636,12 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
       var time = new Date(fromServer[i]['incident_time']);
       var image = fromServer[i]['photo_link'];
       if (image == null) {
-      	image = 'img/img-placeholder.jpg';
+          image = 'img/img-placeholder.jpg';
       }
       /*
-	  else {
-		image = image.slice(0,4) + image.slice(5,image.length);
-	  }
+      else {
+        image = image.slice(0,4) + image.slice(5,image.length);
+      }
       */
       var incident = {
         "submitter": fromServer[i]['user']['last_name'] + ", " + fromServer[i]['user']['first_name'],
@@ -878,19 +878,19 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
     document.getElementById('status').value = data.status;
     setTimeout(init, 1000); // needs slight delay
     $scope.dateTimeNow();
-  	$scope.toggleMinDate();
-  	$scope.dateOptions = {
-  	  showWeeks: false
-  	};
-  	$scope.dateOpened = false;
-  	$scope.hourStep = 1;
-  	$scope.format = "dd-MMM-yyyy";
-  	$scope.minuteStep = 1;
-  	$scope.timeOptions = {
-  	  hourStep: [1, 2, 3],
-  	  minuteStep: [1, 5, 10, 15, 25, 30]
-  	};
-  	$scope.showMeridian = true;
+      $scope.toggleMinDate();
+      $scope.dateOptions = {
+        showWeeks: false
+      };
+      $scope.dateOpened = false;
+      $scope.hourStep = 1;
+      $scope.format = "dd-MMM-yyyy";
+      $scope.minuteStep = 1;
+      $scope.timeOptions = {
+        hourStep: [1, 2, 3],
+        minuteStep: [1, 5, 10, 15, 25, 30]
+      };
+      $scope.showMeridian = true;
   };
 
   // writes body html of modal
@@ -903,12 +903,12 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
            '<select id="status"><option value="1">Unresolved</option><option value="2">In Progress</option><option value="3">Resolved</option></select>' +
            '</div>';
     str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Date & Time</span>: " +
-    	   "<input class='formedit' id='time' name='time' type='text' value='" + data.created_at + "' />" +
+           "<input class='formedit' id='time' name='time' type='text' value='" + data.created_at + "' />" +
            "<br></div></div>";
     str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Submitter</span>: &nbsp;<span id='submitter'>" + data.submitter + "</span></div>";
     str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><span class='title'>Departments</span>: " + "<input class='formedit' id='departments' name='departments' type='text' value='" + data.departments + "' />" + "</div></div><br>";
     str += "<div class='row'><div class='col-xs-6 col-s-6 col-md-6 col-lg-6'>" + '<label for="Textarea">Incident Description</label>' +
-     	   '<textarea name="description" class="formedit form-control" name="description" id="description" rows="8">'+ data.description +  '</textarea></div>'
+            '<textarea name="description" class="formedit form-control" name="description" id="description" rows="8">'+ data.description +  '</textarea></div>'
     str += "<div class='col-xs-6 col-s-6 col-md-6 col-lg-6'><input class='formedit controls' name='location' id='pac-input' type='text' value='" + data.location + "' />" +
            "<div id='map'></div></div></div><br>";
     var status;
@@ -962,33 +962,33 @@ app.controller('incidentCtrl2', function($scope, $http, $filter, $timeout, uiGri
   var client = Stomp.over(ws);
 
   $scope.on_connect = function() {
-  	// makes get request for page's data
-  	$scope.make_api_get();
-  	//connect to the message queue we are using, receive updates
+      // makes get request for page's data
+      $scope.make_api_get();
+      //connect to the message queue we are using, receive updates
     client.subscribe("/exchange/incidents", function(msg) {
-     	var newIncident = JSON.parse(msg.body);
-     	var alreadyIn = false;
-     	for (var i = 0; i < fromServer.length; i++) {
-     		if (fromServer[i].id == newIncident.id) {
-     			fromServer[i] = newIncident;
-     			alreadyIn = true;
-     		}
-     	}
-     	//add new incident
-     	if (!alreadyIn) {
-     		fromServer.push(newIncident)
-     	}
-     	//else edit pre-existing incident
-		refreshing = true;
-		$scope.sort();
-		refreshing = false;
-		$scope.loaded = true;
-		$scope.$apply();
-	});
+         var newIncident = JSON.parse(msg.body);
+         var alreadyIn = false;
+         for (var i = 0; i < fromServer.length; i++) {
+             if (fromServer[i].id == newIncident.id) {
+                 fromServer[i] = newIncident;
+                 alreadyIn = true;
+             }
+         }
+         //add new incident
+         if (!alreadyIn) {
+             fromServer.push(newIncident)
+         }
+         //else edit pre-existing incident
+        refreshing = true;
+        $scope.sort();
+        refreshing = false;
+        $scope.loaded = true;
+        $scope.$apply();
+    });
   };
 
   $scope.on_error =  function() {
-  	console.log('error');
+      console.log('error');
   };
 
   client.connect('guest', 'guest', $scope.on_connect, $scope.on_error, '/');

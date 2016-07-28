@@ -85,10 +85,10 @@ function init() {
       initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
       map.setCenter(initialLocation);
       var marker = new google.maps.Marker({
-    	position: initialLocation,
-    	map: map,
-    	title: 'You are here'
-  	  });
+        position: initialLocation,
+        map: map,
+        title: 'You are here'
+        });
     }, function() {
       //handleNoGeolocation(browserSupportFlag);
     });
@@ -129,49 +129,49 @@ USER = 1;
  */
 var $ = jQuery.noConflict();
 $( document ).ready(function() {
-	// from http://stackoverflow.com/questions/169506/obtain-form-input-fields-using-jquery
-	$( "#form" ).on( "submit", function( event ) {
-	 	event.preventDefault();
-	    var $inputs = $('#form :input');
-	    var values = {};
-	    $inputs.each(function() {
-	        if (this.name === "") {
-	        	values['time'] = new Date();
-            	values['user_id'] = USER; // this will be replaced by UserID when we get one (TODO)
-            	values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
-            	values['departments'] = []; // this will be coded in later (TODO)
-            	values['status'] = 0; // all incidents start as unresolved
-            	var e = document.getElementById("severity");
-    			var severity = e.options[e.selectedIndex].value;
-            	values['severity'] = parseInt(severity) - 1;
+    // from http://stackoverflow.com/questions/169506/obtain-form-input-fields-using-jquery
+    $( "#form" ).on( "submit", function( event ) {
+         event.preventDefault();
+        var $inputs = $('#form :input');
+        var values = {};
+        $inputs.each(function() {
+            if (this.name === "") {
+                values['time'] = new Date();
+                values['user_id'] = USER; // this will be replaced by UserID when we get one (TODO)
+                values['permission'] = 2; // this will be based on the UserID when we get one (TODO)
+                values['departments'] = []; // this will be coded in later (TODO)
+                values['status'] = 0; // all incidents start as unresolved
+                var e = document.getElementById("severity");
+                var severity = e.options[e.selectedIndex].value;
+                values['severity'] = parseInt(severity) - 1;
 
 
-            	var filename = document.getElementById("InputFile").files[0];
-    			if(file != null){
-      			  	get_signed_request(file);
-       			
-    			}
-   				
+                var filename = document.getElementById("InputFile").files[0];
+                if(file != null){
+                        get_signed_request(file);
+                   
+                }
+                   
 
-            	//console.log(filename.name);
-            	//console.log("HERE")
-            	//console.log(values);
-            	$.ajax({
-				  method: "POST",
-				  url: 'URL' + '/incidents/new',
-				  data: values
-				})
-				.done(function(msg) {
-				 //console.log(msg);
-				  window.location = 'issuedisplay3.html'
-				});
-	        } else {
-	        	values[this.name] = escapeHtml($(this).val());
-	        }
-	    });
-	});
-	$( "#datetimepicker" ).datetimepicker({value: new Date()});
-	document.getElementById('submitbutton').disabled = true;
+                //console.log(filename.name);
+                //console.log("HERE")
+                //console.log(values);
+                $.ajax({
+                  method: "POST",
+                  url: 'URL' + '/incidents/new',
+                  data: values
+                })
+                .done(function(msg) {
+                 //console.log(msg);
+                  window.location = 'issuedisplay3.html'
+                });
+            } else {
+                values[this.name] = escapeHtml($(this).val());
+            }
+        });
+    });
+    $( "#datetimepicker" ).datetimepicker({value: new Date()});
+    document.getElementById('submitbutton').disabled = true;
 });
 
 //https://github.com/flyingsparx/NodeDirectUploader/blob/master/views/account.html
@@ -201,8 +201,8 @@ function upload_file(file, signed_request, url){
     request.
 */
 function get_signed_request(file){
-	console.log(file.name);
-	alert("got a file");
+    console.log(file.name);
+    alert("got a file");
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "/sign_s3?file_name="+file.name+"&file_type="+file.type);
     xhr.onreadystatechange = function(){
@@ -231,12 +231,12 @@ function escapeHtml(str) {
 
 // activates "submit" button only when description contains text
 var descriptionedit = function() {
-	var desc = document.getElementById('description');
-	if (desc.value == "") {
-		document.getElementById('submitbutton').disabled = true;
-	} else {
-		document.getElementById('submitbutton').disabled = false;
-	}
+    var desc = document.getElementById('description');
+    if (desc.value == "") {
+        document.getElementById('submitbutton').disabled = true;
+    } else {
+        document.getElementById('submitbutton').disabled = false;
+    }
 }
 
 // load map on page init

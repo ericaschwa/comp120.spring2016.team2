@@ -52,15 +52,15 @@ Response<br />
 <br />
 Example code:<br />
 <pre>
-	// Get all incidents. AJAX request, requires jQuery.
-	// Within the callback function, you may use msg however you'd like.
+    // Get all incidents. AJAX request, requires jQuery.
+    // Within the callback function, you may use msg however you'd like.
 
-	$.ajax({
-  		method: "GET",
-  		url: "http://api.dirt.frontfish.net/incidents"
-  	})
-  	.done(function(msg) {
-  	});
+    $.ajax({
+          method: "GET",
+          url: "http://api.dirt.frontfish.net/incidents"
+      })
+      .done(function(msg) {
+      });
  </pre>
 ------------------------------------------------------------------------------------------------<br />
 <br />
@@ -83,17 +83,17 @@ Required fields are marked with an asterisk "*"<br /><br />
 
 Example code:<br />
 <pre>
-	// Report new incident. AJAX request, requires jQuery.
-	// Requires some prior-created value object.
-	// Within the callback function, you may use msg however you'd like.
-	
-	$.ajax({
-  		method: "POST",
-  		url: "http://api.dirt.frontfish.net/incidents/new"
-  		data: value
-  	})
-  	.done(function(msg) {
-  	});
+    // Report new incident. AJAX request, requires jQuery.
+    // Requires some prior-created value object.
+    // Within the callback function, you may use msg however you'd like.
+    
+    $.ajax({
+          method: "POST",
+          url: "http://api.dirt.frontfish.net/incidents/new"
+          data: value
+      })
+      .done(function(msg) {
+      });
  </pre>
 ------------------------------------------------------------------------------------------------<br />
 <br />
@@ -107,15 +107,15 @@ Response<br />
 <br />
 Example code:<br />
 <pre>
-	// Get an existing incident. AJAX request, requires jQuery.
-	// Within the callback function, you may use msg however you'd like.
+    // Get an existing incident. AJAX request, requires jQuery.
+    // Within the callback function, you may use msg however you'd like.
 
-	$.ajax({
-  		method: "GET",
-  		url: "http://api.dirt.frontfish.net/incidents/" + value['id']
-  	})
-  	.done(function(msg) {
-  	});
+    $.ajax({
+          method: "GET",
+          url: "http://api.dirt.frontfish.net/incidents/" + value['id']
+      })
+      .done(function(msg) {
+      });
  </pre>
 ------------------------------------------------------------------------------------------------<br />
 <br />
@@ -138,17 +138,17 @@ Status is on a range from 0 to 2, where 0 is unresolved, 1 is in progress, and 2
 Required fields are marked with an asterisk "*"<br /><br />
 Example code:<br />
 <pre>
-	// Edit an existing incident. AJAX request, requires jQuery.
-	// Requires some prior-created value object.
-	// Within the callback function, you may use msg however you'd like.
-	
-	$.ajax({
-  		method: "POST",
-  		url: "http://api.dirt.frontfish.net/incidents/" + value['id'],
-  		data: value
-  	})
-  	.done(function(msg) {
-  	});
+    // Edit an existing incident. AJAX request, requires jQuery.
+    // Requires some prior-created value object.
+    // Within the callback function, you may use msg however you'd like.
+    
+    $.ajax({
+          method: "POST",
+          url: "http://api.dirt.frontfish.net/incidents/" + value['id'],
+          data: value
+      })
+      .done(function(msg) {
+      });
  </pre>
 ------------------------------------------------------------------------------------------------<br />
 <br />
@@ -162,9 +162,9 @@ Response<br />
 <br />
 Example code: <br />
 <pre>
-	get '/users/:id' do |id|
-  		return json User.get(id)
-  	end
+    get '/users/:id' do |id|
+          return json User.get(id)
+      end
  </pre>
 ------------------------------------------------------------------------------------------------<br />
 <br />
@@ -182,14 +182,14 @@ Response<br />
 Note: Required fields are marked with an asterisk "*"<br /><br />
 Example code: <br />
 <pre>
-	post '/users/new' do
-		user = User.create(first_name => params[:first_name], :last_name => params[:last_name])
-  		if user.saved?
-  			return json user
-  		else
-  			return "Failed to create user"
-  		end
-  	end
+    post '/users/new' do
+        user = User.create(first_name => params[:first_name], :last_name => params[:last_name])
+          if user.saved?
+              return json user
+          else
+              return "Failed to create user"
+          end
+      end
  </pre>
 ------------------------------------------------------------------------------------------------
 </span>
